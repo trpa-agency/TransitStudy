@@ -32,6 +32,7 @@ The public website for the Tahoe Transit Study, a Tahoe Regional Planning Agency
 | `data/historic-timeline.js` | `window.HISTORIC_TIMELINE`: historic transit events for the Existing conditions tab. |
 | `assets/img/` | Photos, maps, governance chart, TRPA logos, favicon. Partner logos are in `assets/img/partners/`, trimmed and no larger than 320 by 160 pixels. |
 | `.nojekyll` | Tells Pages to skip Jekyll. Keep it. |
+| `TransitFundingModel/` | The Regional Transit Funding Model, moved from the Transportation repo on Nov. 10, 2026. It has its own `CLAUDE.md`; read that before editing it. Its four source workbooks in `source-data/workbooks/` (about 17 MB) are an approved exception to the keep-small rule, because the build reads them. Its fact sheet PDFs are linked from trpa.gov, not stored here. |
 
 ## Page structure
 
@@ -50,7 +51,7 @@ One page with hash-routed tabs: `#home`, `#recommendations`, `#existing-conditio
 - **Timeframes:** `term` values like "Short to medium" render as dots in the Short, Medium, and Long columns. CSV export writes X for each dot.
 - **Agencies:** add a new agency to `AG` (with its group) before using its key in `lead` or `partners`.
 - **Meetings:** each entry has `date` (YYYY-MM-DD), `body`, `time`, `place`, and an optional `link`. The page splits Upcoming and Past by today's date, so past meetings don't need to be moved.
-- **Survey:** Survey123 item `d49378edcde44d33ad51f498b09e4c4c`, embedded with `embed=fullscreen&hide=footer`. The survey is open through January 2027.
+- **Survey:** Survey123 item `d49378edcde44d33ad51f498b09e4c4c`, embedded with `embed=fullscreen&hide=footer`. The survey closes Jan. 31, 2027. The date is `survey.closes` in the config.
 
 ## Brand
 

@@ -48,7 +48,7 @@ window.REC_MATRIX = {
     { type: "service", term: "Short", title: "Increase vanpools between Reno and Truckee/North Lake Tahoe", lead: ["TNT"], partners: ["TRK", "RTCW", "EMP", "RES"] },
     { type: "service", term: "Medium", title: "Discontinue TTD's operation of Route 19X and reimplement US 50 service between South Shore and Carson City", lead: ["TTD"], partners: ["NDOT", "CC", "DC", "CAMPO"] },
     { type: "service", term: "Medium", title: "Continue summer service from South Lake Y to Sugar Pine (Emerald Bay Shuttle)", lead: ["TTD"], partners: ["EDC", "CSLT", "USFS", "CASP", "PC", "CT", "TRPA"] },
-    { type: "service", term: "Medium", title: "Expand microtransit zone to Meyers commingled with paratransit", lead: ["TTD", "SSTMA"], partners: ["EDC", "STTJPA", "TRPA"] },
+    { type: "service", term: "Medium", title: "Expand microtransit zone to Meyers comingled with paratransit", lead: ["TTD", "SSTMA"], partners: ["EDC", "STTJPA", "TRPA"] },
     { type: "service", term: "Medium to long", title: "Reimplement TART Connect service in Incline Village", lead: ["PC"], partners: ["WC", "IVCBVB", "TRPA"] },
     { type: "service", term: "Long", title: "Expand seasonal service of Route 28 to Spooner Mobility Hub", lead: ["TTD"], partners: ["NDOT", "NVSP"] },
     { type: "service", term: "Long", title: "Increase frequency on TART fixed routes to 30 minutes during peak summer and winter", lead: ["PC"], partners: ["RES", "TNT"] },

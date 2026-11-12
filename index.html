@@ -498,7 +498,7 @@
             <h2>Recommended service strategies</h2>
           </div>
           <figure class="chart">
-            <a class="img" href="assets/img/recommended-service-map.png" target="_blank" rel="noopener"><img src="assets/img/recommended-service-map.png" width="2269" height="2377" loading="lazy" alt="Map of the nine recommended service strategies in the Lake Tahoe Basin. 1: Discontinue Route 19X and reimplement 21X service via US 50. 2: Expand seasonal service of Route 28 to the Spooner Mobility Hub. 3: Continue summer service from the South Lake Tahoe Y to Sugar Pine. 4: Discontinue the LTCC deviation on Route 50 during the summer. 5: Expand the microtransit zone to Meyers and commingle with TTD's extended paratransit zone. 6: Reimplement TART Connect service in Incline Village. 7: Increase vanpools between Reno and Truckee/North Lake Tahoe. 8: Increase frequency on all TART fixed routes to 30 minutes in peak summer and winter months. 9: Expand TART service span on all fixed routes to 8 p.m." /></a>
+            <a class="img" href="assets/img/recommended-service-map.png" target="_blank" rel="noopener"><img src="assets/img/recommended-service-map.png" width="2269" height="2377" loading="lazy" alt="Map of the nine recommended service strategies in the Lake Tahoe Basin. 1: Discontinue Route 19X and reimplement 21X service via US 50. 2: Expand seasonal service of Route 28 to the Spooner Mobility Hub. 3: Continue summer service from the South Lake Tahoe Y to Sugar Pine. 4: Discontinue the LTCC deviation on Route 50 during the summer. 5: Expand the microtransit zone to Meyers and comingle with TTD's extended paratransit zone. 6: Reimplement TART Connect service in Incline Village. 7: Increase vanpools between Reno and Truckee/North Lake Tahoe. 8: Increase frequency on all TART fixed routes to 30 minutes in peak summer and winter months. 9: Expand TART service span on all fixed routes to 8 p.m." /></a>
             <figcaption>Recommended service strategies. Map: TRPA. <a class="full" href="assets/img/recommended-service-map.png" target="_blank" rel="noopener">Open full size</a></figcaption>
           </figure>
         </div>
@@ -514,7 +514,7 @@
             <h2>Existing services</h2>
           </div>
           <figure class="chart map">
-            <a class="img" href="assets/img/existing-transit-map.png" target="_blank" rel="noopener"><img src="assets/img/existing-transit-map.png" width="1260" height="1631" loading="lazy" alt="Map of the existing transit system in the Lake Tahoe Basin. North Shore fixed routes (TART Mainline, 89, 267, and TTD Route 28) connect Truckee, Olympic Valley, Tahoma, Kings Beach, and Incline Village, with TART Connect zones along the north and west shores and the North Lake Tahoe Express to the airport. South Shore fixed routes (TTD 50/51, 55, 10 and 12, 207 and 14, 22, and 19X) serve South Lake Tahoe, Stateline, Carson City, and Gardnerville, with Lake Link zones in South Lake Tahoe. Seasonal routes include the Emerald Bay Shuttle and the East Shore service on Route 28. El Dorado Transit runs from Meyers to Sacramento, and the South Tahoe Airporter runs to Reno." /></a>
+            <a class="img" href="assets/img/existing-transit-map.png" target="_blank" rel="noopener"><img src="assets/img/existing-transit-map.png" width="1836" height="2376" loading="lazy" alt="Map of the existing transit system in the Lake Tahoe Basin. North Shore fixed routes (TART Mainline, 89, 267, and TTD Route 28) connect Truckee, Olympic Valley, Tahoma, Kings Beach, and Incline Village, with TART Connect zones along the north and west shores and the North Lake Tahoe Express to the airport. South Shore fixed routes (TTD 50/51, 55, 10 and 12, 207 and 14, 22, and 19X) serve South Lake Tahoe, Stateline, Carson City, and Gardnerville, with Lake Link zones in South Lake Tahoe. Seasonal routes include the Emerald Bay Shuttle and the East Shore service on Route 28. El Dorado Transit runs from Meyers to Sacramento, and the South Tahoe Airporter runs to Reno." /></a>
             <figcaption>Existing transit system. Map: TRPA. <a class="full" href="assets/img/existing-transit-map.png" target="_blank" rel="noopener">Open full size</a></figcaption>
           </figure>
         </div>
@@ -576,7 +576,7 @@
           </div>
           <div class="cards">
             <article class="card"><h3>Join a public meeting to learn about the study and share your feedback</h3><p>TRPA will seek input on key findings and recommendations at several public meetings around the basin.</p><a class="btn outline" href="#meetings">See meeting dates</a></article>
-            <article class="card"><h3>Take our community survey</h3><p>We want to hear directly from you to understand how you use the transit system, the challenges you face, and the improvements that would make the biggest difference. The survey will be open through January 2027.</p><a class="btn outline" href="#survey">Take the survey</a></article>
+            <article class="card"><h3>Take our community survey</h3><p>We want to hear directly from you to understand how you use the transit system, the challenges you face, and the improvements that would make the biggest difference.</p><a class="btn outline" href="#survey">Take the survey</a></article>
             <article class="card"><h3>Share your comments</h3><p>Send your comments to:</p><p><span class="who" data-contact-name style="font-weight:600"></span><br /><span class="role" data-contact-title></span><a data-contact-email></a></p></article>
           </div>
         </div>
@@ -587,7 +587,7 @@
           <div class="survey-intro">
             <p class="kicker">Public survey</p>
             <h2>Tell us how you use transit</h2>
-            <p>The Tahoe Transit Study Survey asks how you use the transit system and what you think of the proposed changes.</p>
+            <p>The Tahoe Transit Study Survey asks how you use the transit system and what you think of the proposed changes. It will be open through <span class="survey-closes">Jan. 31, 2027</span>.</p>
             <p><a id="survey-newtab" target="_blank" rel="noopener">Open the survey in a new tab</a></p>
           </div>
           <div class="survey-frame" id="survey-frame">
@@ -685,6 +685,7 @@
       };
       $("#team-list").innerHTML = (CFG.partners?.team || []).map(logo).join("");
       $("#stakeholder-list").innerHTML = (CFG.partners?.stakeholders || []).map(logo).join("");
+      if (CFG.survey && CFG.survey.closes) document.querySelectorAll(".survey-closes").forEach(el => { el.textContent = CFG.survey.closes; });
       $("#survey-newtab").href = CFG.survey ? `https://survey123.arcgis.com/share/${CFG.survey.itemId}` : "#";
 
       // meetings: today and later are upcoming, soonest first; past is newest first

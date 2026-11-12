@@ -13,7 +13,8 @@ window.SITE_CONFIG = {
   survey: {
     title: "Tahoe Transit Study Survey",
     itemId: "d49378edcde44d33ad51f498b09e4c4c",
-    shortUrl: "https://arcg.is/0Kv8eu0"
+    shortUrl: "https://arcg.is/0Kv8eu0",
+    closes: "Jan. 31, 2027"   // shown on the Get involved tab
     // share URL and iframe URL are built from itemId in the page
   },
 
