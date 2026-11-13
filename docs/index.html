@@ -260,6 +260,7 @@
     .notice{display:flex;gap:.7rem;align-items:flex-start;background:var(--ct-gold-light);border:1px solid #EFE2A0;border-left:4px solid var(--ct-gold);border-radius:var(--brand-radius);padding:.85rem 1.1rem;font-size:.93rem;margin:1.4rem 0 0;}
     .notice b{color:var(--ct-gold-text);}
     .embed-head{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;justify-content:space-between;}
+    .fund-sub{margin-top:2.6rem;} .fund-sub h3{font-size:1.25rem;margin-bottom:.4rem;}
     .embed-frame{margin-top:1.6rem;background:#fff;border:1px solid var(--gray-border);border-radius:var(--brand-radius);overflow:hidden;}
     .embed-frame iframe{display:block;width:100%;border:0;}
     /* ---------- responsibility matrix (AG Grid) ---------- */
@@ -553,13 +554,10 @@
             <p>This chart traces federal, state, and local funding to the transit operations it supports in the Tahoe Basin. Hover over a flow to see its amount.</p>
           </div>
           <div class="embed-frame" id="funding-frame"><p class="loading">Loading the funding chart</p></div>
-        </div>
-      </section>
-      <section class="band">
-        <div class="wrap">
-          <p class="kicker">Funding tables</p>
-          <h2>Funding sources in detail</h2>
-          <p class="prose">Fact sheets with more information on each funding source, match requirements, uses, and restrictions.</p>
+          <div class="prose fund-sub">
+            <h3>Funding sources in detail</h3>
+            <p>Fact sheets with more information on each funding source, match requirements, uses, and restrictions.</p>
+          </div>
           <div class="link-grid" id="funding-list"></div>
         </div>
       </section>
