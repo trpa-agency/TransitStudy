@@ -8,6 +8,10 @@ window.REC_MATRIX = {
 
   groups: ["Transit operators", "Regional and planning", "Local jurisdictions", "State and federal", "Private, nonprofit, and other", "General groups"],
 
+  // Column order in the matrix, matching the spreadsheet. Agencies with no recommendations are hidden.
+  order: ["TTD", "PC", "SSTMA", "TNT", "TRPA", "EDT", "RTCW", "CSLT", "EDC", "DC", "WC", "STTJPA", "CAMPO", "TRK", "CC", "NC",
+          "NDOT", "CT", "NVSP", "CASP", "USFS", "HEAV", "LTCC", "IVCBVB", "NTCA", "LTVA", "TBEC", "RES", "EMP"],
+
   AG: {
     TTD:    { n: "Tahoe Transportation District (TTD)", s: "TTD", g: "Transit operators" },
     PC:     { n: "Placer County (operates TART)", s: "Placer County/TART", g: "Transit operators" },

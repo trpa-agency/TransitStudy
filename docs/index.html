@@ -802,12 +802,13 @@
     const termsOf = t => { if (!t) return []; const p = t.toLowerCase().split(" to "); const i = TERMS.findIndex(x => x[0] === p[0]), j = TERMS.findIndex(x => x[0] === p[p.length - 1]); return TERMS.slice(i, j + 1).map(x => x[0]); };
     let mxGrid, activeAgency = "";
     function buildMatrix(){
-      const { AG, groups, recs } = window.REC_MATRIX;
+      const { AG, groups, order, recs } = window.REC_MATRIX;
       const narrow = matchMedia("(max-width: 640px)").matches;
       const who = r => [...r.lead, ...r.partners];
       const count = {}; recs.forEach(r => who(r).forEach(a => count[a] = (count[a] || 0) + 1));
       const cols = [];
-      groups.forEach(g => Object.keys(AG).filter(k => AG[k].g === g && count[k])
+      if (order) order.filter(k => count[k]).forEach(k => cols.push(k));
+      else groups.forEach(g => Object.keys(AG).filter(k => AG[k].g === g && count[k])
         .sort((a, b) => count[b] - count[a]).forEach(k => cols.push(k)));
       const list = activeAgency ? recs.filter(r => who(r).includes(activeAgency)) : recs;
       const rows = list.map(r => {
