@@ -6,7 +6,7 @@ Context for Claude when working in this repo. Read this before editing anything.
 
 The public website for the Tahoe Transit Study, a Tahoe Regional Planning Agency (TRPA) project. The study includes an operational analysis plus service, governance, and funding recommendations for transit in the Lake Tahoe Basin.
 
-- Live site: https://trpa-agency.github.io/TransitStudy/ (GitHub Pages, deployed from `main`, root folder)
+- Live site: https://trpa-agency.github.io/TransitStudy/ (GitHub Pages, deployed from `main`, `/docs` folder)
 - Replaces: https://tahoetransitstudy.squarespace.com/. Nothing on the site loads from Squarespace anymore. Keep it that way.
 - Owner: Rachael Shaw, Transportation Planning Analyst, TRPA
 - Public contact on the site: Kira Richardson, Senior Transportation Planner, krichardson@trpa.gov
@@ -17,7 +17,7 @@ The public website for the Tahoe Transit Study, a Tahoe Regional Planning Agency
 - Don't commit, push, or merge. The owner reviews and commits from GitHub Desktop.
 - Ask before acting when directions conflict or a choice is the owner's to make. Ask one question at a time.
 - Don't redesign or "improve" sections that weren't part of the request. Several sections went through many rounds of review (the historic timeline, the project timeline, the matrix). Change only what was asked.
-- Put links, paths, dates, embed IDs, and contacts in `config/site-config.js` or the `data/` files, never hardcoded in `index.html`.
+- Put links, paths, dates, embed IDs, and contacts in `docs/config/site-config.js` or the `docs/data/` files, never hardcoded in `docs/index.html`.
 - No build step, no framework, no npm. Plain HTML, CSS, and JavaScript, with libraries from a CDN at pinned versions.
 - Never guess at facts (meeting dates, dollar amounts, agency roles, history). Cite a source or ask.
 
@@ -25,13 +25,15 @@ The public website for the Tahoe Transit Study, a Tahoe Regional Planning Agency
 
 | Path | What it is |
 |---|---|
-| `index.html` | The whole site: markup, inline CSS (design tokens on `:root`), and the inline script that renders everything from config and data. |
-| `config/site-config.js` | `window.SITE_CONFIG`: contact, survey, reports, funding tables, Flourish ID, images, partners, AG Grid URL, and meetings. |
-| `data/recommendations-matrix.js` | `window.REC_MATRIX`: agencies (`AG`) and recommendations (`recs`) for the responsibility matrix. |
-| `data/project-timeline.js` | `window.PROJECT_TIMELINE`: Gantt lanes and items for the Home tab, from Project_Timeline.xlsx. Months are `YYYY-MM`. |
-| `data/historic-timeline.js` | `window.HISTORIC_TIMELINE`: historic transit events for the Existing conditions tab. |
-| `assets/img/` | Photos, maps, governance chart, TRPA logos, favicon. Partner logos are in `assets/img/partners/`, trimmed and no larger than 320 by 160 pixels. |
-| `.nojekyll` | Tells Pages to skip Jekyll. Keep it. |
+| `docs/index.html` | The whole site: markup, inline CSS (design tokens on `:root`), and the inline script that renders everything from config and data. |
+| `docs/config/site-config.js` | `window.SITE_CONFIG`: contact, survey, reports, funding tables, Flourish ID, images, partners, AG Grid URL, and meetings. |
+| `docs/data/recommendations-matrix.js` | `window.REC_MATRIX`: agencies (`AG`) and recommendations (`recs`) for the responsibility matrix. |
+| `docs/data/project-timeline.js` | `window.PROJECT_TIMELINE`: Gantt lanes and items for the Home tab, from Project_Timeline.xlsx. Months are `YYYY-MM`. |
+| `docs/data/historic-timeline.js` | `window.HISTORIC_TIMELINE`: historic transit events for the Existing conditions tab. |
+| `docs/assets/img/` | Photos, maps, governance chart, TRPA logos, favicon. Partner logos are in `docs/assets/img/partners/`, trimmed and no larger than 320 by 160 pixels. |
+| `docs/.nojekyll` | Tells Pages to skip Jekyll. Keep it. |
+
+Pages publishes only `docs/`. Files outside it get no website URL, but they are still public on github.com because the repo is public. `README.md` and this file stay at the repo root.
 | `TransitFundingModel/` | The Regional Transit Funding Model, moved from the Transportation repo on Nov. 10, 2026. It has its own `CLAUDE.md`; read that before editing it. Its four source workbooks in `source-data/workbooks/` (about 17 MB) are an approved exception to the keep-small rule, because the build reads them. Its fact sheet PDFs are linked from trpa.gov, not stored here. |
 
 ## Page structure
@@ -46,8 +48,8 @@ One page with hash-routed tabs: `#home`, `#recommendations`, `#existing-conditio
 
 ## Data notes
 
-- **Matrix, service and governance rows:** match the Tahoe Transit Study Executive Summary, Tables 3 and 4, for wording, lead agencies, partners, and timeframe. If the Executive Summary changes, recheck every row against it.
-- **Matrix, funding rows:** from the draft Funding Memo v2, with renames approved by the owner. They have no timeframe on purpose. Leave `term` blank unless the owner provides one.
+- **Matrix, agencies and roles:** the current source is the responsibility matrix spreadsheet with Kira Richardson's edits (Nov. 13, 2026). It replaced the Executive Summary's lead and partner lists and added specific agencies where the tables said "local jurisdictions" or "TMAs." Service and governance wording still follows the Executive Summary, Tables 3 and 4. The final study will be updated to match this spreadsheet. When it is published, check the matrix against it.
+- **Matrix, funding rows:** from the same spreadsheet. They have no timeframe on purpose. Leave `term` blank unless the owner provides one.
 - **Timeframes:** `term` values like "Short to medium" render as dots in the Short, Medium, and Long columns. CSV export writes X for each dot.
 - **Agencies:** add a new agency to `AG` (with its group) before using its key in `lead` or `partners`.
 - **Meetings:** each entry has `date` (YYYY-MM-DD), `body`, `time`, `place`, and an optional `link`. The page splits Upcoming and Past by today's date, so past meetings don't need to be moved.
@@ -75,5 +77,5 @@ Copy on the site follows TRPA and Microsoft Writing Style Guide rules.
 
 ## Preview and checks
 
-- Serve locally with `python -m http.server 8000` from the repo root, then open http://localhost:8000/. The data files load best from a server. In VS Code, open this repo as the workspace folder and trust it, or Live Preview returns "Forbidden."
+- Serve locally with `python -m http.server 8000` from the `docs` folder, then open http://localhost:8000/. The data files load best from a server. In VS Code, open this repo as the workspace folder and trust it, or Live Preview returns "Forbidden."
 - Before handing off a change, check every tab at desktop width and at 375 pixels wide, check that the matrix loads and filters, and confirm there are no console errors.
