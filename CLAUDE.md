@@ -35,6 +35,7 @@ The public website for the Tahoe Transit Study, a Tahoe Regional Planning Agency
 
 Pages publishes only `docs/`. Files outside it get no website URL, but they are still public on github.com because the repo is public. `README.md` and this file stay at the repo root.
 | `TransitFundingModel/` | The Regional Transit Funding Model, moved from the Transportation repo on Nov. 10, 2026. It has its own `CLAUDE.md`; read that before editing it. Its four source workbooks in `source-data/workbooks/` (about 17 MB) are an approved exception to the keep-small rule, because the build reads them. Its fact sheet PDFs are linked from trpa.gov, not stored here. |
+| `docs/funding-model/` | Hosted copies of the funding model's public and full pages: `transit-funding-public.html` and `transit-funding-full.html`. Written by `TransitFundingModel/pipeline/editions/build_editions.py`; don't edit them here. Live at https://trpa-agency.github.io/TransitStudy/funding-model/ |
 
 ## Page structure
 

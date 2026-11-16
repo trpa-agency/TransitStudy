@@ -1,0 +1,104 @@
+# Model constants: agencies, jurisdictions, and source file names. Edited by hand.
+schema: tahoe-transit-funding-data/1
+modelVersion: tahoe-transit-funding-1.0
+sourceFiles:
+  scen: Example Transit Financial Scenario Workbook.xlsx
+  plan: Financial PlanG.xlsx
+  v1g: Funding Model V1G.xlsx
+  sstma: SSTMA multijurisdiction transit services working model.xlsx
+  fed: Federal Funds, Oct. 28, 2026.pdf
+  state: State Funds, Oct. 28, 2026.pdf
+  loc1: Local Funds 1 of 3, Oct. 28, 2026.pdf
+  loc2: Local Funds 2 of 3, Oct. 28, 2026.pdf
+  loc3: Local Funds 3 of 3, Oct. 28, 2026.pdf
+sourceFileNotes:
+  scen: State and local route conditions (costs tab). Its costs and rates are replaced by Funding Model V1G.
+  plan: Revenue conditions and match notes (Revenue %s, columns B and C) and the five-year revenue tables (Tables A1 and A2). Its FY 26-27 
+    amounts and shares are replaced by Funding Model V1G.
+  v1g: 'Source of truth for existing transit data since Nov. 13, 2026: FY 26-27 revenue by source and agency, route allocations, and operating
+    cost by route (Per Route Model Clean), service statistics (Operating Stats), operator rates (VRH Rates), and the FTA split.'
+  sstma: Multi-jurisdiction cost-share method (miles, hours, stops, ridership) and Lake Link zone structure.
+  fed: Federal funding fact sheet (FY 25-26 budgeted amounts, purpose, match, restrictions).
+  state: State funding fact sheet.
+  loc1: Local funding fact sheet, part 1 of 3 (TART partners, Placer County TOT, Washoe RTC, Town of Truckee, TTD local appropriation).
+  loc2: Local funding fact sheet, part 2 of 3 (Nevada State Parks, Tahoe Douglas Visitor Authority, NLTE partners, Lake Link public 
+    partners).
+  loc3: Local funding fact sheet, part 3 of 3 (Lake Link private partners).
+# Links to the fact sheets on trpa.gov (Oct. 28, 2026 versions, the newest). Each fact sheet in sourceFiles has one.
+sourceFileLinks:
+  fed: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/FederalFunds-10.28.2026.pdf'}]
+  state: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/StateFunds-10.28.2026.pdf'}]
+  loc1: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/LocalFunds1of3-7columns-10.28.2026.pdf'}]
+  loc2: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/LocalFunds2of3-7columns-10.28.2026.pdf'}]
+  loc3: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/LocalFunds3of3-6columns-10.28.2026.pdf'}]
+# Published documents cited in the model, numbered after the workbooks, fact sheets, and TRPA direction.
+references:
+  tartPlan:
+    name: TART 2025 Systems Plan Update, Board presentation, Item 04A, Placer County Board of Supervisors, November 18, 2025
+    note: Preferred service scenario and the cost of 30-minute peak service on TART fixed routes (slides 30 and 31).
+    url: 
+      https://www.placer.ca.gov/DocumentCenter/View/99365/2025-111825-PowerPoint-Item-04A-DPW---Tahoe-Truckee-Area-Regional-Transit-2025-Systems-Plan-Update
+  tartMemo:
+    name: TART 2025 Systems Plan Update, staff report, Placer County Public Works, November 18, 2025
+    note: Current 60-minute frequency on all TART fixed routes, and the peak-season and year-round 30-minute options.
+    url: https://www.placer.ca.gov/DocumentCenter/View/99284/04A
+# Scenario inputs taken from published plans. Used by the scenario presets.
+scenarios:
+  peak30:
+    # 30-minute frequency on TART fixed routes in the winter and summer months, from 60 minutes today.
+    cost: 2683400  # annual operating cost increase in FY 26-27 dollars; the model grows it at TART's escalator and starts it in the year the user picks
+    hours: 16100            # added annual service hours
+    miles: 318200           # added annual service miles
+    riders: 153000          # added annual riders
+    routes: [TART-WS, TART-NS, TART-NV, '89', '267']   # Main Line (West Shore, North Shore, Nevada), Hwy 89, Hwy 267. Night service is not included.
+    split: Placeholder. The plan gives a systemwide total. The model splits it across routes by each route's annual service hours.
+    cite: [tartPlan, tartMemo]
+agencies:
+- id: TTD
+  name: Tahoe Transportation District
+  short: TTD
+- id: SSTMA
+  name: South Shore TMA (Lake Link)
+  short: Lake Link
+- id: TART
+  name: Placer County TART
+  short: TART
+- id: TNTTMA
+  name: Truckee North Tahoe TMA
+  short: TNT/TMA
+- id: REGION
+  name: Regional or new (not yet assigned)
+  short: Regional
+jurisdictions:
+- id: CSLT
+  name: City of South Lake Tahoe
+  short: CSLT
+  state: CA
+- id: ELD
+  name: El Dorado County
+  short: El Dorado
+  state: CA
+- id: PLA
+  name: Placer County
+  short: Placer
+  state: CA
+- id: NEV
+  name: Nevada County
+  short: Nevada Co.
+  state: CA
+- id: TRK
+  name: Town of Truckee
+  short: Truckee
+  state: CA
+- id: DOU
+  name: Douglas County
+  short: Douglas
+  state: NV
+- id: WAS
+  name: Washoe County
+  short: Washoe
+  state: NV
+- id: CC
+  name: Carson City
+  short: Carson City
+  state: NV
