@@ -15,6 +15,18 @@ public:
   status_label: DRAFT   # replaces the Beta chip in the header
 full:
   file: transit-funding-full.html
+  # Passphrase gate on the full page, adapted from the TRPA Tools QA gate. Keeps casual visitors out; it is not security.
+  gate:
+    hash: '812e7a731009213c4bfaf51b01b4a606591d715468f0268d5840ce6775c5076e'   # set by set_passphrase.bat; the build stops until it is set. Only the hash is stored, never the passphrase
+    salt: trpa-agency.github.io/TransitStudy/funding-model
+    key: trpa-funding-model-gate          # browser storage key for the 30-day unlock
+    ttl_days: 30
+    request_email: rshaw@trpa.gov
+    request_subject: Regional Transit Funding Model passphrase
+    title: Regional Transit Funding Model
+    message: The full model is a working draft for TRPA staff and partners. Enter the passphrase to continue.
+    logo: https://trpa-agency.github.io/tools/assets/TRPALogo_COLOR.png
+    public_link_text: Open the public page
 
 # Existing funding conditions, on both the public and the full page.
 existing_page:

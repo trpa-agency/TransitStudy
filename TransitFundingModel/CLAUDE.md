@@ -27,7 +27,7 @@ Older working papers in `docs/` are dated records. Don't update them to match la
 | `model/transit-funding-model.html` | The current model page. Built by the pipeline; never edit it by hand |
 | `model/archive/` | Earlier versions of the page |
 | `pipeline/` | Build: `etl/build_model_data.py`, `etl/config.yaml`, `etl/seed/*.yaml`, and the page template |
-| `pipeline/editions/` | Builds the public page (Existing funding conditions only) and the full page from `model/`, then copies the public and full pages to `../docs/funding-model/` for GitHub Pages |
+| `pipeline/editions/` | Builds the public page (Existing funding conditions only) and the full page from `model/`, then copies the public and full pages to `../docs/funding-model/` for GitHub Pages. The full page gets a passphrase gate (`editions/gate.js`); set the passphrase with `pipeline/set_passphrase.bat` |
 | `../docs/funding-model/` | Hosted copies, live at https://trpa-agency.github.io/TransitStudy/funding-model/. Written by the editions build; never edit them by hand |
 | `source-data/workbooks/` | Copies of the four source workbooks. Funding Model V1G is the source of truth for existing transit data. The live copies are in the TRPA SharePoint folder "4. Funding Implementation Memo" |
 | Fact sheets | Not in this repo. The model cites the newest versions on trpa.gov, dated Oct. 28, 2026: Federal Funds, State Funds, and Local Funds in three parts (sources 5 to 9). The links are in `sourceFileLinks` in `pipeline/etl/seed/model.yaml` and on the Sources and notes tab |

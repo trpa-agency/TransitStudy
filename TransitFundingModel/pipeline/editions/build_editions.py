@@ -12,6 +12,7 @@ Usage, from pipeline/:  propy editions/build_editions.py
 from __future__ import annotations
 
 import html
+import json
 import re
 import sys
 from pathlib import Path
@@ -53,7 +54,29 @@ def existing_page_text(s: str, cfg: dict) -> str:
 
 
 def make_full(s: str, cfg: dict) -> str:
-    return existing_page_text(s, cfg)
+    s = existing_page_text(s, cfg)
+    g = cfg["full"].get("gate")
+    if g:
+        s = add_gate(s, g, cfg["public"]["file"])
+    return s
+
+
+def add_gate(s: str, g: dict, public_file: str) -> str:
+    """Inline the passphrase gate at the top of <head>, so it runs before the page shows."""
+    if not str(g.get("hash") or "").strip():
+        raise EditionError("No passphrase is set for the full page. Run set_passphrase.bat, then build again.")
+    if not re.fullmatch(r"[0-9a-f]{64}", str(g["hash"]).strip()):
+        raise EditionError("gate.hash in config.yaml is not a SHA-256 hash. Run set_passphrase.bat to set it.")
+    settings = {"hash": str(g["hash"]).strip(), "salt": g["salt"], "key": g["key"], "ttlDays": int(g.get("ttl_days", 30)),
+                "requestEmail": g["request_email"], "requestSubject": g.get("request_subject", "Passphrase request"),
+                "title": g["title"], "message": g["message"], "logo": g["logo"],
+                "publicPage": public_file, "publicLinkText": g.get("public_link_text", "Open the public page")}
+    js = (HERE / "gate.js").read_text(encoding="utf-8")
+    if js.count("__SETTINGS__") != 1:
+        raise EditionError("gate.js must contain the __SETTINGS__ token once.")
+    js = js.replace("__SETTINGS__", json.dumps(settings, ensure_ascii=False).replace("</", "<\\/"))
+    block = '<meta name="robots" content="noindex" />\n<!-- Passphrase gate (pipeline/editions/gate.js) -->\n<script>\n' + js + '\n</script>\n'
+    return swap(s, '<meta charset="UTF-8" />\n', '<meta charset="UTF-8" />\n' + block, "gate placement")
 
 
 def make_public(s: str, cfg: dict, full_file: str) -> str:

@@ -17,6 +17,17 @@ The public page links to the full page by file name, so host the two files in th
 
 Settings, including the file names, the link text, and the Existing funding conditions heading and note, are in `config.yaml`.
 
+## Passphrase on the full page
+
+The full page opens behind a passphrase box, adapted from the TRPA Tools QA gate (trpa-agency/tools, `assets/qa-gate.js`). The public page stays open, and its "Open the full model" button leads to the box. Visitors who enter the passphrase stay unlocked in that browser for 30 days. "Request the passphrase" emails rshaw@trpa.gov.
+
+1. Double-click `set_passphrase.bat` in `pipeline/`. Type the passphrase twice. It is never shown or saved; only its SHA-256 hash, salted with `full.gate.salt`, goes into `config.yaml`.
+2. Run `build_editions.bat` and commit. Changing the passphrase asks everyone for the new one on their next visit.
+
+The build stops if no passphrase is set. Settings (request email, wording, 30-day unlock) are in the `full.gate` block of `config.yaml`. The gate script is `gate.js`; the build inlines it at the top of the full page.
+
+This keeps casual visitors out. It is not security: the page and its data still download to the browser, and the repo is public.
+
 ## When it stops
 
 The public page is cut from the model page at fixed markers: section comments, element IDs, the citation superscripts, and a few sentences. If the template changes one of them, the build stops and names it. Update `build_editions.py` to match.
