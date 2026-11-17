@@ -24,7 +24,7 @@ full:
     request_email: rshaw@trpa.gov
     request_subject: Regional Transit Funding Model passphrase
     title: Regional Transit Funding Model
-    message: The full model is a working draft for TRPA staff and partners. Enter the passphrase to continue.
+    message: The full model is a working draft for the Transit Working Group staff members. Enter the passphrase to continue.
     logo: https://trpa-agency.github.io/tools/assets/TRPALogo_COLOR.png
     public_link_text: Open the public page
     # Checkbox the visitor must check before the passphrase unlocks the page. The disclaimer is TRPA's standard text.
