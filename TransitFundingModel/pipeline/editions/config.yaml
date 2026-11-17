@@ -19,7 +19,7 @@ full:
   gate:
     hash: '812e7a731009213c4bfaf51b01b4a606591d715468f0268d5840ce6775c5076e'   # set by set_passphrase.bat; the build stops until it is set. Only the hash is stored, never the passphrase
     salt: trpa-agency.github.io/TransitStudy/funding-model
-    key: trpa-funding-model-gate          # browser storage key for the 30-day unlock
+    key: trpa-funding-model-gate-v2       # browser storage key for the 30-day unlock
     ttl_days: 30
     request_email: rshaw@trpa.gov
     request_subject: Regional Transit Funding Model passphrase
@@ -27,6 +27,13 @@ full:
     message: The full model is a working draft for TRPA staff and partners. Enter the passphrase to continue.
     logo: https://trpa-agency.github.io/tools/assets/TRPALogo_COLOR.png
     public_link_text: Open the public page
+    # Checkbox the visitor must check before the passphrase unlocks the page. The disclaimer is TRPA's standard text.
+    agreement: By checking this box, I agree not to share, cite, or publish the data in this model outside my agency without TRPA's approval.
+    disclaimer: >-
+      While TRPA believes the data is accurate and properly functioning, TRPA disclaims any responsibility for the
+      accuracy or correctness of the data. TRPA makes no warranties, express or implied, including but not limited to any
+      warranties of merchantability or fitness for a particular purpose, nor shall the distribution of this information
+      constitute any warranty.
 
 # Existing funding conditions, on both the public and the full page.
 existing_page:

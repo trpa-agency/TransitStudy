@@ -73,6 +73,9 @@
     '.fm-gate button { font: inherit; font-size: 1rem; font-weight: 600; padding: 0.6rem 1.1rem; border: 0; border-radius: 6px; background: #0072CE; color: #fff; cursor: pointer; }',
     '.fm-gate button:hover { background: #005ea8; }',
     '.fm-gate button:disabled { opacity: 0.6; cursor: default; }',
+    '.fm-gate .fm-gate-agree { display: flex; gap: 0.55rem; align-items: flex-start; margin: 0 0 0.5rem; font-size: 0.875rem; font-weight: 600; line-height: 1.45; cursor: pointer; }',
+    '.fm-gate .fm-gate-agree input { flex: none; width: 18px; height: 18px; margin: 0.1rem 0 0; padding: 0; accent-color: #0072CE; -webkit-appearance: checkbox; appearance: auto; cursor: pointer; }',
+    '.fm-gate .fm-gate-disclaimer { margin: 0 0 1.1rem; font-size: 0.78rem; line-height: 1.45; color: #5f7893; }',
     '.fm-gate .fm-gate-error { min-height: 1.3em; margin: 0.6rem 0 0; font-size: 0.875rem; color: #9C3E27; }',
     '.fm-gate .fm-gate-request { display: inline-flex; align-items: center; gap: 0.4rem; margin: 0.9rem 0 0; padding: 0.5rem 0.9rem; border: 1px solid #0072CE; border-radius: 6px;',
     '  background: #fff; color: #0072CE; font-size: 0.9rem; font-weight: 600; text-decoration: none; }',
@@ -95,6 +98,8 @@
         '<img class="fm-gate-logo" src="' + esc(CFG.logo) + '" alt="Tahoe Regional Planning Agency" />' +
         '<h1 id="fm-gate-title">' + esc(CFG.title) + '</h1>' +
         '<p>' + esc(CFG.message) + '</p>' +
+        (CFG.agreement ? '<label class="fm-gate-agree"><input id="fm-gate-agree" type="checkbox" /><span>' + esc(CFG.agreement) + '</span></label>' : '') +
+        (CFG.disclaimer ? '<p class="fm-gate-disclaimer">' + esc(CFG.disclaimer) + '</p>' : '') +
         '<label for="fm-gate-input">Passphrase</label>' +
         '<div class="fm-gate-row">' +
           '<input id="fm-gate-input" type="password" autocapitalize="off" spellcheck="false" required />' +
@@ -110,7 +115,8 @@
     document.body.appendChild(gate);
 
     var form = gate.querySelector('form');
-    var input = gate.querySelector('input');
+    var input = gate.querySelector('#fm-gate-input');
+    var agree = gate.querySelector('#fm-gate-agree');
     var button = gate.querySelector('button');
     var error = gate.querySelector('.fm-gate-error');
 
@@ -129,6 +135,11 @@
       ev.preventDefault();
       var value = input.value;
       if (!value) return;
+      if (agree && !agree.checked) {
+        error.textContent = 'Check the box to agree before you continue.';
+        agree.focus();
+        return;
+      }
       button.disabled = true;
       sha256(SALT + value).then(function (hex) {
         if (hex === HASH) {

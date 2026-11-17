@@ -70,7 +70,8 @@ def add_gate(s: str, g: dict, public_file: str) -> str:
     settings = {"hash": str(g["hash"]).strip(), "salt": g["salt"], "key": g["key"], "ttlDays": int(g.get("ttl_days", 30)),
                 "requestEmail": g["request_email"], "requestSubject": g.get("request_subject", "Passphrase request"),
                 "title": g["title"], "message": g["message"], "logo": g["logo"],
-                "publicPage": public_file, "publicLinkText": g.get("public_link_text", "Open the public page")}
+                "publicPage": public_file, "publicLinkText": g.get("public_link_text", "Open the public page"),
+                "agreement": g.get("agreement", ""), "disclaimer": g.get("disclaimer", "")}
     js = (HERE / "gate.js").read_text(encoding="utf-8")
     if js.count("__SETTINGS__") != 1:
         raise EditionError("gate.js must contain the __SETTINGS__ token once.")
