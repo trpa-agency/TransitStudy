@@ -19,11 +19,19 @@ window.PROJECT_TIMELINE = {
       ]
     },
     {
+      name: "Funding model",
+      kind: "model",
+      items: [
+        { label: "Beta testing with Transit Working Group", start: "2026-11", end: "2027-02" },
+        { label: "Final model (expected)", start: "2027-03" }
+      ]
+    },
+    {
       name: "Stakeholder engagement",
       kind: "stakeholder",
       items: [
         { label: "Transit Working Group review", start: "2026-02", end: "2026-09" },
-        { label: "Stakeholder review and meetings", start: "2027-01", end: "2027-03" }
+        { label: "Transit Working Group and stakeholder review", start: "2026-12", end: "2027-03" }
       ]
     },
     {

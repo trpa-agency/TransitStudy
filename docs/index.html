@@ -173,11 +173,11 @@
     .ptl-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.2rem;margin:1.4rem 0 1rem;font-size:.82rem;color:var(--gray-text);}
     .ptl-legend .k{display:inline-flex;align-items:center;gap:.4rem;}
     .ptl-legend .k::before{content:"";width:14px;height:14px;border-radius:4px;border:2px solid var(--c);background:var(--bg);}
-    .ptl-legend .k.now::before{width:3px;height:16px;border:0;border-radius:2px;background:rgba(186,91,83,.45);}
     .study{--c:var(--ct-blue);--bg:var(--ct-blue-light);}
     .stakeholder{--c:var(--ct-green);--bg:var(--ct-green-light);}
     .public{--c:#C9579A;--bg:#FBEAF3;}  /* pink: outside the Connecting Tahoe palette, chosen to stand apart from the red Today line */
     .board{--c:var(--ct-gold);--bg:var(--ct-gold-light);}
+    .model{--c:#E97132;--bg:#FBE3D6;}  /* funding model lane: orange from Project_Timeline.xlsx (Accent 2, 80 percent tint), outside the Connecting Tahoe palette */
     .ptl-scroll{overflow-x:auto;background:#fff;border:1px solid var(--gray-border);border-radius:var(--brand-radius);}
     .ptl{--lw:165px;position:relative;display:grid;grid-template-columns:var(--lw) repeat(var(--n),minmax(62px,1fr));min-width:calc(var(--lw) + var(--n) * 62px);padding-bottom:1.9rem;}  /* room under the last row for the Today label */
     .ptl .mo{grid-row:1;text-align:center;font-size:.72rem;font-weight:600;color:var(--gray-text);padding:.7rem .2rem .55rem;border-bottom:1px solid var(--gray-border);border-left:1px solid #EEF1F5;line-height:1.25;}
@@ -186,13 +186,13 @@
     .ptl .mo.cur{color:var(--ct-red-text);}
     .ptl .lane{grid-column:1;display:flex;align-items:center;font-family:var(--label-font);font-size:.74rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;line-height:1.35;color:var(--gray-text);padding:.6rem .8rem;position:sticky;left:0;background:#fff;z-index:2;border-right:1px solid var(--gray-border);}
     /* lane labels take their category color, using the darker text step so small type passes 4.5:1 */
-    .ptl .lane.study{color:var(--ct-blue-text);} .ptl .lane.stakeholder{color:var(--ct-green-text);} .ptl .lane.public{color:#A8407D;} .ptl .lane.board{color:var(--ct-gold-text);}
+    .ptl .lane.study{color:var(--ct-blue-text);} .ptl .lane.stakeholder{color:var(--ct-green-text);} .ptl .lane.public{color:#A8407D;} .ptl .lane.board{color:var(--ct-gold-text);} .ptl .lane.model{color:#B55A10;}
     .ptl .lanebg{grid-column:1 / -1;border-top:1px solid var(--gray-border);}
     .ptl .lanebg.first{border-top:0;}
     .ptl .it{position:relative;z-index:1;margin:.35rem .2rem;padding:.4rem .5rem;border-radius:8px;border:1.5px solid var(--c);background:var(--bg);font-size:.72rem;font-weight:600;line-height:1.3;color:var(--brand-text);align-self:stretch;}
     .ptl .it.pt{justify-self:start;align-self:center;max-width:100%;padding:.35rem .5rem;}  /* one-month items: a box only as wide as its label */
     .ptl .it.done{background:#fff;font-weight:400;}
-    .ptl .now{position:absolute;top:0;bottom:0;margin-left:-1px;width:2px;background:rgba(186,91,83,.45);pointer-events:none;z-index:1;}
+    .ptl .now{position:absolute;top:0;bottom:0;margin-left:-1px;width:2px;background:repeating-linear-gradient(to bottom,rgba(186,91,83,.75) 0 6px,transparent 6px 11px);pointer-events:none;z-index:0;}  /* dashed so it stands apart from the orange funding model bars; drawn behind the bars */
     .ptl .now span{position:absolute;bottom:.45rem;left:4px;font-size:.62rem;font-weight:700;color:var(--ct-red-text);background:#fff;padding:0 .2rem;white-space:nowrap;}
     .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
 
@@ -412,7 +412,7 @@
             <p class="kicker">Schedule</p>
             <h2>Project timeline</h2>
           </div>
-          <div class="ptl-legend" aria-hidden="true"><span class="k study">Study documents</span><span class="k stakeholder">Stakeholder engagement</span><span class="k public">Public outreach</span><span class="k board">Board meetings</span><span class="k now">Today</span></div>
+          <div class="ptl-legend" aria-hidden="true"><span class="k study">Study documents</span><span class="k model">Funding model</span><span class="k stakeholder">Stakeholder engagement</span><span class="k public">Public outreach</span><span class="k board">Board meetings</span></div>
           <div class="ptl-scroll" tabindex="0" role="region" aria-label="Project timeline, February 2026 to April 2027">
             <div class="ptl" id="ptl"></div>
           </div>
@@ -732,7 +732,7 @@
       if (cur >= first && cur < first + n) {
         const dim = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
         const pct = ((cur - first) + (now.getDate() - 1) / dim) / n * 100;
-        h += `<div class="now" style="left:calc(var(--lw) + (100% - var(--lw)) * ${(pct / 100).toFixed(4)})" aria-hidden="true"><span>Today</span></div>`;
+        h += `<div class="now" style="left:calc(var(--lw) + (100% - var(--lw)) * ${(pct / 100).toFixed(4)})" aria-hidden="true"><span>We are here</span></div>`;
       }
       box.innerHTML = h;
     })();
