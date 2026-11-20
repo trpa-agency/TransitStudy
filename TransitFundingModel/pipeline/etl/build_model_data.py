@@ -646,6 +646,7 @@ class Build:
             "sourceFiles": m["sourceFiles"], "sourceFileNotes": m["sourceFileNotes"],
             "sourceFileLinks": m.get("sourceFileLinks", {}),
             "references": m.get("references", {}), "scenarios": m.get("scenarios", {}),
+            "sourceGroups": m.get("sourceGroups", {}),
             "agencies": m["agencies"], "jurisdictions": m["jurisdictions"],
             "services": services, "operators": operators, "lines": lines, "fta": fta,
             "dataNotes": self.seed["notes"]["dataNotes"], "agreements": self.seed["notes"]["agreements"],

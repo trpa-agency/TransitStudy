@@ -42,6 +42,16 @@ references:
     name: TART 2025 Systems Plan Update, staff report, Placer County Public Works, November 18, 2025
     note: Current 60-minute frequency on all TART fixed routes, and the peak-season and year-round 30-minute options.
     url: https://www.placer.ca.gov/DocumentCenter/View/99284/04A
+# Funding sources grid on Inputs and assumptions: lines are grouped by program into collapsible rows.
+# Map a line's program name to the group it shows under. Programs not listed group under their own name.
+sourceGroups:
+  FTA 5307 (flexed CMAQ): FTA 5307 Urbanized Area Formula
+  FTA 5307 carryover: FTA 5307 Urbanized Area Formula
+  FTA 5310 carryover: FTA 5310
+  FTA 5339 (Lake Tahoe UZA and NV DOT): FTA 5339 Bus and Bus Facilities
+  FTA 5339 (Lake Tahoe UZA): FTA 5339 Bus and Bus Facilities
+  TDA LTF, TRPA apportionment: TDA Local Transportation Fund
+  TDA STA, TRPA apportionment: TDA State Transit Assistance
 # Scenario inputs taken from published plans. Used by the scenario presets.
 scenarios:
   peak30:

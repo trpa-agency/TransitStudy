@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
 
-<!-- UMD libraries first, then Calcite (ESM). ExcelJS loads on demand for Export and Import. -->
+<!-- UMD libraries first, then Calcite (ESM). ExcelJS loads on demand for Export. -->
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@33.3.2/dist/ag-grid-community.min.js"></script>
 <script type="module" src="https://js.arcgis.com/calcite-components/5.0"></script>
@@ -113,6 +113,11 @@
   .note strong { color: var(--brand-text); }
   .source { font-size: 0.8rem; color: var(--gray-text); margin-top: 0.45rem; }
   .callout { border-left: 4px solid var(--ct-gold); background: var(--ct-gold-light); padding: 0.55rem 0.85rem; border-radius: 0 6px 6px 0; margin: 0.6rem 0; font-size: 0.918rem; }
+  .callout.cliffs { margin-top: 1rem; padding: 0.8rem 1rem; }
+  .callout.cliffs h3 { margin: 0 0 0.3rem; font-size: 1rem; }
+  .callout.cliffs p { margin: 0 0 0.4rem; }
+  .callout.cliffs ul { margin: 0; padding-left: 1.2rem; }
+  .callout.cliffs li { margin: 0.15rem 0; }
   .callout.blue { border-left-color: var(--ct-blue); background: var(--ct-blue-light); }
   .callout.green { border-left-color: var(--ct-green-text); background: var(--ct-green-light); }
   .cols-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; }
@@ -163,6 +168,11 @@
   .grid { width: 100%; height: 440px; }
   .grid.short { height: 300px; }
   .grid.tall { height: 600px; }
+  .suggest-body { font-size: 0.9rem; line-height: 1.5; color: var(--brand-text); }
+  .suggest-body p { margin: 0 0 0.7rem; }
+  .suggest-body ol { margin: 0 0 0.7rem; padding-left: 1.3rem; }
+  .suggest-body li { margin-bottom: 0.25rem; }
+  .suggest-body .suggest-undo { margin: 0; padding: 0.6rem 0.75rem; background: var(--ct-gold-light); border-left: 4px solid var(--ct-gold); border-radius: 4px; }
   .ag-cell.num, .ag-header-cell.num .ag-header-cell-label { justify-content: flex-end; text-align: right; font-variant-numeric: tabular-nums; }
   .ag-cell.input { background: var(--ct-blue-light); color: var(--ct-blue-text); font-weight: 600; }
   .ag-cell.edited { box-shadow: inset 3px 0 0 var(--ct-red); }
@@ -172,6 +182,15 @@
   .ag-row.row-off { color: var(--gray-muted); }
   .ag-row.row-off .ag-cell { text-decoration: line-through; text-decoration-color: rgba(138,147,163,0.6); }
   .ag-row.row-total { font-weight: 700; background: var(--row-total); }
+  .ag-row.row-src-group { background: var(--gray-bg); }
+  .ag-row.row-src-group .ag-cell { font-weight: 600; }
+  .ag-cell.src-member { padding-left: 2.1rem; }
+  .src-toggle { display: inline-flex; align-items: center; gap: 0.4rem; max-width: 100%; font: inherit; font-weight: 600; color: var(--brand-text); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
+  .src-toggle:hover .nm { text-decoration: underline; }
+  .src-toggle:focus-visible { outline: 2px solid var(--ct-blue); outline-offset: 2px; border-radius: 3px; }
+  .src-toggle .chev { width: 1rem; flex: none; color: var(--ct-blue-text); }
+  .src-toggle .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .src-toggle .ct { flex: none; font-size: 0.72rem; font-weight: 700; color: var(--gray-text); background: #fff; border: 1px solid var(--gray-border); border-radius: 999px; padding: 0 0.4rem; line-height: 1.3; }
   .grid-btn { font: inherit; font-size: 0.8rem; font-weight: 600; color: var(--ct-blue-text); background: #fff; border: 1px solid var(--gray-border-strong); border-radius: 6px; padding: 0 0.5rem; line-height: 22px; cursor: pointer; }
   .grid-btn:hover { border-color: var(--ct-blue); }
   .input-legend { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--gray-text); }
@@ -485,6 +504,15 @@ window.TRANSIT_MODEL_DATA = {
     "tartMemo"
    ]
   }
+ },
+ "sourceGroups": {
+  "FTA 5307 (flexed CMAQ)": "FTA 5307 Urbanized Area Formula",
+  "FTA 5307 carryover": "FTA 5307 Urbanized Area Formula",
+  "FTA 5310 carryover": "FTA 5310",
+  "FTA 5339 (Lake Tahoe UZA and NV DOT)": "FTA 5339 Bus and Bus Facilities",
+  "FTA 5339 (Lake Tahoe UZA)": "FTA 5339 Bus and Bus Facilities",
+  "TDA LTF, TRPA apportionment": "TDA Local Transportation Fund",
+  "TDA STA, TRPA apportionment": "TDA State Transit Assistance"
  },
  "agencies": [
   {
@@ -5218,8 +5246,8 @@ window.TRANSIT_MODEL_DATA = {
   }
  ],
  "build": {
-  "id": "20261114a",
-  "builtAt": "2026-11-14T00:27:25",
+  "id": "20261120a",
+  "builtAt": "2026-11-20T22:53:52",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",
@@ -5262,7 +5290,7 @@ const TOK = (() => { const cs = getComputedStyle(document.documentElement); retu
 const LEVELS = {
   federal: { label: 'Federal', color: TOK('--c-federal') },
   state:   { label: 'State', color: TOK('--c-state') },
-  local:   { label: 'Local public', color: TOK('--c-local') },
+  local:   { label: 'Local', color: TOK('--c-local') },
   private: { label: 'Private', color: TOK('--c-private') },
   fare:    { label: 'Fares', color: TOK('--c-fare') },
   other:   { label: 'Other', color: TOK('--c-other') }
@@ -5389,7 +5417,7 @@ const AGREEMENTS = DATA ? DATA.agreements.map(d => [d.title, d.text, d.cite]) : 
 
 /* ══════════════════════════════════════════════════════════════════════════
    3. STATE
-   A saved or imported scenario built on an older data build is rebased:
+   A saved scenario built on an older data build is rebased:
    the new build's values load, then the scenario's edits and added items are
    applied on top. Edits to items the new build no longer has are dropped.
    ══════════════════════════════════════════════════════════════════════════ */
@@ -6235,29 +6263,71 @@ function renderCosts() {
 }
 function costTotalRow() { const rows = S.services.filter(s => !s.plan && s.include); return { id: '_total', name: 'Total, included services', include: null, trips: sum(rows.map(s => s.trips)), vsh: sum(rows.map(s => s.vsh)), vsm: sum(rows.map(s => s.vsm)), operator: '', agency: '', area: '', type: '', federalized: null, refCost: null, _total: true }; }
 
-/* ── Funding sources ── */
+/* ── Funding sources ──
+   Lines that share a program (FTA 5307 at TTD and at TART, for example) sit under one collapsible
+   program row. The program row shows totals and any value its lines share. Edits happen on the lines. */
+const SRC_OPEN = new Set();
+const SRC_GROUPS = (DATA && DATA.sourceGroups) || {};   // program name to group name, from seed/model.yaml
+const srcProgram = l => SRC_GROUPS[l.program] || l.program || l.name;
+function sourceRows() {
+  const order = [], by = {};
+  S.lines.forEach(l => { const k = srcProgram(l); if (!by[k]) { by[k] = []; order.push(k); } by[k].push(l); });
+  const rows = [];
+  order.forEach(k => {
+    const m = by[k];
+    if (m.length < 2) { rows.push(m[0]); return; }
+    const same = f => m.every(l => l[f] === m[0][f]) ? m[0][f] : null;
+    const gid = 'grp:' + k;
+    rows.push({ _group: true, id: gid, name: k, members: m, level: same('level'), recipient: [...new Set(m.map(l => agShort(l.recipient)))].join(', '),
+      matchText: same('matchText') ?? 'Varies by line', commitment: same('commitment'), status: same('status'), enabled: m.some(l => l.enabled && l.status !== 'capital') });
+    m.forEach(l => rows.push({ _member: gid, _line: l }));
+  });
+  return rows;
+}
 function renderSources() {
-  const rows = S.lines;
+  // Member rows wrap the line so the grid can tell them apart. D() returns the line for a line or member row.
+  const D = p => p.data._line || p.data;
+  const G = p => !!p.data._group;
+  const agg = (p, fn) => G(p) ? p.data.members.reduce((t, l) => t + (+fn(l) || 0), 0) : fn(D(p));
+  const one = (p, fn, varies = 'Varies by line') => { if (!G(p)) return fn(D(p)); const v = p.data.members.map(fn); return v.every(x => x === v[0]) ? v[0] : varies; };
   const ed = (id, f) => isEdited('line', id, f) ? 'edited' : '';
   const cols = [
-    { headerName: '', colId: 'edit', width: 78, pinned: 'left', sortable: false, filter: false, cellRenderer: p => { const b = document.createElement('button'); b.className = 'grid-btn'; b.textContent = 'Details'; b.title = 'See citations and edit rules'; b.addEventListener('click', () => openLineEditor(p.data.id)); return b; } },
-    { field: 'name', headerName: 'Funding source', pinned: 'left', minWidth: 240, flex: 1.6, tooltipValueGetter: p => p.data.purpose || null, cellClass: p => ed(p.data.id, 'name') },
-    { field: 'level', headerName: 'Level', width: 120, cellRenderer: p => levelBadge(p.value), filterValueGetter: p => LEVELS[p.data.level].label },
-    { field: 'recipient', headerName: 'Receiving agency', width: 124, valueFormatter: p => agShort(p.value) },
-    numCol({ colId: 'amount', headerName: 'FY 26-27 amount', width: 132, editable: p => p.data.amountMode !== 'fta5307', valueGetter: p => lineBase(S, p.data), valueParser: p => parseNum(p.newValue),
-      valueSetter: p => setField('line', p.data, 'amount', parseNum(p.newValue) ?? 0), cellClass: p => 'num ' + (p.data.amountMode === 'fta5307' ? '' : 'input ') + ed(p.data.id, 'amount'),
-      tooltipValueGetter: p => p.data.amountMode === 'fta5307' ? 'Calculated by the FTA 5307 split below. Unlink in Details to type an amount.' : (citeText(p.data.cites.amount) || null) }),
-    numCol({ colId: 'yr', headerName: `${YEARS[YEAR]} amount`, width: 126, hide: YEAR === 0, valueGetter: p => lineAmount(S, p.data, YEAR) }),
-    { field: 'matchText', headerName: 'Match requirement', minWidth: 160, flex: 1, tooltipField: 'matchText' },
-    { colId: 'fedcap', headerName: 'Federal share cap', width: 120, cellClass: 'num', valueGetter: p => p.data.fedShare == null ? '' : pct(+p.data.fedShare, 1) + (p.data.fedShareADA ? ` (ADA ${pct(+p.data.fedShareADA, 0)})` : '') },
-    { colId: 'restr', headerName: 'Restrictions and conditions', minWidth: 230, flex: 1.4, valueGetter: p => [p.data.restrictionText, p.data.conditionText].filter(x => x && x !== '–').join('. '), tooltipValueGetter: p => [p.data.restrictionText, p.data.conditionText].filter(Boolean).join(' | ') },
-    { colId: 'rules', headerName: 'Rules the model checks', minWidth: 210, flex: 1.2, valueGetter: p => rulesText(p.data), tooltipValueGetter: p => rulesText(p.data) },
-    { field: 'commitment', headerName: 'Commitment', width: 170, valueFormatter: p => (COMMIT[p.value] || {}).label || p.value },
-    { field: 'status', headerName: 'Status', width: 140, valueFormatter: p => STATUS[p.value] || p.value },
-    { colId: 'proj', headerName: 'Projection', width: 160, valueGetter: p => projectionText(p.data) },
-    { colId: 'cite', headerName: 'Amount source', minWidth: 230, flex: 1.2, valueGetter: p => citeText(p.data.cites.amount), tooltipValueGetter: p => citeText(p.data.cites.amount) || null, cellClass: 'muted' }
+    { headerName: '', colId: 'edit', width: 78, pinned: 'left', sortable: false, filter: false, cellRenderer: p => { if (G(p)) return ''; const b = document.createElement('button'); b.className = 'grid-btn'; b.textContent = 'Details'; b.title = 'See citations and edit rules'; b.addEventListener('click', () => openLineEditor(D(p).id)); return b; } },
+    { colId: 'name', headerName: 'Funding source', pinned: 'left', minWidth: 320, flex: 1.6, valueGetter: p => D(p).name,
+      tooltipValueGetter: p => G(p) ? null : (D(p).purpose || null),
+      cellClass: p => G(p) ? 'src-group' : (p.data._member ? 'src-member ' : '') + ed(D(p).id, 'name'),
+      cellRenderer: p => {
+        if (!G(p)) return esc(p.value);
+        const open = SRC_OPEN.has(p.data.id), b = document.createElement('button');
+        b.type = 'button'; b.className = 'src-toggle'; b.setAttribute('aria-expanded', String(open));
+        b.title = (open ? 'Hide' : 'Show') + ' the ' + p.data.members.length + ' lines in this program';
+        b.innerHTML = `<span class="chev" aria-hidden="true">${open ? '▾' : '▸'}</span><span class="nm">${esc(p.value)}</span><span class="ct">${p.data.members.length}</span>`;
+        b.addEventListener('click', () => { open ? SRC_OPEN.delete(p.data.id) : SRC_OPEN.add(p.data.id); const g = GRIDS.sources; g.onFilterChanged(); g.refreshCells({ rowNodes: [p.node], columns: ['name'], force: true }); });
+        return b;
+      } },
+    { colId: 'level', headerName: 'Level', width: 120, valueGetter: p => G(p) ? p.data.level : D(p).level, cellRenderer: p => p.value ? levelBadge(p.value) : '', filterValueGetter: p => { const v = G(p) ? p.data.level : D(p).level; return v ? LEVELS[v].label : ''; } },
+    { colId: 'recipient', headerName: 'Receiving agency', width: 124, valueGetter: p => G(p) ? p.data.recipient : agShort(D(p).recipient) },
+    numCol({ colId: 'amount', headerName: 'FY 26-27 amount', width: 132, editable: p => !G(p) && D(p).amountMode !== 'fta5307', valueGetter: p => agg(p, l => lineBase(S, l)), valueParser: p => parseNum(p.newValue),
+      valueSetter: p => setField('line', D(p), 'amount', parseNum(p.newValue) ?? 0),
+      cellClass: p => G(p) ? 'num src-total' : 'num ' + (D(p).amountMode === 'fta5307' ? '' : 'input ') + ed(D(p).id, 'amount'),
+      tooltipValueGetter: p => G(p) ? 'Total of the lines in this program' : D(p).amountMode === 'fta5307' ? 'Calculated by the FTA 5307 split below. Unlink in Details to type an amount.' : (citeText(D(p).cites.amount) || null) }),
+    numCol({ colId: 'yr', headerName: `${YEARS[YEAR]} amount`, width: 126, hide: YEAR === 0, valueGetter: p => agg(p, l => lineAmount(S, l, YEAR)), cellClass: p => G(p) ? 'num src-total' : 'num' }),
+    { colId: 'matchText', headerName: 'Match requirement', minWidth: 160, flex: 1, valueGetter: p => one(p, l => l.matchText), tooltipValueGetter: p => one(p, l => l.matchText) },
+    { colId: 'fedcap', headerName: 'Federal share cap', width: 120, cellClass: 'num', valueGetter: p => one(p, l => l.fedShare == null ? '' : pct(+l.fedShare, 1) + (l.fedShareADA ? ` (ADA ${pct(+l.fedShareADA, 0)})` : ''), 'Varies') },
+    { colId: 'restr', headerName: 'Restrictions and conditions', minWidth: 230, flex: 1.4, valueGetter: p => one(p, l => [l.restrictionText, l.conditionText].filter(x => x && x !== '–').join('. ')), tooltipValueGetter: p => G(p) ? null : [D(p).restrictionText, D(p).conditionText].filter(Boolean).join(' | ') },
+    { colId: 'rules', headerName: 'Rules the model checks', minWidth: 210, flex: 1.2, valueGetter: p => one(p, rulesText), tooltipValueGetter: p => one(p, rulesText) },
+    { colId: 'commitment', headerName: 'Commitment', width: 170, valueGetter: p => one(p, l => (COMMIT[l.commitment] || {}).label || l.commitment, 'Varies') },
+    { colId: 'status', headerName: 'Status', width: 140, valueGetter: p => one(p, l => STATUS[l.status] || l.status, 'Varies') },
+    { colId: 'proj', headerName: 'Projection', width: 160, valueGetter: p => one(p, projectionText, 'Varies') },
+    { colId: 'cite', headerName: 'Amount source', minWidth: 230, flex: 1.2, valueGetter: p => G(p) ? '' : citeText(D(p).cites.amount), tooltipValueGetter: p => G(p) ? null : (citeText(D(p).cites.amount) || null), cellClass: 'muted' }
   ];
-  makeGrid('sources', $('gridSources'), { columnDefs: cols, rowData: rows, getRowId: p => p.data.id, rowClassRules: { 'row-off': p => !p.data.enabled || p.data.status === 'capital' }, onCellValueChanged: () => setTimeout(refresh, 0) });
+  makeGrid('sources', $('gridSources'), { columnDefs: cols, rowData: sourceRows(), getRowId: p => p.data._member ? 'm:' + p.data._line.id : p.data.id,
+    rowClassRules: { 'row-off': p => G(p) ? !p.data.enabled : (!D(p).enabled || D(p).status === 'capital'), 'row-src-group': p => G(p), 'row-src-member': p => !!p.data._member },
+    isExternalFilterPresent: () => true,
+    doesExternalFilterPass: n => !n.data._member || SRC_OPEN.has(n.data._member),
+    // Keep each program's lines directly under its program row, whatever the sort.
+    postSortRows: p => { const kids = {}, top = []; p.nodes.forEach(n => n.data._member ? (kids[n.data._member] = kids[n.data._member] || []).push(n) : top.push(n)); p.nodes.length = 0; top.forEach(n => { p.nodes.push(n); if (kids[n.data.id]) p.nodes.push(...kids[n.data.id]); }); },
+    onCellValueChanged: () => setTimeout(refresh, 0) });
 }
 function rulesText(l) {
   const r = l.rules || {}, a = [];
@@ -6307,20 +6377,24 @@ function buildLineEditor(l) {
   const r = l.rules || {};
   const svcOpts = S.services.filter(s => s.include || !s.plan).map(s => [s.id, s.short]);
   const jurOpts = [['', '(none)']].concat(JURIS.map(j => [j.id, j.name]));
+  // Local sources pick the jurisdiction that pays. It sets level "local" and the contributor used in the jurisdiction results.
+  const lvCur = l.level === 'local' ? 'local:' + (l.contributor || '') : l.level;
+  const lvOpt = (v, t) => `<option value="${esc(v)}" ${lvCur === v ? 'selected' : ''}>${esc(t)}</option>`;
+  const levelSel = `<select data-path="level" data-kind="level">${LEVEL_ORDER.map(k => k !== 'local' ? lvOpt(k, LEVELS[k].label)
+    : `<optgroup label="Local">${JURIS.map(j => lvOpt('local:' + j.id, j.name)).join('')}${lvOpt('local:', 'Other local or more than one')}</optgroup>`).join('')}</select>`;
   const yrOpts = [['', 'No end year']].concat(YEARS.map((y, i) => [String(i), 'Ends after ' + y]));
   const isFta = l.amountMode === 'fta5307';
   const canFta = l.program.startsWith('FTA 5307 Urbanized') && (l.recipient === 'TTD' || l.recipient === 'TART');
   const proj = YEARS.map((y, i) => `<div>${y}<b>${money(lineAmount(S, l, i))}</b></div>`).join('');
   const L0 = R.line[l.id] || { pct: {} };
   const allocTop = Object.entries(L0.pct).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${svcShort(k)} ${pct(v)}`).join(', ') || 'Not applied to any service';
-  const cites = Object.entries(l.cites || {}).filter(([, v]) => v).map(([k, v]) => `<li><span class="k">${esc(CITE_LABELS[k] || k)}:</span> ${citeHtml(v)}</li>`).join('');
   const edits = Object.keys(S.edited).filter(k => k.startsWith(`line:${l.id}:`)).map(k => { const f = k.split(':').slice(2).join(':'); return `<li><span class="k">${esc(fieldLabel(f))}</span> changed from source value ${esc(typeof S.edited[k] === 'object' ? JSON.stringify(S.edited[k]) : (S.edited[k] ?? 'blank'))}</li>`; }).join('');
   $('dlgLineBody').innerHTML = `
   <div class="ed-sec"><h4>Basics</h4><div class="ed-grid">
     <label class="fld wide${ed('name')}">Name<input type="text" data-path="name" data-kind="text" value="${val(l.name)}" /></label>
     <label class="fld${ed('program')}">Program<input type="text" data-path="program" data-kind="text" value="${val(l.program)}" /></label>
     <label class="fld${ed('grantor')}">Source or administering agency<input type="text" data-path="grantor" data-kind="text" value="${val(l.grantor)}" /></label>
-    <label class="fld${ed('level')}">Funding level${sel('level', LEVEL_ORDER.map(k => [k, LEVELS[k].label]), l.level)}</label>
+    <label class="fld${ed('level') || ed('contributor')}">Funding level${levelSel}</label>
     <label class="fld${ed('recipient')}">Receiving agency${sel('recipient', AGENCIES.map(a => [a.id, a.name]), l.recipient)}</label>
     <label class="fld${ed('status')}">Status${sel('status', Object.entries(STATUS), l.status)}</label>
     <label class="fld${ed('enabled')}" style="justify-content:flex-end"><span class="checks"><label><input type="checkbox" data-path="enabled" data-kind="bool" ${l.enabled ? 'checked' : ''} /> Include in the model</label></span></label>
@@ -6334,23 +6408,21 @@ function buildLineEditor(l) {
     ${[1, 2, 3, 4].map(i => `<label class="fld${ed('overrides.' + i)}">${YEARS[i]} value ($)<input type="number" step="1" data-path="overrides.${i}" data-kind="num" value="${val(l.overrides ? l.overrides[i] : null)}" placeholder="by rule" /><span class="hint">Blank follows the rule</span></label>`).join('')}
     <div class="wide"><div class="proj">${proj}</div></div>
   </div></div>
-  <div class="ed-sec"><h4>Match and eligibility</h4><div class="ed-grid">
+  <div class="ed-sec"><h4>Rules and requirements</h4><div class="ed-grid">
     <label class="fld wide${ed('matchText')}">Match requirement (notes)<input type="text" data-path="matchText" data-kind="text" value="${val(l.matchText)}" /></label>
-    <label class="fld wide${ed('conditionText')}">Revenue conditions (notes)<input type="text" data-path="conditionText" data-kind="text" value="${val(l.conditionText)}" /></label>
-    <label class="fld wide${ed('restrictionText')}">Restrictions (fact sheet)<input type="text" data-path="restrictionText" data-kind="text" value="${val(l.restrictionText)}" /></label>
     <label class="fld${ed('fedShare')}">Maximum federal share of net operating cost (%)<input type="number" step="0.01" data-path="fedShare" data-kind="pct" value="${pv(l.fedShare)}" placeholder="no cap" /><span class="hint">50 means 50% non-federal match</span></label>
     <label class="fld${ed('fedShareADA')}">Federal share for ADA paratransit (%)<input type="number" step="0.01" data-path="fedShareADA" data-kind="pct" value="${pv(l.fedShareADA)}" placeholder="same as above" /></label>
     <div class="fld">Counts toward match<span class="checks"><label><input type="checkbox" data-path="matchEligible" data-kind="bool" ${l.matchEligible !== false ? 'checked' : ''} /> Counts as non-federal match</label><label><input type="checkbox" data-path="matchOnly" data-kind="bool" ${l.matchOnly ? 'checked' : ''} /> Match-only credit (not cash)</label></span></div>
-    <div class="fld wide">Required: states${multi('rules.states', [['CA', 'California'], ['NV', 'Nevada']], r.states)}</div>
-    <div class="fld wide">Required: urban or rural${multi('rules.areas', Object.entries(AREAS), r.areas)}</div>
-    <div class="fld wide">Required: service types${multi('rules.types', Object.entries(TYPES), r.types)}</div>
-    <div class="fld wide">Required: operating agencies${multi('rules.agencies', AGENCIES.filter(a => a.id !== 'REGION').map(a => [a.id, a.short]), r.agencies)}</div>
-    <div class="fld wide">Required: only these services${multi('rules.routes', svcOpts, r.routes)}</div>
-    <label class="fld">Required: up to one jurisdiction's share${sel('rules.jurisdiction', jurOpts, r.jurisdiction || '')}</label>
+    <div class="fld wide">Restrictions: states${multi('rules.states', [['CA', 'California'], ['NV', 'Nevada']], r.states)}</div>
+    <div class="fld wide">Restrictions: urban or rural${multi('rules.areas', Object.entries(AREAS), r.areas)}</div>
+    <div class="fld wide">Restrictions: service types${multi('rules.types', Object.entries(TYPES), r.types)}</div>
+    <div class="fld wide">Restrictions: operating agencies${multi('rules.agencies', AGENCIES.filter(a => a.id !== 'REGION').map(a => [a.id, a.short]), r.agencies)}</div>
+    <div class="fld wide">Restrictions: only these services${multi('rules.routes', svcOpts, r.routes)}</div>
+    <label class="fld">Restrictions: up to one jurisdiction's share${sel('rules.jurisdiction', jurOpts, r.jurisdiction || '')}</label>
     <div class="fld">Preferred states${multi('rules.preferStates', [['CA', 'California'], ['NV', 'Nevada']], r.preferStates)}</div>
     <label class="fld">Preferred jurisdiction${sel('rules.preferJurisdiction', jurOpts, r.preferJurisdiction || '')}</label>
     <div class="fld wide">Intended services${multi('rules.preferRoutes', svcOpts, r.preferRoutes)}</div>
-  </div><p class="note" style="margin-top:0.4rem">Required rules produce flags when broken. Preferences produce notes. Applying one agency's funds to another agency's service always produces a note.</p></div>
+  </div><p class="note" style="margin-top:0.4rem">Restrictions produce flags when broken. Preferences produce notes. Applying one agency's funds to another agency's service always produces a note.</p></div>
   <div class="ed-sec"><h4>Allocation</h4><div class="ed-grid">
     <label class="fld">Method${sel('alloc.mode', [['manual', 'Shares set by hand'], ['auto', 'Automatic split']], (l.alloc || {}).mode || 'manual')}</label>
     <label class="fld">Automatic split by${sel('alloc.basis', Object.entries(BASIS), (l.alloc || {}).basis || 'vsh')}</label>
@@ -6359,12 +6431,10 @@ function buildLineEditor(l) {
   </div></div>
   <div class="ed-sec"><h4>Commitment and agreements</h4><div class="ed-grid">
     <label class="fld${ed('commitment')}">Commitment basis${sel('commitment', Object.entries(COMMIT).map(([k, v]) => [k, v.label]), l.commitment)}</label>
-    <label class="fld${ed('contributor')}">Contributing jurisdiction (jurisdiction view)${sel('contributor', jurOpts, l.contributor || '')}</label>
     <label class="fld wide${ed('commitNote')}">Agreement or evidence<textarea data-path="commitNote" data-kind="text">${val(l.commitNote)}</textarea></label>
   </div></div>
-  <div class="ed-sec"><h4>Where this comes from</h4>
-    <ul class="cite-list">${cites || '<li>Entered in this scenario.</li>'}</ul>
-    ${edits ? `<p class="note" style="margin-top:0.5rem"><strong>Changed in this scenario:</strong></p><ul class="cite-list">${edits}</ul>` : ''}
+  <div class="ed-sec"><h4>Notes</h4>
+    ${edits ? `<p class="note"><strong>Changed in this scenario:</strong></p><ul class="cite-list">${edits}</ul>` : ''}
     <label class="fld" style="margin-top:0.5rem">Notes<textarea data-path="notes" data-kind="text">${val(l.notes)}</textarea></label>
   </div>`;
   bindForm($('dlgLineBody'), l);
@@ -6373,6 +6443,12 @@ function bindForm(root, l) {
   root.querySelectorAll('[data-path]').forEach(el => {
     el.addEventListener('change', () => {
       const path = el.dataset.path, kind = el.dataset.kind; let v;
+      if (kind === 'level') {
+        const [lv, jur] = el.value.split(':');
+        setField('line', l, 'level', lv);
+        if ((l.contributor || null) !== (lv === 'local' ? jur || null : null)) setField('line', l, 'contributor', lv === 'local' ? jur || null : null);
+        refresh(); buildLineEditor(l); return;
+      }
       if (kind === 'num') v = parseNum(el.value);
       else if (kind === 'pct') { const n = parseNum(el.value); v = n == null ? null : n / 100; }
       else if (kind === 'bool') v = el.checked;
@@ -6540,12 +6616,12 @@ function resultsAgency() {
 function resultsJuris() {
   $('resTitle').textContent = `Results by jurisdiction, ${YEARS[YEAR]}`;
   $('resNote').textContent = 'Service cost attributed to each jurisdiction by its share of each service, the federal, state, private, and fare funding applied to that share, and the local share that leaves, compared with what the jurisdiction contributes.';
-  $('resSource').textContent = 'Illustrative: most jurisdiction miles are placeholders (equal splits). Contributions count local public sources tagged with a contributing jurisdiction in Details. Town of Truckee contributes to routes attributed to Nevada County and Placer County.';
+  $('resSource').textContent = 'Illustrative: most jurisdiction miles are placeholders (equal splits). Contributions count local sources by the jurisdiction picked as their funding level in Details. Town of Truckee contributes to routes attributed to Nevada County and Placer County.';
   const js = JURIS.filter(j => R.juris[j.id].cost || R.juris[j.id].contrib);
   const x = js.map(j => j.short);
   Plotly.react('chResults', [
     { type: 'bar', name: 'Local share of cost after other funds', x, y: js.map(j => R.juris[j.id].need), marker: { color: COST_COLOR }, hovertemplate: '%{y:$,.0f}' },
-    { type: 'bar', name: 'Local public contributions', x, y: js.map(j => R.juris[j.id].contrib), marker: { color: LEVELS.local.color }, hovertemplate: '%{y:$,.0f}' }
+    { type: 'bar', name: 'Local contributions', x, y: js.map(j => R.juris[j.id].contrib), marker: { color: LEVELS.local.color }, hovertemplate: '%{y:$,.0f}' }
   ], layout({ barmode: 'group', height: 340, hovermode: 'x unified', xaxis: { type: 'category' }, yaxis: { tickprefix: '$', tickformat: '~s' }, bargap: 0.3, bargroupgap: 0.08 }), PCFG);
   const rows = js.map(j => { const J = R.juris[j.id]; return { id: j.id, name: j.name, state: j.state, cost: J.cost, nonLocal: J.nonLocal, need: J.need, local: J.local, contrib: J.contrib, diff: J.diff }; });
   const cols = [
@@ -6588,7 +6664,8 @@ function renderOutlook() {
   const cn = $('cliffNote');
   if (ends.length) {
     ends.sort((a, b) => a.lastY - b.lastY || b.lastAmt - a.lastAmt);
-    cn.innerHTML = `<strong>Funding cliffs.</strong> These sources end within the plan period: ${listWords(ends.map(e => `${esc(e.name)} (${moneyShort(e.lastAmt)} through ${YEARS[e.lastY]})`))}. No replacement funding is defined${supHtml([SRC_NUM.trpa])}. Treat these as the gap to plan for.`;
+    cn.innerHTML = `<h3>Funding cliffs</h3><p>These sources end within the plan period. No replacement funding is defined${supHtml([SRC_NUM.trpa])}. Treat them as the gap to plan for.</p>`
+      + `<ul>${ends.map(e => `<li><strong>${esc(e.name)}:</strong> ${moneyShort(e.lastAmt)} through ${YEARS[e.lastY]}</li>`).join('')}</ul>`;
     cn.hidden = false;
   } else cn.hidden = true;
   const as = S.assume;
@@ -6796,13 +6873,13 @@ function exportCsv(key) {
   const map = { services: 'services', juris: 'juris', plan: 'plan', peak: 'peak', sources: 'sources', alloc: 'alloc', issues: 'issues', results: 'results', proj: 'proj', agree: 'agree', changes: 'changes', outlook: 'outlookSummary' };
   const g = GRIDS[map[key]]; if (!g) return;
   const slug = (S.name || 'scenario').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40);
-  g.exportDataAsCsv({ fileName: `tahoe-transit-${key}-${YEARS[YEAR].replace(/\s/g, '').toLowerCase()}-${slug}.csv`, processCellCallback: p => { const v = p.value; if (typeof v === 'number') return Math.round(v * 10000) / 10000; return v; } });
+  const extra = key === 'sources' ? { exportedRows: 'all', shouldRowBeSkipped: p => !!(p.node.data && p.node.data._group) } : {};
+  g.exportDataAsCsv({ ...extra, fileName: `tahoe-transit-${key}-${YEARS[YEAR].replace(/\s/g, '').toLowerCase()}-${slug}.csv`, processCellCallback: p => { const v = p.value; if (typeof v === 'number') return Math.round(v * 10000) / 10000; return v; } });
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   10b. EXCEL EXPORT AND IMPORT
-   Export writes a readable workbook plus a hidden "_scenario" sheet that holds the
-   scenario itself, so Import can reload it. Edits typed into the workbook are not read back.
+   10b. EXCEL EXPORT
+   Export writes a readable workbook of the current scenario. It is one-way: the model does not read workbooks back.
    ══════════════════════════════════════════════════════════════════════════ */
 const EXCELJS_URL = 'https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js';
 function loadExcel() {
@@ -6853,7 +6930,7 @@ async function buildWorkbook() {
   for (let j = 0; j < sm.length; j++) for (let y = 0; y < 5; y++) ws.getRow(r + 2 + j).getCell(2 + y).numFmt = sm[j][3] === 'int' ? XF.int : XF.usd;
   r += sm.length + 3;
   ['Sources are listed on the Sources sheet. Superscript numbers in the model match that numbering.',
-   'To reload this scenario, use Import in the model and choose this file. Edits typed into this workbook are not read back.',
+   'This workbook is a snapshot. Edits typed into it do not change the model.',
    'Federal operating funds can pay only their share of net cost, generally 50 percent and 80 percent for ADA paratransit.'].forEach((t, i) => { ws.getCell(`A${r + i}`).value = t; ws.getCell(`A${r + i}`).font = { italic: true, color: { argb: hexARGB(MUTED) } }; });
   // 2. Outlook by agency
   const M = [['Cost', 'cost', 1], ['Revenue', 'revTotal', 1], ['Less federal above share cap', 'fedExcess', -1], ['Carried from prior year', 'carryIn', 1], ['Ending balance', 'balance', 1]];
@@ -6895,10 +6972,6 @@ async function buildWorkbook() {
   xSheet(wb, 'Changes', [{ h: 'When', k: r => new Date(r.t).toLocaleString('en-US'), w: 22 }, { h: 'Item', k: 'name', w: 36 }, { h: 'Field', k: 'field', w: 26 }, { h: 'From', k: r => changeShow(r.from), w: 30 }, { h: 'To', k: r => changeShow(r.to), w: 30 }], S.changes);
   // 10. Sources
   xSheet(wb, 'Sources', [{ h: 'No.', k: 'n', w: 6 }, { h: 'Source', k: 'name', w: 60 }, { h: 'What it provides', k: 'note', w: 80 }], SOURCES.map((s, i) => ({ n: i + 1, name: s.name, note: s.note })));
-  // 11. Hidden scenario payload for Import
-  const hs = wb.addWorksheet('_scenario', { state: 'veryHidden' });
-  const json = JSON.stringify(S); hs.getCell('A1').value = 'tahoe-transit-scenario/1';
-  for (let i = 0, row = 2; i < json.length; i += 30000, row++) hs.getCell('A' + row).value = json.slice(i, i + 30000);
   return wb;
 }
 async function exportXlsx() {
@@ -6909,26 +6982,8 @@ async function exportXlsx() {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = `tahoe-transit-scenario-${(S.name || 'scenario').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40)}.xlsx`;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800);
-  toast('Downloaded the scenario workbook. Use Import with this file to reload the scenario.');
+  toast('Downloaded the scenario workbook.');
 }
-async function importScenario(file) {
-  let p;
-  if (/\.json$/i.test(file.name)) p = JSON.parse(await file.text());
-  else {
-    const ExcelJS = await loadExcel();
-    const wb = new ExcelJS.Workbook(); await wb.xlsx.load(await file.arrayBuffer());
-    const hs = wb.getWorksheet('_scenario');
-    if (!hs || hs.getCell('A1').value !== 'tahoe-transit-scenario/1') throw new Error('this workbook was not exported from this model.');
-    let json = ''; for (let row = 2; hs.getCell('A' + row).value; row++) json += hs.getCell('A' + row).value;
-    p = JSON.parse(json);
-  }
-  if (!p || p.version !== MODEL_VERSION || !Array.isArray(p.lines) || !Array.isArray(p.services)) throw new Error('not a scenario from this model version.');
-  p.changes = p.changes || []; p.edited = p.edited || {};
-  if (p.dataBuild === BUILD.id) { S = patchState(p); REBASE = null; } else { REBASE = rebase(p); S = REBASE.S; }
-  resetGrids(); showRebaseNote(); refresh();
-  toast(`Loaded “${S.name}.”`);
-}
-
 /* ══════════════════════════════════════════════════════════════════════════
    11. WIRING
    ══════════════════════════════════════════════════════════════════════════ */
@@ -6977,7 +7032,14 @@ function init() {
   $('allocBasis').insertAdjacentHTML('afterbegin', '<option value="" hidden>choose a basis</option>');
   $('allocBasis').addEventListener('change', e => applySplit(e.target.value));
   $('btnClearRow').addEventListener('click', () => { const l = lineById(ALLOC_SEL); if (!l) return; setField('line', l, 'alloc', { mode: 'manual', pct: {}, note: 'Cleared' }); refresh(); $('splitMsg').textContent = `${l.name} is cleared. Its full amount is now not applied.`; });
-  $('btnSuggest').addEventListener('click', () => { suggestAllocation(ALLOC_AGENCY); refresh(); });
+  $('btnSuggest').addEventListener('click', () => {
+    $('dlgSuggestScope').textContent = ALLOC_AGENCY === 'ALL'
+      ? 'Suggest allocation replaces the route shares for every agency\'s funding sources.'
+      : `Suggest allocation replaces the route shares for ${agShort(ALLOC_AGENCY)}'s funding sources. Other agencies' shares do not change.`;
+    $('dlgSuggest').open = true;
+  });
+  $('dlgSuggestCancel').addEventListener('click', () => { $('dlgSuggest').open = false; });
+  $('dlgSuggestOk').addEventListener('click', () => { $('dlgSuggest').open = false; suggestAllocation(ALLOC_AGENCY); refresh(); toast('Suggested allocation applied. Select Reset at the top of the page to undo it.'); });
   $('assumeCarry').addEventListener('change', e => setAssume('carry', e.target.checked));
   $('assumeFed').addEventListener('change', e => setAssume('fedExcess', e.target.value));
   document.addEventListener('click', e => {
@@ -6999,15 +7061,10 @@ function init() {
     logChange('line', id, 'enabled', null, true); refresh(); openLineEditor(id);
   });
   $('dlgLineDone').addEventListener('click', () => { $('dlgLine').open = false; });
-  $('dlgLineDup').addEventListener('click', () => { const l = lineById(EDIT_LINE); if (!l) return; const d = clone(l); d.id = 'user-src-' + Date.now(); d.name = l.name + ' (copy)'; d.user = true; d.cites = Object.assign({}, l.cites, { amount: 'Copied from ' + l.name }); delete d.cites.build; S.lines.splice(S.lines.indexOf(l) + 1, 0, d); logChange('line', d.id, 'enabled', null, true); refresh(); openLineEditor(d.id); });
+  $('dlgLineDup').addEventListener('click', () => { const l = lineById(EDIT_LINE); if (!l) return; const d = clone(l); d.id = 'user-src-' + Date.now(); d.name = l.name + ' (copy)'; d.user = true; d.cites = Object.assign({}, l.cites, { amount: 'Copied from ' + l.name }); delete d.cites.build; S.lines.splice(S.lines.indexOf(l) + 1, 0, d); SRC_OPEN.add('grp:' + srcProgram(d)); logChange('line', d.id, 'enabled', null, true); refresh(); openLineEditor(d.id); });
   $('dlgLineDelete').addEventListener('click', () => { const i = S.lines.findIndex(l => l.id === EDIT_LINE); if (i < 0 || !S.lines[i].user) return; logChange('line', EDIT_LINE, 'enabled', true, null); S.lines.splice(i, 1); $('dlgLine').open = false; refresh(); });
   $('dlgSvcDone').addEventListener('click', () => { $('dlgSvc').open = false; });
   $('btnExport').addEventListener('click', () => { exportXlsx().catch(err => toast('Export failed: ' + err.message)); });
-  $('btnImport').addEventListener('click', () => $('fileImport').click());
-  $('fileImport').addEventListener('change', e => {
-    const f = e.target.files[0]; if (!f) return;
-    importScenario(f).catch(err => toast('Could not load that file: ' + err.message)).finally(() => { e.target.value = ''; });
-  });
   $('btnReset').addEventListener('click', () => { $('dlgConfirm').open = true; });
   $('dlgConfirmCancel').addEventListener('click', () => { $('dlgConfirm').open = false; });
   $('dlgConfirmOk').addEventListener('click', () => { $('dlgConfirm').open = false; S = makeDefaults(); REBASE = null; showRebaseNote(); resetGrids(); refresh(); toast('Reset to the source data.'); });

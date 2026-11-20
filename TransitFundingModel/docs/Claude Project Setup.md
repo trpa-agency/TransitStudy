@@ -32,4 +32,4 @@ Open this folder as the working directory. Claude Code reads `CLAUDE.md` automat
 
 - **The original chats** from Oct. 20 to 27 are in Andy's claude.ai account. Their conclusions are in the handoff doc and the files above.
 - **Three live artifacts** linked in the handoff doc are private to Andy's account until he shares them. Copies are in this folder: the Rule Errors and Questions docs in `docs/`, and the concept mockups in `model/archive/mockups/`.
-- **Browser state:** scenarios saved in someone's browser stay in that browser. Export to Excel to pass a scenario along. Import reloads it.
+- **Browser state:** scenarios saved in someone's browser stay in that browser. Export to Excel to share a scenario's results. The page has no Import button.
