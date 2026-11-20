@@ -18,7 +18,7 @@ How the model page calculates, as of November 13, 2026. The code is the JavaScri
 | Inputs users can change | Inputs and assumptions | These are the inputs |
 | Inputs users can change | Allocation and rules | Shares are inputs; rule checks update |
 | Results and future | One-year outlook, Five-year outlook, Agreements and risk | Yes |
-| Reference | Sources and notes | No (sources, data notes, build) |
+| Reference | Sources and notes | No (sources and build; data notes and the agreements inventory stay in `etl/seed/notes.yaml`, off the page since Nov. 20, 2026) |
 
 ## Services and cost (engine, section 5)
 

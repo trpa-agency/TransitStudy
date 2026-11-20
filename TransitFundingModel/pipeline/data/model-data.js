@@ -4793,7 +4793,7 @@ window.TRANSIT_MODEL_DATA = {
   },
   {
    "title": "FTA 5307, 5339, and 5310 sub-allocation between TTD and Placer County",
-   "text": "Earned-share worksheet based on revenue miles, population, and ridership. FTA expects the MPO and designated recipients to set the split through a \"fair and rational\" process.",
+   "text": "Earned-share worksheet based on revenue miles, population, and ridership. FTA expects the MPO and designated recipients to set the split through a \"fair and rational\" process. Per TRPA (Nov. 20, 2026), an MOU documents the split.",
    "cite": "Financial PlanG.xlsx › FTA Allocation Split (26-27); Revenue %s AD59"
   },
   {
@@ -4829,7 +4829,7 @@ window.TRANSIT_MODEL_DATA = {
  ],
  "build": {
   "id": "20261120a",
-  "builtAt": "2026-11-20T22:53:52",
+  "builtAt": "2026-11-20T23:00:10",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",

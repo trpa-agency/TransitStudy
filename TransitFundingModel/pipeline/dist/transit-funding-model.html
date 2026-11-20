@@ -428,7 +428,7 @@
         <div class="ov-tile" style="--tg:var(--ct-sage)">
           <span class="kicker">Reference</span>
           <h3>Sources and notes</h3>
-          <p class="note">Includes every source file, numbered to match the superscripts throughout the model. The data notes and open questions flag known data issues and items that need partner validation.</p>
+          <p class="note">Includes every source file, numbered to match the superscripts throughout the model.</p>
           <div class="go"><button type="button" class="linkbtn" data-go="assumptions">Sources and notes</button></div>
         </div>
       </div>
@@ -703,17 +703,11 @@
           <div class="tools"><calcite-button data-csv="agree" appearance="outline" kind="brand" scale="s" icon-start="file-csv">CSV</calcite-button></div></div>
         <div id="gridAgree" class="grid"></div>
       </div>
-      <div class="cols-2">
-        <div class="card">
-          <h3>Agreements and arrangements referenced in the source files</h3>
-          <p class="note">A starting inventory. Confirm terms with the agency that holds each agreement.</p>
-          <ul class="tight agreements note" id="agreeList"></ul>
-        </div>
-        <div class="card">
-          <h3>Where the model points to new or updated agreements</h3>
-          <p class="note">Generated from the current scenario.</p>
-          <ul class="tight agreements note" id="agreeGaps"></ul>
-        </div>
+      <!-- The inventory of agreements referenced in the source files is kept in etl/seed/notes.yaml (agreements) and model-data.json, not shown on the page (TRPA, Nov. 20, 2026). -->
+      <div class="card">
+        <h3>Where the model points to new or updated agreements</h3>
+        <p class="note">Generated from the current scenario.</p>
+        <ul class="tight agreements note" id="agreeGaps"></ul>
       </div>
     </div>
   </section>
@@ -727,11 +721,7 @@
         <ol class="srclist note" id="srcFiles"></ol>
         <p class="source">Edits save in this browser only. Use Export to Excel to keep or share a version.</p>
       </div>
-      <div class="card">
-        <h2>Data notes and open questions</h2>
-        <p class="note">Inconsistencies found while building the model and how the model handles each one. These are the items to confirm with partners.</p>
-        <ol class="datanotes note" id="dataNotes"></ol>
-      </div>
+      <!-- Data notes and open questions are kept in etl/seed/notes.yaml (dataNotes) and model-data.json, not shown on the page (TRPA, Nov. 20, 2026). -->
       <div class="card">
         <h2>Data build</h2>
         <p class="note" id="buildInfo"></p>
@@ -5580,7 +5570,7 @@ window.TRANSIT_MODEL_DATA = {
   },
   {
    "title": "FTA 5307, 5339, and 5310 sub-allocation between TTD and Placer County",
-   "text": "Earned-share worksheet based on revenue miles, population, and ridership. FTA expects the MPO and designated recipients to set the split through a \"fair and rational\" process.",
+   "text": "Earned-share worksheet based on revenue miles, population, and ridership. FTA expects the MPO and designated recipients to set the split through a \"fair and rational\" process. Per TRPA (Nov. 20, 2026), an MOU documents the split.",
    "cite": "Financial PlanG.xlsx › FTA Allocation Split (26-27); Revenue %s AD59"
   },
   {
@@ -5616,7 +5606,7 @@ window.TRANSIT_MODEL_DATA = {
  ],
  "build": {
   "id": "20261120a",
-  "builtAt": "2026-11-20T22:53:52",
+  "builtAt": "2026-11-20T23:00:10",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",
@@ -5781,8 +5771,6 @@ function textSub(str, sup) {
 const textPlain = str => textSub(str, supText);
 /* HTML version: escape first, then insert superscript markup through a placeholder */
 function textHtml(str) { return esc(textSub(str, n => `\u0001${n}\u0002`)).replace(/\u0001(\d+)\u0002/g, (m, n) => supHtml([+n])); }
-const DATA_NOTES = DATA ? DATA.dataNotes.map(d => [d.title, d.text, d.cite]) : [];
-const AGREEMENTS = DATA ? DATA.agreements.map(d => [d.title, d.text, d.cite]) : [];
 
 /* ══════════════════════════════════════════════════════════════════════════
    3. STATE
@@ -7102,7 +7090,6 @@ function renderAgreements() {
     { field: 'end', headerName: 'Last year', width: 100 },
     { field: 'svcs', headerName: 'Services that depend on it', minWidth: 170, flex: 1, tooltipField: 'svcs' },
     { field: 'note', headerName: 'Agreement or evidence', minWidth: 300, flex: 2, valueFormatter: p => textPlain(p.value), tooltipValueGetter: p => textPlain(p.value) || null }] });
-  $('agreeList').innerHTML = AGREEMENTS.map(([t, d, ci]) => `<li><strong>${esc(t)}.</strong> ${textHtml(d)}${supHtml(citeNums(ci))}</li>`).join('');
   // generated gaps
   const gaps = [];
   const cross = {}; R.issues.filter(i => i.rule === 'Cross-agency use').forEach(i => { const k = `${agShort(lineById(i.line).recipient)} → ${agShort(i.agency)}`; cross[k] = (cross[k] || 0) + i.amt; });
@@ -7113,7 +7100,6 @@ function renderAgreements() {
   if (one.length) gaps.push(`<li><strong>Time-limited funds in ${YEARS[YEAR]}.</strong> ${moneyShort(sum(one.map(L => L.amount)))} from ${listWords(one.map(L => esc(L.l.name)))} ends within the plan period. Identify successor funding before it ends.</li>`);
   const jdiff = JURIS.filter(j => R.juris[j.id].need > 1 && R.juris[j.id].contrib < R.juris[j.id].need * 0.5).map(j => j.name);
   if (jdiff.length) gaps.push(`<li><strong>Local shares not matched by contributions.</strong> At placeholder shares, ${listWords(jdiff)} contribute less than half of the local share of the service attributed to them. Use the jurisdiction results to test a funding allocation formula.</li>`);
-  gaps.push(`<li><strong>FTA sub-allocation.</strong> The TTD and Placer County split of Lake Tahoe UZA funds (${pct(ftaShares(S).TTD, 1)} and ${pct(ftaShares(S).TART, 1)} in this scenario) rests on a worksheet. Documenting the method in an agreement between the MPO and designated recipients would meet FTA's "fair and rational" expectation.</li>`);
   $('agreeGaps').innerHTML = gaps.join('');
 }
 
@@ -7154,7 +7140,6 @@ function renderAssumptions() {
   const warns = BUILD.warnings || [];
   $('buildWarnHead').innerHTML = warns.length ? `<strong>${warns.length} build warning${warns.length === 1 ? '' : 's'}.</strong> Fix these in the workbooks or the seed files, then rebuild.` : 'The build found no problems in the workbooks.';
   $('buildWarnings').innerHTML = warns.map(w => `<li>${esc(w)}</li>`).join('');
-  $('dataNotes').innerHTML = DATA_NOTES.map(([t, d, ci]) => `<li><strong>${esc(t)}.</strong> ${textHtml(d)}<span class="cite">${citeHtml(ci)}</span></li>`).join('');
   $('srcFiles').innerHTML = SOURCES.map((s, i) => `<li id="src-${i + 1}"><strong>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>` : esc(s.name)}</strong>${s.note ? '. ' + esc(s.note) : ''}${(s.links || []).length ? `. Published version: ${s.links.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`).join(', ')}` : ''}</li>`).join('');
 }
 
