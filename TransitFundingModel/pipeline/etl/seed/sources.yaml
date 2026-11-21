@@ -439,7 +439,7 @@ sources:
       ADA-TTD: 0.12240237579
   commitment: formula
   commitNote: TRPA apportionment; no change assumed in the TRPA TDA split (Table A1 note 2). TTD applies one-third to rural and two-thirds 
-    to urban routes (Revenue %s AE10).
+    to urban routes (Revenue %s AE10). Per TRPA (Nov. 20, 2026), the TRPA TDA split stays the same.
   contributor: null
   matchText: No match requirement
   conditionText: California funding ideally used in CA, but can be used as federal match
@@ -501,7 +501,7 @@ sources:
       '51': 0.011628129524
       ADA-TTD: 0.12240237579
   commitment: formula
-  commitNote: ''
+  commitNote: 'Per TRPA (Nov. 20, 2026), the TRPA TDA split stays the same.'
   contributor: null
   matchText: No match requirement
   conditionText: California funding ideally used in CA, but can be used as federal match
@@ -1046,7 +1046,7 @@ sources:
     pct:
       '30': 1.0
   commitment: onetime
-  commitNote: 'Total allocated through FY 27-28: $38,000.'
+  commitNote: 'Total allocated through FY 27-28: $38,000. Per TRPA (Nov. 20, 2026), pilot funds cover two years, summer 2026 and summer 2027 service, and do not extend beyond that.'
   contributor: null
   matchText: No match requirement
   conditionText: ''
@@ -1107,7 +1107,7 @@ sources:
     pct:
       '30': 1.0
   commitment: onetime
-  commitNote: 'Total allocated through FY 27-28: $809,000.'
+  commitNote: 'Total allocated through FY 27-28: $809,000. Per TRPA (Nov. 20, 2026), pilot funds cover two years, summer 2026 and summer 2027 service, and do not extend beyond that.'
   contributor: null
   matchText: 11.47% non-federal
   conditionText: ''
@@ -1170,7 +1170,7 @@ sources:
     pct:
       '30': 1.0
   commitment: onetime
-  commitNote: 'Total allocated through FY 27-28: $431,395.'
+  commitNote: 'Total allocated through FY 27-28: $431,395. Per TRPA (Nov. 20, 2026), pilot funds cover two years, summer 2026 and summer 2027 service, and do not extend beyond that.'
   contributor: ELD
   matchText: No match requirement
   conditionText: Ideally used only in CA
@@ -1233,7 +1233,7 @@ sources:
     pct:
       '30': 1.0
   commitment: onetime
-  commitNote: 'Total allocated through FY 27-28: $38,000.'
+  commitNote: 'Total allocated through FY 27-28: $38,000. Per TRPA (Nov. 20, 2026), pilot funds cover two years, summer 2026 and summer 2027 service, and do not extend beyond that.'
   contributor: PLA
   matchText: No match requirement
   conditionText: Ideally used only in CA
@@ -2228,7 +2228,7 @@ sources:
       NIGHT: 0.084972660841
       ADA-PLA: 0.055556748251
   commitment: formula
-  commitNote: ''
+  commitNote: 'Per TRPA (Nov. 20, 2026), the TRPA TDA split stays the same.'
   contributor: null
   matchText: No match requirement
   conditionText: California funding ideally used in CA, but can be used as federal match
@@ -2348,7 +2348,7 @@ sources:
       NIGHT: 0.084972660841
       ADA-PLA: 0.055556748251
   commitment: formula
-  commitNote: ''
+  commitNote: 'Per TRPA (Nov. 20, 2026), the TRPA TDA split stays the same.'
   contributor: null
   matchText: No match requirement
   conditionText: California funding ideally used in CA, but can be used as federal match
