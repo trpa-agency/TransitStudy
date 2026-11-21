@@ -52,6 +52,10 @@ sourceGroups:
   FTA 5339 (Lake Tahoe UZA): FTA 5339 Bus and Bus Facilities
   TDA LTF, TRPA apportionment: TDA Local Transportation Fund
   TDA STA, TRPA apportionment: TDA State Transit Assistance
+# Submit as a data update (header button on the full model): who receives the request email.
+dataUpdates:
+  email: rshaw@trpa.gov
+  subject: Funding model data update request
 # Scenario inputs taken from published plans. Used by the scenario presets.
 scenarios:
   peak30:

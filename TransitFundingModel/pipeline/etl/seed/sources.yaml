@@ -563,7 +563,7 @@ sources:
       '51': 0.005189639367
       ADA-TTD: 0.168709892944
   commitment: formula
-  commitNote: TTD receives LCTOP every other year; it alternates with TART based on ridership (Revenue %s D67).
+  commitNote: TTD receives LCTOP every other year; it alternates with TART based on ridership (Revenue %s D67). Confirmed by TRPA (Nov. 20, 2026).
   contributor: null
   matchText: No match requirement
   conditionText: California funding ideally used in CA, but can be used as federal match
@@ -599,6 +599,48 @@ sources:
       shares: false
     route:
       row: Low Carbon Transit Operations Program (LCTOP) - Operating
+- id: tart-lctop
+  name: Low Carbon Transit Operations Program (TART)
+  level: state
+  recipient: TART
+  program: LCTOP
+  enabled: true
+  status: budgeted
+  amountMode: manual
+  amount: 0
+  prior: 0
+  growth: 0
+  lastYear: null
+  cap: null
+  overrides:
+  - null
+  - 265500.0
+  - 0.0
+  - 265500.0
+  - 0.0
+  fedShare: null
+  fedShareADA: null
+  matchEligible: true
+  matchOnly: false
+  rules:
+    states:
+    - CA
+  alloc:
+    mode: auto
+    basis: vsh
+  commitment: formula
+  commitNote: TART receives LCTOP in the years TTD does not; the two alternate based on ridership (Revenue %s D67), confirmed by TRPA (Nov. 20, 2026). Placeholder amount, to be verified.
+  contributor: null
+  matchText: No match requirement
+  conditionText: California funding ideally used in CA, but can be used as federal match
+  restrictionText: CA only
+  purpose: Operating and capital assistance to reduce greenhouse gas emissions and improve mobility.
+  grantor: State of California (5% of cap-and-trade proceeds)
+  notes: 'Added Nov. 20, 2026. No workbook gives TART''s LCTOP amount, so it uses TTD''s amount ($265,500) in FY 27-28 and FY 29-30 as a placeholder. Shares follow TART service hours.'
+  cites:
+    amount: 'Placeholder: TTD''s LCTOP amount in its years (Financial PlanG.xlsx › T2-4 Table A1 row 73), pending TART''s figure'
+    projection: 'Alternates with TTD every other year, per TRPA (Nov. 20, 2026)'
+  user: false
 - id: ttd-elec
   name: Electrification credits (TTD)
   level: state
@@ -1334,13 +1376,17 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
     preferStates:
     - CA
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.3333333333333333
+      LL-Z2: 0.3333333333333333
+      LL-Z3: 0.3333333333333334
   commitment: onetime
   commitNote: Assumes an SB 125 allocation in FY 26-27 only (Table A1 O85).
   contributor: null
@@ -1385,15 +1431,19 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
     jurisdiction: DOU
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: agreement
   commitNote: Written agreement; one of only two written Lake Link contracts (Per Route Model D88). Table A1 note 6 assumes support at 
-    existing levels beyond the end of current agreements.
+    existing levels beyond the end of current agreements. Per TRPA (Nov. 20, 2026), the agreement does not renew or escalate on its own.
   contributor: DOU
   matchText: No match requirement
   conditionText: Ideally used only in Douglas County
@@ -1450,14 +1500,18 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
     jurisdiction: CSLT
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: agreement
-  commitNote: Written agreement (Per Route Model D88). Table A1 note 6 assumes support at existing levels beyond current agreements.
+  commitNote: Written agreement (Per Route Model D88). Table A1 note 6 assumes support at existing levels beyond current agreements. Per TRPA (Nov. 20, 2026), the agreement does not renew or escalate on its own.
   contributor: CSLT
   matchText: No match requirement
   conditionText: Ideally used only in the City of South Lake Tahoe
@@ -1506,11 +1560,15 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: agreement
   commitNote: Assumes the $3 surcharge goes to transit and no increase in the annual attendee cap (Table A1 note 7).
   contributor: null
@@ -1561,11 +1619,15 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: none
   commitNote: Listed in the FY 26-27 route model; no written commitment on file.
   contributor: null
@@ -1615,11 +1677,15 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: none
   commitNote: Listed in the FY 26-27 route model; no written commitment on file.
   contributor: null
@@ -1669,11 +1735,15 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: none
   commitNote: Listed in the FY 26-27 route model; no written commitment on file.
   contributor: null
@@ -1723,11 +1793,15 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: none
   commitNote: Listed in the FY 26-27 route model; no written commitment on file.
   contributor: null
@@ -1777,11 +1851,15 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: none
   commitNote: Listed in the FY 26-27 route model; no written commitment on file.
   contributor: null
@@ -1831,11 +1909,15 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: none
   commitNote: Listed in the FY 26-27 route model; no written commitment on file.
   contributor: null
@@ -1886,11 +1968,15 @@ sources:
   matchOnly: false
   rules:
     routes:
-    - LL
+    - LL-Z1
+    - LL-Z2
+    - LL-Z3
   alloc:
     mode: manual
     pct:
-      LL: 1.0
+      LL-Z1: 0.5
+      LL-Z2: 0.25
+      LL-Z3: 0.25
   commitment: none
   commitNote: Listed in the FY 26-27 route model; no written commitment on file.
   contributor: null

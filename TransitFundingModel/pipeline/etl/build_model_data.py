@@ -310,7 +310,8 @@ class Build:
                     s[field] = self.resolve(where, field, s.get(field), v, keep)
                 s["cite"] = f"{self.fname(cfg.get('wb', 'scen'))}{SEP}{cfg['sheet']} row {r}"
                 self.read_log.append(f"{where}: costs row {r}")
-            if "conditions" in src or ("costs" in src and self.cfg.get("conditions_tab")):
+            # `conditions: false` in the seed keeps the seed route conditions (Lake Link zones, which the scenario workbook does not list)
+            if src.get("conditions") is not False and ("conditions" in src or ("costs" in src and self.cfg.get("conditions_tab"))):
                 ccfg = self.cfg["conditions_tab"]
                 cws, _, ccol, cfind = self.tab_reader(ccfg)
                 c_src = src.get("conditions") or src["costs"]
@@ -646,7 +647,7 @@ class Build:
             "sourceFiles": m["sourceFiles"], "sourceFileNotes": m["sourceFileNotes"],
             "sourceFileLinks": m.get("sourceFileLinks", {}),
             "references": m.get("references", {}), "scenarios": m.get("scenarios", {}),
-            "sourceGroups": m.get("sourceGroups", {}),
+            "sourceGroups": m.get("sourceGroups", {}), "dataUpdates": m.get("dataUpdates", {}),
             "agencies": m["agencies"], "jurisdictions": m["jurisdictions"],
             "services": services, "operators": operators, "lines": lines, "fta": fta,
             "dataNotes": self.seed["notes"]["dataNotes"], "agreements": self.seed["notes"]["agreements"],

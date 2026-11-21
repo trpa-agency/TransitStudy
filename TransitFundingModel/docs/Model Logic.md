@@ -18,7 +18,7 @@ How the model page calculates, as of November 13, 2026. The code is the JavaScri
 | Inputs users can change | Inputs and assumptions | These are the inputs |
 | Inputs users can change | Allocation and rules | Shares are inputs; rule checks update |
 | Results and future | One-year outlook, Five-year outlook, Agreements and risk | Yes |
-| Reference | Sources and notes | No (sources and build; data notes and the agreements inventory stay in `etl/seed/notes.yaml`, off the page since Nov. 20, 2026) |
+| Reference | Sources and notes | No (source files only. Data notes and the agreements inventory stay in `etl/seed/notes.yaml`, and build details stay in `pipeline/data/build-report.md`, off the page since Nov. 20, 2026) |
 
 ## Services and cost (engine, section 5)
 
@@ -27,6 +27,26 @@ How the model page calculates, as of November 13, 2026. The code is the JavaScri
 - **Service plan elements:** these use a five-year cost schedule from Tables A1 and A2. They count only when "Include" is checked.
 - **Later years:** each operator's escalator applies (4 percent; TART Connect 5 percent; My Ride to Work 3 percent).
 - **Jurisdiction miles:** annual service miles by jurisdiction set each service's California and Nevada portions. The engine reads them as weights and normalizes each row. Until miles by jurisdiction arrive, each service's total service miles are split evenly as a placeholder, by TRPA direction. Entering miles for a service replaces its placeholder.
+
+**Service plan elements.** Rows not yet included are grayed out. For the study's plan rows, Starts in and Start-year cost come from the first year with a cost; operator and service hours show a dash because the plan gives only costs.
+
+**New services (Service plan elements).** Besides the study's service plan rows, users can add a new service: name, agency, operator, start year, urban or rural, type, federalized, and jurisdictions served (even split). Cost is either an annual cost in start-year dollars, grown from the start year at the operator's escalator, or annual service hours priced at the operator rate in FY 26-27 dollars and escalated each year. The service is inactive before its start year. New services can be edited or removed in the grid. Added Nov. 20, 2026.
+
+**Changing a service's agency.** Changing the Agency in Services and operating costs moves the service's cost. The model then offers to move the old agency's funding sources that pay only for that service (100 percent share, not the FTA 5307 split). Shared sources stay. Federal eligibility does not change. The "TTD absorbs Lake Link" preset remains for the full transfer, which also federalizes Lake Link and reallocates TTD's funding. Added Nov. 20, 2026.
+
+**Revenue by funding level (Existing funding conditions).** Selecting a bar, or a level button above the chart, drills into that level. Local revenue shows by the jurisdiction picked as each source's funding level in Details, with untagged sources as "Other local or more than one." Other levels show by program, grouped with `sourceGroups`. Each drill-down sums to the level total. "All levels" returns to the overview. On the full and public pages. Added Nov. 20, 2026.
+
+**Lake Link zones.** Lake Link is three services, per TRPA (Nov. 20, 2026): Zone 1 is mostly City of South Lake Tahoe and partly Douglas County (placeholder split 75 and 25 percent), Zone 2 is Douglas County, and Zone 3 is City of South Lake Tahoe. Hours, miles, and cost come from V1G Operating Stats rows LL Z1 to Z3, which the workbook marks as an example one-third split of the 47,002 contract hours. Source shares come from V1G Per Route Model Clean columns S to U (most sources 50, 25, and 25 percent). Trips by zone are not available. The split adds three flags in FY 26-27: Douglas County funds on Zone 3 and City of South Lake Tahoe funds on Zone 2 break their jurisdiction restrictions, and Douglas County funds on Zone 1 exceed its Douglas share.
+
+**Five-year outlook.** A how-to section and the User input changes card open the page. The cost lines are operating cost in the source data (dashed) and operating cost with the user's changes (solid); with no changes, one line shows. The all-service-plan-elements line was removed. Ending balance by agency shows one small table per agency under its chart, plus a region table.
+
+**Agreements and risk.** "Risks and considerations for this scenario" is generated from the current scenario: cross-agency funding, uncommitted partners, time-limited funds, and local shares not matched by contributions. The FTA sub-allocation item was removed because an MOU documents the method.
+
+**Fiscal year menu.** The header menu was removed (Nov. 20, 2026). One-year outlook and Allocation and rules each have a Fiscal year menu; they share one year and stay in sync. The header flag count follows that year and names it. Agreements and risk, Inputs and assumptions, and Existing funding conditions always show FY 26-27. Five-year outlook's Effect of user inputs table compares FY 26-27 with FY 30-31.
+
+**Own-agency rule (fundamental).** A source pays only for services run by the agency that receives it (TRPA, Nov. 20, 2026). Shares on another agency's services are ignored, and those Allocation cells are gray and not editable. The old Cross-agency use note no longer appears. If a service moves to another agency and its funding does not, the service shows a funding gap and the money stays unspent with the original agency.
+
+**State that pays.** State-level sources have a paying state, picked under State in the Funding level dropdown (California or Nevada). The default reads the source's grantor. Revenue by funding level drills State revenue down by state.
 
 ## Funding source amounts
 
@@ -52,7 +72,7 @@ The FY 26-27 amount comes from Funding Model V1G, Per Route Model Clean, or from
 | Federal share cap | Flag | Federal funds on a service exceed the highest federal share among its federal sources, times net cost. ADA paratransit uses the ADA share (80 percent for 5307) |
 | Local match | Flag | Non-federal match applied to the service is less than federal × (1 − share) / share |
 | Intended use, state preference, jurisdiction preference | Note | "Ideally" conditions. TRPA allows these and wants them highlighted |
-| Cross-agency use | Note | One agency's funds on another agency's service. Needs an interagency agreement |
+| Cross-agency use (removed Nov. 20, 2026) | None | Replaced by the own-agency rule: a source cannot pay for another agency's services |
 | Unallocated, funding gap | Info | Money not applied; route cost with no funding |
 
 Fares count as local match by TRPA direction. A fare line with "Counts as match" unchecked is treated as fare replacement: it lowers net cost instead.
@@ -80,13 +100,15 @@ Fares count as local match by TRPA direction. A fare line with "Counts as match"
 
 ## Scenario presets (Inputs and assumptions)
 
+All presets were removed Nov. 20, 2026, per TRPA. The rows below are a record. Plan services and the TART peak are rows in Service plan elements. A service's agency is changed in Services and operating costs, with a prompt to move its funding. Federalizing a moved service and reallocating its funding are done by hand (Federalized checkbox, Suggest allocation).
+
 Each preset lists the values it sets. Checking it applies them as logged edits. Unchecking returns those values to the source data. Each card shows its effect against the source data before it is applied.
 
 | Preset | What it sets |
 | --- | --- |
-| Meyers paratransit and microtransit pilot | Includes the SP-MEY service plan element. Its cost starts in FY 27-28 |
+| Meyers paratransit and microtransit pilot (removed Nov. 20, 2026) | No longer a preset. Check Include on the SP-MEY row in Service plan elements. Its cost starts in FY 27-28 |
 | TTD absorbs Lake Link | Lake Link services and all SSTMA sources move to TTD. Lake Link becomes federalized. TTD's combined sources are reallocated with the rules-based allocation, computed on the source data. Three assumptions apply only while the preset is on: SSTMA admin cost removed, the share of Lake Link private partner funds kept, and added federal compliance cost. Defaults ($0, 100 percent, $0) change nothing. SSTMA admin costs carry over to TTD by default, per TRPA (Nov. 13, 2026). The card compares separate and consolidated cases, both under the rules-based allocation: flags, notes, TTD federal funds above the share cap, and the combined TTD and Lake Link balance |
-| All TART fixed routes at 30-minute peak frequency | Sets `peak30` on the TART Main Line (West Shore, North Shore, Nevada), Hwy 89, and Hwy 267. Adds the TART 2025 Systems Plan cost of $2,683,400 a year, treated as FY 26-27 dollars and grown by TART's 4 percent escalator. Service starts in the fiscal year chosen on the card (`assume.peak30Start`), FY 27-28 by default, per TRPA (Nov. 13, 2026). Earlier years carry no added cost. The total is split across the routes by annual service hours, a placeholder until TART gives a route breakdown. Plan figures are in `etl/seed/model.yaml` under `scenarios.peak30` |
+| TART fixed routes at 30-minute peak frequency (moved Nov. 20, 2026) | No longer a preset. It is a row in Service plan elements with Include, Starts in (`assume.peak30Start`, default FY 27-28), and an editable start-year cost (`assume.peak30Cost`, stored in FY 26-27 dollars; blank uses the TART 2025 Systems Plan's $2,683,400). Include sets `peak30` on the TART Main Line (West Shore, North Shore, Nevada), Hwy 89, and Hwy 267. The cost is split by each route's service hours, shown in Peak frequency inputs, and grows at TART's escalator |
 
 The TDA and SB 125 California-only preset and the Lake Link federalized preset were removed on October 30, 2026, per TRPA review.
 
@@ -94,6 +116,7 @@ The TDA and SB 125 California-only preset and the Lake Link federalized preset w
 
 - **Export to Excel:** writes ten readable sheets: Scenario, Outlook by agency, Results by service, Results by jurisdiction, Funding sources, Allocation shares, Services, Rule checks, Changes, and Sources.
 - **No import:** Import was removed on Nov. 20, 2026, per TRPA. Exported workbooks are one-way snapshots.
+- **Submit as a data update:** a header button, active once a scenario has edits. It lists the net changes from the source data and asks for a name and agency, with optional notes for the source and context. It downloads the scenario workbook, then opens an email to the address in `dataUpdates` in `etl/seed/model.yaml` with the changes listed. The user attaches the workbook. TRPA reviews the request and applies approved values in the workbooks or seed, then rebuilds. Long change lists are cut at about 1,700 encoded characters; the rest are on the workbook's Changes sheet. Added Nov. 20, 2026. Scenario edits stay private to each browser.
 
 ## Citations
 

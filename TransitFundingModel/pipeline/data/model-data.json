@@ -96,6 +96,10 @@
   "TDA LTF, TRPA apportionment": "TDA Local Transportation Fund",
   "TDA STA, TRPA apportionment": "TDA State Transit Assistance"
  },
+ "dataUpdates": {
+  "email": "rshaw@trpa.gov",
+  "subject": "Funding model data update request"
+ },
  "agencies": [
   {
    "id": "TTD",
@@ -437,20 +441,20 @@
    "condCite": "Example Transit Financial Scenario Workbook.xlsx › costs row 11"
   },
   {
-   "id": "LL",
-   "name": "Lake Link microtransit",
-   "short": "Lake Link",
+   "id": "LL-Z1",
+   "name": "Lake Link Zone 1",
+   "short": "LL Zone 1",
    "agency": "SSTMA",
    "operator": "Via",
    "group": "Lake Link",
    "stateCond": "CA/NV",
-   "localCond": "Zone 1 (Douglas County), Zone 2 (CSLT), Zone 3 (CSLT)",
+   "localCond": "Zone 1 (City of South Lake Tahoe and Douglas County)",
    "area": "urban",
    "type": "microtransit",
    "federalized": false,
-   "trips": 223047.0,
-   "vsh": 47002.0,
-   "vsm": 366322.0,
+   "trips": null,
+   "vsh": 15667.333333333334,
+   "vsm": 122107.33333333333,
    "dataYear": "25-26",
    "rateOverride": null,
    "costOverride": null,
@@ -459,14 +463,76 @@
    "include": true,
    "plan": false,
    "juris": {
-    "DOU": 0.3333333333333333,
-    "CSLT": 0.6666666666666666
+    "CSLT": 0.75,
+    "DOU": 0.25
    },
-   "refCost": 3229037,
+   "refCost": 1076346,
    "refCite": "Funding Model V1G.xlsx › Per Route Model Clean S10",
-   "note": "VSH are from the contract, not actuals (costs tab U12). Non-federalized per TRPA (Oct. 23, 2026).",
-   "cite": "Funding Model V1G.xlsx › Operating Stats row 15",
-   "condCite": "Example Transit Financial Scenario Workbook.xlsx › costs row 12"
+   "note": "Mostly City of South Lake Tahoe, partly Douglas County, per TRPA (Nov. 20, 2026). The 75 percent and 25 percent split is a placeholder until miles by jurisdiction are entered. Zone hours and miles are the funding model's example one-third split of Lake Link's 47,002 contract hours. Trips by zone are not available; Lake Link carried 223,047 trips in FY 25-26. Non-federalized per TRPA (Oct. 23, 2026).",
+   "cite": "Funding Model V1G.xlsx › Operating Stats row 16",
+   "condCite": "Per TRPA (Nov. 20, 2026)"
+  },
+  {
+   "id": "LL-Z2",
+   "name": "Lake Link Zone 2",
+   "short": "LL Zone 2",
+   "agency": "SSTMA",
+   "operator": "Via",
+   "group": "Lake Link",
+   "stateCond": "Nevada",
+   "localCond": "Zone 2 (Douglas County)",
+   "area": "urban",
+   "type": "microtransit",
+   "federalized": false,
+   "trips": null,
+   "vsh": 15667.333333333334,
+   "vsm": 122107.33333333333,
+   "dataYear": "25-26",
+   "rateOverride": null,
+   "costOverride": null,
+   "costSchedule": null,
+   "activeYears": null,
+   "include": true,
+   "plan": false,
+   "juris": {
+    "DOU": 1.0
+   },
+   "refCost": 1076346,
+   "refCite": "Funding Model V1G.xlsx › Per Route Model Clean T10",
+   "note": "Douglas County, per TRPA (Nov. 20, 2026). Zone hours and miles are the funding model's example one-third split of Lake Link's 47,002 contract hours. Trips by zone are not available; Lake Link carried 223,047 trips in FY 25-26. Non-federalized per TRPA (Oct. 23, 2026).",
+   "cite": "Funding Model V1G.xlsx › Operating Stats row 17",
+   "condCite": "Per TRPA (Nov. 20, 2026)"
+  },
+  {
+   "id": "LL-Z3",
+   "name": "Lake Link Zone 3",
+   "short": "LL Zone 3",
+   "agency": "SSTMA",
+   "operator": "Via",
+   "group": "Lake Link",
+   "stateCond": "California",
+   "localCond": "Zone 3 (City of South Lake Tahoe)",
+   "area": "urban",
+   "type": "microtransit",
+   "federalized": false,
+   "trips": null,
+   "vsh": 15667.333333333334,
+   "vsm": 122107.33333333333,
+   "dataYear": "25-26",
+   "rateOverride": null,
+   "costOverride": null,
+   "costSchedule": null,
+   "activeYears": null,
+   "include": true,
+   "plan": false,
+   "juris": {
+    "CSLT": 1.0
+   },
+   "refCost": 1076346,
+   "refCite": "Funding Model V1G.xlsx › Per Route Model Clean U10",
+   "note": "City of South Lake Tahoe, per TRPA (Nov. 20, 2026). Zone hours and miles are the funding model's example one-third split of Lake Link's 47,002 contract hours. Trips by zone are not available; Lake Link carried 223,047 trips in FY 25-26. Non-federalized per TRPA (Oct. 23, 2026).",
+   "cite": "Funding Model V1G.xlsx › Operating Stats row 18",
+   "condCite": "Per TRPA (Nov. 20, 2026)"
   },
   {
    "id": "TART-WS",
@@ -1679,7 +1745,7 @@
     }
    },
    "commitment": "formula",
-   "commitNote": "TTD receives LCTOP every other year; it alternates with TART based on ridership (Revenue %s D67).",
+   "commitNote": "TTD receives LCTOP every other year; it alternates with TART based on ridership (Revenue %s D67). Confirmed by TRPA (Nov. 20, 2026).",
    "contributor": null,
    "matchText": "No match requirement",
    "conditionText": "California funding ideally used in CA, but can be used as federal match",
@@ -1695,6 +1761,55 @@
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 21 (FY 26-27 route allocations)",
     "projection": "Financial PlanG.xlsx › T2-4 Table A1 O73: TTD gets every other year",
     "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean D21 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 21 | Year values: Financial PlanG.xlsx › T2-4 A1 TTD LL Costs row 73 (H, I, J, K) | Conditions and match: Financial PlanG.xlsx › Revenue %s row 15, columns B and C"
+   },
+   "user": false
+  },
+  {
+   "id": "tart-lctop",
+   "name": "Low Carbon Transit Operations Program (TART)",
+   "level": "state",
+   "recipient": "TART",
+   "program": "LCTOP",
+   "enabled": true,
+   "status": "budgeted",
+   "amountMode": "manual",
+   "amount": 0,
+   "prior": 0,
+   "growth": 0,
+   "lastYear": null,
+   "cap": null,
+   "overrides": [
+    null,
+    265500.0,
+    0.0,
+    265500.0,
+    0.0
+   ],
+   "fedShare": null,
+   "fedShareADA": null,
+   "matchEligible": true,
+   "matchOnly": false,
+   "rules": {
+    "states": [
+     "CA"
+    ]
+   },
+   "alloc": {
+    "mode": "auto",
+    "basis": "vsh"
+   },
+   "commitment": "formula",
+   "commitNote": "TART receives LCTOP in the years TTD does not; the two alternate based on ridership (Revenue %s D67), confirmed by TRPA (Nov. 20, 2026). Placeholder amount, to be verified.",
+   "contributor": null,
+   "matchText": "No match requirement",
+   "conditionText": "California funding ideally used in CA, but can be used as federal match",
+   "restrictionText": "CA only",
+   "purpose": "Operating and capital assistance to reduce greenhouse gas emissions and improve mobility.",
+   "grantor": "State of California (5% of cap-and-trade proceeds)",
+   "notes": "Added Nov. 20, 2026. No workbook gives TART's LCTOP amount, so it uses TTD's amount ($265,500) in FY 27-28 and FY 29-30 as a placeholder. Shares follow TART service hours.",
+   "cites": {
+    "amount": "Placeholder: TTD's LCTOP amount in its years (Financial PlanG.xlsx › T2-4 Table A1 row 73), pending TART's figure",
+    "projection": "Alternates with TTD every other year, per TRPA (Nov. 20, 2026)"
    },
    "user": false
   },
@@ -2421,7 +2536,9 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ],
     "preferStates": [
      "CA"
@@ -2430,7 +2547,9 @@
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.333333333333,
+     "LL-Z2": 0.333333333333,
+     "LL-Z3": 0.333333333333
     }
    },
    "commitment": "onetime",
@@ -2478,18 +2597,22 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ],
     "jurisdiction": "DOU"
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "agreement",
-   "commitNote": "Written agreement; one of only two written Lake Link contracts (Per Route Model D88). Table A1 note 6 assumes support at existing levels beyond the end of current agreements.",
+   "commitNote": "Written agreement; one of only two written Lake Link contracts (Per Route Model D88). Table A1 note 6 assumes support at existing levels beyond the end of current agreements. Per TRPA (Nov. 20, 2026), the agreement does not renew or escalate on its own.",
    "contributor": "DOU",
    "matchText": "No match requirement",
    "conditionText": "Ideally used only in Douglas County",
@@ -2534,18 +2657,22 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ],
     "jurisdiction": "CSLT"
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "agreement",
-   "commitNote": "Written agreement (Per Route Model D88). Table A1 note 6 assumes support at existing levels beyond current agreements.",
+   "commitNote": "Written agreement (Per Route Model D88). Table A1 note 6 assumes support at existing levels beyond current agreements. Per TRPA (Nov. 20, 2026), the agreement does not renew or escalate on its own.",
    "contributor": "CSLT",
    "matchText": "No match requirement",
    "conditionText": "Ideally used only in the City of South Lake Tahoe",
@@ -2590,13 +2717,17 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ]
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "agreement",
@@ -2645,13 +2776,17 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ]
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "none",
@@ -2699,13 +2834,17 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ]
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "none",
@@ -2753,13 +2892,17 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ]
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "none",
@@ -2807,13 +2950,17 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ]
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "none",
@@ -2861,13 +3008,17 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ]
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "none",
@@ -2915,13 +3066,17 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ]
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "none",
@@ -2969,13 +3124,17 @@
    "matchOnly": false,
    "rules": {
     "routes": [
-     "LL"
+     "LL-Z1",
+     "LL-Z2",
+     "LL-Z3"
     ]
    },
    "alloc": {
     "mode": "manual",
     "pct": {
-     "LL": 1.0
+     "LL-Z1": 0.5,
+     "LL-Z2": 0.25,
+     "LL-Z3": 0.25
     }
    },
    "commitment": "none",
@@ -4828,8 +4987,8 @@
   }
  ],
  "build": {
-  "id": "20261120a",
-  "builtAt": "2026-11-20T23:00:10",
+  "id": "20261121a",
+  "builtAt": "2026-11-21T02:02:01",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",

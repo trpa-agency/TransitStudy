@@ -284,20 +284,20 @@ services:
       agency: TTD
     routeCost: {}
   condCite: Example Transit Financial Scenario Workbook.xlsx › costs row 11
-- id: LL
-  name: Lake Link microtransit
-  short: Lake Link
+- id: LL-Z1
+  name: Lake Link Zone 1
+  short: LL Zone 1
   agency: SSTMA
   operator: Via
   group: Lake Link
   stateCond: CA/NV
-  localCond: Zone 1 (Douglas County), Zone 2 (CSLT), Zone 3 (CSLT)
+  localCond: Zone 1 (City of South Lake Tahoe and Douglas County)
   area: urban
   type: microtransit
   federalized: false
-  trips: 223047.0
-  vsh: 47002.0
-  vsm: 366322.0
+  trips: null
+  vsh: 15667.333333333334
+  vsm: 122107.33333333333
   dataYear: 25-26
   rateOverride: null
   costOverride: null
@@ -306,18 +306,87 @@ services:
   include: true
   plan: false
   juris:
-    DOU: 0.3333333333333333
-    CSLT: 0.6666666666666666
-  refCost: 3229037
+    CSLT: 0.75
+    DOU: 0.25
+  refCost: 1076346
   refCite: Funding Model V1G.xlsx › Per Route Model Clean S10
-  note: VSH are from the contract, not actuals (costs tab U12). Non-federalized per TRPA (Oct. 23, 2026).
-  cite: Funding Model V1G.xlsx › Operating Stats row 15
+  note: 'Mostly City of South Lake Tahoe, partly Douglas County, per TRPA (Nov. 20, 2026). The 75 percent and 25 percent split is a placeholder until miles by jurisdiction are entered. Zone hours and miles are the funding model''s example one-third split of Lake Link''s 47,002 contract hours. Trips by zone are not available; Lake Link carried 223,047 trips in FY 25-26. Non-federalized per TRPA (Oct. 23, 2026).'
+  cite: Funding Model V1G.xlsx › Operating Stats row 16
   from:
     costs:
-      label: Lake Link
+      label: LL Z1
       agency: SSTMA
+    conditions: false
     routeCost: {}
-  condCite: Example Transit Financial Scenario Workbook.xlsx › costs row 12
+  condCite: Per TRPA (Nov. 20, 2026)
+- id: LL-Z2
+  name: Lake Link Zone 2
+  short: LL Zone 2
+  agency: SSTMA
+  operator: Via
+  group: Lake Link
+  stateCond: Nevada
+  localCond: Zone 2 (Douglas County)
+  area: urban
+  type: microtransit
+  federalized: false
+  trips: null
+  vsh: 15667.333333333334
+  vsm: 122107.33333333333
+  dataYear: 25-26
+  rateOverride: null
+  costOverride: null
+  costSchedule: null
+  activeYears: null
+  include: true
+  plan: false
+  juris:
+    DOU: 1.0
+  refCost: 1076346
+  refCite: Funding Model V1G.xlsx › Per Route Model Clean T10
+  note: 'Douglas County, per TRPA (Nov. 20, 2026). Zone hours and miles are the funding model''s example one-third split of Lake Link''s 47,002 contract hours. Trips by zone are not available; Lake Link carried 223,047 trips in FY 25-26. Non-federalized per TRPA (Oct. 23, 2026).'
+  cite: Funding Model V1G.xlsx › Operating Stats row 17
+  from:
+    costs:
+      label: LL Z2
+      agency: SSTMA
+    conditions: false
+    routeCost: {}
+  condCite: Per TRPA (Nov. 20, 2026)
+- id: LL-Z3
+  name: Lake Link Zone 3
+  short: LL Zone 3
+  agency: SSTMA
+  operator: Via
+  group: Lake Link
+  stateCond: California
+  localCond: Zone 3 (City of South Lake Tahoe)
+  area: urban
+  type: microtransit
+  federalized: false
+  trips: null
+  vsh: 15667.333333333334
+  vsm: 122107.33333333333
+  dataYear: 25-26
+  rateOverride: null
+  costOverride: null
+  costSchedule: null
+  activeYears: null
+  include: true
+  plan: false
+  juris:
+    CSLT: 1.0
+  refCost: 1076346
+  refCite: Funding Model V1G.xlsx › Per Route Model Clean U10
+  note: 'City of South Lake Tahoe, per TRPA (Nov. 20, 2026). Zone hours and miles are the funding model''s example one-third split of Lake Link''s 47,002 contract hours. Trips by zone are not available; Lake Link carried 223,047 trips in FY 25-26. Non-federalized per TRPA (Oct. 23, 2026).'
+  cite: Funding Model V1G.xlsx › Operating Stats row 18
+  from:
+    costs:
+      label: LL Z3
+      agency: SSTMA
+    conditions: false
+    routeCost: {}
+  condCite: Per TRPA (Nov. 20, 2026)
 - id: TART-WS
   name: Main Line – West Shore
   short: West Shore

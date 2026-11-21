@@ -41,10 +41,8 @@ costs_tab:
   ignore_labels:
     - Main Line                 # subtotal of West Shore, N Shore, and Nevada; counting it would double count about $2.5 million
     - Total
-    - LL Z1                     # Lake Link and TART Connect zone rows are example one-third splits of the service totals
-    - LL Z2
-    - LL Z3
-    - TC Z1
+    - Lake Link                 # total of the three Lake Link zone rows, which are the model's services (per TRPA, Nov. 20, 2026)
+    - TC Z1                     # TART Connect zone rows are example one-third splits of the service total
     - TC Z2
     - TC Z3
     - TC Z4
@@ -80,9 +78,9 @@ route_model:
     "51": "51"
     ADA Para (TTD): ADA-TTD
     "30": "30"
-    Lake Link (Zone 1): LL
-    Lake Link (Zone 2): LL
-    Lake Link (Zone 3): LL
+    Lake Link (Zone 1): LL-Z1
+    Lake Link (Zone 2): LL-Z2
+    Lake Link (Zone 3): LL-Z3
     Mainline: [TART-WS, TART-NS, TART-NV]   # Main Line is three services in the model
     Hwy 89: "89"
     Hwy 267: "267"
@@ -118,9 +116,9 @@ revenue_tab:
     "51": "51"
     ADA Para (TTD): ADA-TTD
     "30": "30"
-    Lake Link (Zone 1): LL
-    Lake Link (Zone 2): LL
-    Lake Link (Zone 3): LL
+    Lake Link (Zone 1): LL-Z1
+    Lake Link (Zone 2): LL-Z2
+    Lake Link (Zone 3): LL-Z3
     Mainline: null              # TART Main Line is split into three services; set shares for those in the seed
     Hwy 89: "89"
     Hwy 267: "267"

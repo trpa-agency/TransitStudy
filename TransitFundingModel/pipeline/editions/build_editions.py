@@ -83,9 +83,8 @@ def add_gate(s: str, g: dict, public_file: str) -> str:
 def make_public(s: str, cfg: dict, full_file: str) -> str:
     pub = cfg["public"]
 
-    # Header: replace the year picker with a link to the full model. Drop the scenario bar.
+    # Header: add a link to the full model. Drop the scenario bar.
     link = f'<a class="linkbtn hdr-full" href="{html.escape(full_file)}">{html.escape(pub["full_link_text"])}</a>\n'
-    s = cut(s, '<span class="year-pick">Fiscal year', "  </div>\n</header>", "year picker")
     s = swap(s, "  </div>\n</header>", "    " + link + "  </div>\n</header>", "header link")
     s = swap(s, '">Beta</span>', f'">{html.escape(pub["status_label"], quote=False)}</span>', "status chip")
     s = cut(s, '<div class="scenario-bar">', '<main class="wrap">', "scenario bar")
@@ -104,6 +103,10 @@ def make_public(s: str, cfg: dict, full_file: str) -> str:
     if n == 0:
         raise EditionError("citations: no superscripts found. The page layout changed; update build_editions.py.")
     s = swap(s, "const supHtml = ns => ns.length ?", "const supHtml = ns => false ?", "citation helper")
+
+    # Source lines: name the study, not workbook tabs (config.yaml public.source_text).
+    for i, r in enumerate(pub.get("source_text") or []):
+        s = swap(s, r["find"], r["replace"], f"public source text {i + 1}")
 
     # Text that refers to editing or to other tabs.
     s = swap(s, " Edit these on Inputs and assumptions.", "", "inventory note")
