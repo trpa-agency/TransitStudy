@@ -576,8 +576,10 @@ window.TRANSIT_MODEL_DATA = {
   "TDA STA, TRPA apportionment": "TDA State Transit Assistance"
  },
  "dataUpdates": {
-  "email": "rshaw@trpa.gov",
-  "subject": "Funding model data update request"
+  "serviceUrl": "https://services5.arcgis.com/fXXSUzHD5JjcOt1v/arcgis/rest/services/service_97add89ea7044725abf93da481f35bfa_form/FeatureServer",
+  "layerId": 0,
+  "tableId": 1,
+  "contact": "rshaw@trpa.gov"
  },
  "agencies": [
   {
@@ -5466,8 +5468,8 @@ window.TRANSIT_MODEL_DATA = {
   }
  ],
  "build": {
-  "id": "20261121a",
-  "builtAt": "2026-11-21T02:07:11",
+  "id": "20261123a",
+  "builtAt": "2026-11-23T23:08:00",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",
@@ -7132,56 +7134,65 @@ function netChanges() {
   const out = new Map();
   for (const c of S.changes) {   // newest first
     const k = c.entity + '|' + c.id + '|' + c.field;
-    if (!out.has(k)) out.set(k, { name: c.name, field: c.field, from: c.from, to: c.to }); else out.get(k).from = c.from;
+    if (!out.has(k)) out.set(k, { name: c.name, field: c.field, from: c.from, to: c.to, entity: c.entity, id: c.id }); else out.get(k).from = c.from;
   }
   return [...out.values()].filter(c => !same(c.from, c.to));
 }
+/* Data updates go to a Survey123 survey (ArcGIS Online). The page posts one main record and one repeat row per change
+   to the survey's feature service with applyEdits. Settings: dataUpdates in etl/seed/model.yaml. */
 const DU = (DATA && DATA.dataUpdates) || {};
+const changeLine = c => `${c.name}, ${c.field}: ${changeShow(c.from)} to ${changeShow(c.to)}`;
+function submitStage(done) {
+  $('dlgSubmitForm').hidden = done; $('dlgSubmitDone').hidden = !done;
+  $('dlgSubmitOk').hidden = done; $('dlgSubmitCancel').hidden = done;
+  $('dlgSubmitKeep').hidden = !done; $('dlgSubmitReset').hidden = !done;
+  $('dlgSubmitCopy').hidden = true;
+}
 function openSubmit() {
   const ch = netChanges();
   $('dlgSubmitCount').innerHTML = `<strong>${ch.length} change${ch.length === 1 ? '' : 's'}</strong> from the source data:`;
-  $('dlgSubmitList').innerHTML = ch.map(c => `<li>${esc(c.name)}, ${esc(c.field)}: ${esc(changeShow(c.from))} to ${esc(changeShow(c.to))}</li>`).join('');
-  if (!$('subAgency').options.length) $('subAgency').innerHTML = '<option value="">Choose one</option>' + [...AGENCIES.filter(a => a.id !== 'REGION').map(a => a.name), ...JURIS.map(j => j.name), 'TRPA', 'Other'].map(x => `<option>${esc(x)}</option>`).join('');
+  $('dlgSubmitList').innerHTML = ch.map(c => `<li>${esc(changeLine(c))}</li>`).join('');
+  if (!$('subAgency').options.length) $('subAgency').innerHTML = '<option value="">Choose one</option>'
+    + [...AGENCIES.filter(a => a.id !== 'REGION').map(a => [a.id, a.name]), ...JURIS.map(j => [j.id, j.name]), ['TRPA', 'TRPA'], ['OTHER', 'Other']].map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('');
   $('dlgSubmitErr').textContent = '';
-  $('subEmail').textContent = DU.email || 'TRPA';
+  submitStage(false);
   $('dlgSubmit').open = true;
 }
-function submitEmail() {
+const newGuid = () => '{' + (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); })).toUpperCase() + '}';
+const cut = (v, n) => { const t = v == null ? '' : String(v); return t.length > n ? t.slice(0, n - 1) + '…' : t; };
+async function sendSubmit() {
   $('dlgSubmitErr').textContent = '';
   const name = $('subName').value.trim(), agency = $('subAgency').value, notes = $('subNotes').value.trim();
-  if (!name || !agency) { $('dlgSubmitErr').textContent = 'Enter your name and your agency.'; return null; }
-  if (!DU.email) { $('dlgSubmitErr').textContent = 'No email address is set for data updates.'; return null; }
-  const ch = netChanges();
-  const head = ['Data update request for the Regional Transit Funding Model', '', `Name: ${name}`, `Agency: ${agency}`, `Data build: ${BUILD.id}`, '', `Changes (${ch.length}):`];
-  const tail = (notes ? ['', 'Notes:', notes] : []).concat(['', 'The scenario workbook is attached. Its Changes sheet lists every edit.']);
-  const subject = `${DU.subject || 'Funding model data update request'}: ${agency}`;
-  // Keep the mailto link short enough for desktop email programs. Changes past the limit are left to the workbook.
-  const lines = []; let shown = 0;
-  const size = extra => encodeURIComponent(head.concat(lines, extra, tail).join('\n')).length;
-  for (const c of ch) { const ln = `- ${c.name}, ${c.field}: ${changeShow(c.from)} to ${changeShow(c.to)}`; if (size([ln, '- and more']) > 1700) break; lines.push(ln); shown++; }
-  if (shown < ch.length) lines.push(`- and ${ch.length - shown} more. See the Changes sheet in the attached workbook.`);
-  const body = head.concat(lines, tail).join('\n');
-  const full = head.concat(ch.map(c => `- ${c.name}, ${c.field}: ${changeShow(c.from)} to ${changeShow(c.to)}`), tail).join('\n');
-  return { subject, body, full };
+  if (!name || !agency) { $('dlgSubmitErr').textContent = 'Enter your name and your agency.'; return; }
+  if (!DU.serviceUrl) { $('dlgSubmitErr').textContent = 'Submitting is not set up yet. Contact TRPA.'; return; }
+  const ch = netChanges(); if (!ch.length) { $('dlgSubmitErr').textContent = 'There are no changes to submit.'; return; }
+  const gid = newGuid();
+  const main = { globalid: gid, submitter_name: cut(name, 100), agency, notes: cut(notes, 4000), change_count: ch.length,
+    change_summary: cut(ch.map(changeLine).join('\n'), 20000), page_url: cut(location.href.split('#')[0], 500), review_status: 'new' };
+  const rows = ch.map(c => ({ globalid: newGuid(), parentglobalid: gid, item_name: cut(c.name, 255), change_field: cut(c.field, 255),
+    from_value: cut(changeShow(c.from), 1000), to_value: cut(changeShow(c.to), 1000), entity: cut(c.entity, 50), item_id: cut(c.id, 100) }));
+  const edits = [{ id: +(DU.layerId ?? 0), adds: [{ attributes: main }] }, { id: +(DU.tableId ?? 1), adds: rows.map(a => ({ attributes: a })) }];
+  const body = new URLSearchParams({ f: 'json', useGlobalIds: 'true', rollbackOnFailure: 'true', edits: JSON.stringify(edits) });
+  $('dlgSubmitOk').loading = true;
+  try {
+    const res = await fetch(DU.serviceUrl.replace(/\/+$/, '') + '/applyEdits', { method: 'POST', body });
+    const js = await res.json();
+    if (js.error) throw new Error(js.error.message || 'the survey refused the submission');
+    const bad = (Array.isArray(js) ? js : []).flatMap(l => (l.addResults || []).filter(r => !r.success));
+    if (!Array.isArray(js) || bad.length) throw new Error(bad.length ? (bad[0].error || {}).description || 'some changes were not saved' : 'unexpected response');
+    $('dlgSubmitN').textContent = `${ch.length} change${ch.length === 1 ? '' : 's'}`;
+    submitStage(true);
+  } catch (err) {
+    $('dlgSubmitErr').textContent = `The submission did not go through (${err.message}). Your edits are still here. Try again, or select Copy change list and send it to TRPA.`;
+    $('dlgSubmitCopy').hidden = false;
+  } finally { $('dlgSubmitOk').loading = false; }
 }
 function copySubmit() {
-  const e = submitEmail(); if (!e) return;
-  const text = `To: ${DU.email}\nSubject: ${e.subject}\n\n${e.full}`;
-  const done = () => { $('dlgSubmitErr').textContent = ''; toast(`Copied. Paste it into an email to ${DU.email}, and attach the workbook from Export to Excel.`); };
-  const fallback = () => { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (x) { $('dlgSubmitErr').textContent = 'Copy is blocked in this browser. Use Download workbook and open email.'; } t.remove(); };
+  const text = ['Data update request for the Regional Transit Funding Model', `Name: ${$('subName').value.trim()}`, `Agency: ${$('subAgency').selectedOptions[0] ? $('subAgency').selectedOptions[0].textContent : ''}`, '', ...netChanges().map(c => '- ' + changeLine(c))]
+    .concat($('subNotes').value.trim() ? ['', 'Notes:', $('subNotes').value.trim()] : []).join('\n');
+  const done = () => toast(`Copied. Send it to ${DU.contact || 'TRPA'}.`);
+  const fallback = () => { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (x) {} t.remove(); };
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
-}
-async function sendSubmit() {
-  const e = submitEmail(); if (!e) return;
-  const { subject, body } = e;
-  $('dlgSubmitOk').loading = true;
-  try { await exportXlsx(); } catch (err) { $('dlgSubmitOk').loading = false; $('dlgSubmitErr').textContent = 'The workbook did not download: ' + err.message; return; }
-  $('dlgSubmitOk').loading = false;
-  $('dlgSubmit').open = false;
-  // Open the email after the download starts. Navigating right away can cancel the download in some browsers.
-  const mail = `mailto:${DU.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  setTimeout(() => { const a = document.createElement('a'); a.href = mail; a.id = 'submitMailto'; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 1000); }, 900);
-  toast('Your email should be open. Attach the workbook that just downloaded, then send.');
 }
 const changeShow = v => v == null ? 'blank' : typeof v === 'object' ? (v.pct ? Object.entries(v.pct).map(([k, x]) => `${svcShort(k)} ${pct(x)}`).join(', ') || 'none' : Object.entries(v).map(([k, x]) => `${k} ${typeof x === 'number' && x <= 1 ? pct(x) : (typeof x === 'object' ? JSON.stringify(x) : x)}`).join(', ')) : typeof v === 'number' ? (Math.abs(v) < 1.5 && v % 1 !== 0 ? pct(v, 2) : v.toLocaleString('en-US', { maximumFractionDigits: 2 })) : String(v);
 function renderChanges() {
@@ -7503,6 +7514,8 @@ function init() {
   $('dlgMoveNo').addEventListener('click', () => { MOVE = null; $('dlgMove').open = false; });
   $('dlgSubmitCancel').addEventListener('click', () => { $('dlgSubmit').open = false; });
   $('dlgSubmitOk').addEventListener('click', () => { sendSubmit(); });
+  $('dlgSubmitKeep').addEventListener('click', () => { $('dlgSubmit').open = false; toast('Submitted. Your edits are still in this browser.'); });
+  $('dlgSubmitReset').addEventListener('click', () => { $('dlgSubmit').open = false; S = makeDefaults(); REBASE = null; showRebaseNote(); resetGrids(); refresh(); toast('Submitted, and reset to the source data.'); });
   $('dlgSubmitCopy').addEventListener('click', copySubmit);
   $('btnReset').addEventListener('click', () => { $('dlgConfirm').open = true; });
   $('dlgConfirmCancel').addEventListener('click', () => { $('dlgConfirm').open = false; });

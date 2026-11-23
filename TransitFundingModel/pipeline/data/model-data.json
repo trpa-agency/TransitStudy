@@ -97,8 +97,10 @@
   "TDA STA, TRPA apportionment": "TDA State Transit Assistance"
  },
  "dataUpdates": {
-  "email": "rshaw@trpa.gov",
-  "subject": "Funding model data update request"
+  "serviceUrl": "https://services5.arcgis.com/fXXSUzHD5JjcOt1v/arcgis/rest/services/service_97add89ea7044725abf93da481f35bfa_form/FeatureServer",
+  "layerId": 0,
+  "tableId": 1,
+  "contact": "rshaw@trpa.gov"
  },
  "agencies": [
   {
@@ -4987,8 +4989,8 @@
   }
  ],
  "build": {
-  "id": "20261121a",
-  "builtAt": "2026-11-21T02:07:11",
+  "id": "20261123a",
+  "builtAt": "2026-11-23T23:08:00",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",

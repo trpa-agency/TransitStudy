@@ -116,7 +116,7 @@ The TDA and SB 125 California-only preset and the Lake Link federalized preset w
 
 - **Export to Excel:** writes ten readable sheets: Scenario, Outlook by agency, Results by service, Results by jurisdiction, Funding sources, Allocation shares, Services, Rule checks, Changes, and Sources.
 - **No import:** Import was removed on Nov. 20, 2026, per TRPA. Exported workbooks are one-way snapshots.
-- **Submit as a data update:** a header button, active once a scenario has edits. It lists the net changes from the source data and asks for a name and agency, with optional notes for the source and context. It downloads the scenario workbook, then opens an email to the address in `dataUpdates` in `etl/seed/model.yaml` with the changes listed. The user attaches the workbook. TRPA reviews the request and applies approved values in the workbooks or seed, then rebuilds. Long change lists are cut at about 1,700 encoded characters; the rest are on the workbook's Changes sheet. Added Nov. 20, 2026. Scenario edits stay private to each browser.
+- **Submit a data update:** a header button, active once a scenario has edits. The popup lists the net changes and asks for name, agency, and optional notes. Submit to TRPA posts to the Survey123 survey "Funding Model Data Update Request" (ArcGIS Online) with applyEdits: one record on the main layer and one row per change in the "changes" repeat. Settings are `dataUpdates` in `etl/seed/model.yaml` (serviceUrl, layerId, tableId, contact). After a successful submit, the user chooses Keep my edits or Reset to source data. If a submit fails, the edits stay and a Copy change list button appears. Replaced the email version on Nov. 23, 2026.
 
 ## Citations
 

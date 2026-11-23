@@ -54,8 +54,13 @@ sourceGroups:
   TDA STA, TRPA apportionment: TDA State Transit Assistance
 # Submit as a data update (header button on the full model): who receives the request email.
 dataUpdates:
-  email: rshaw@trpa.gov
-  subject: Funding model data update request
+  # Survey123 survey "Funding Model Data Update Request" (ArcGIS Online, survey item fc9a1ee7eeb843189f7b50de014abf60).
+  # serviceUrl is the survey's feature service, ending in FeatureServer. The page posts with applyEdits:
+  # one record to layerId and one row per change to tableId (the "changes" repeat).
+  serviceUrl: https://services5.arcgis.com/fXXSUzHD5JjcOt1v/arcgis/rest/services/service_97add89ea7044725abf93da481f35bfa_form/FeatureServer   # the survey's public submission view
+  layerId: 0
+  tableId: 1
+  contact: rshaw@trpa.gov   # shown if a submission fails, so people know where to send the copied change list
 # Scenario inputs taken from published plans. Used by the scenario presets.
 scenarios:
   peak30:
