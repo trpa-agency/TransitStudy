@@ -6074,7 +6074,7 @@ window.TRANSIT_MODEL_DATA = {
  ],
  "build": {
   "id": "20261123a",
-  "builtAt": "2026-11-23T23:08:00",
+  "builtAt": "2026-11-23T23:22:22",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",
@@ -7771,7 +7771,7 @@ async function sendSubmit() {
   const ch = netChanges(); if (!ch.length) { $('dlgSubmitErr').textContent = 'There are no changes to submit.'; return; }
   const gid = newGuid();
   const main = { globalid: gid, submitter_name: cut(name, 100), agency, notes: cut(notes, 4000), change_count: ch.length,
-    change_summary: cut(ch.map(changeLine).join('\n'), 20000), page_url: cut(location.href.split('#')[0], 500), review_status: 'new' };
+    change_summary: cut(ch.map(changeLine).join('\n'), 20000), review_status: 'new' };
   const rows = ch.map(c => ({ globalid: newGuid(), parentglobalid: gid, item_name: cut(c.name, 255), change_field: cut(c.field, 255),
     from_value: cut(changeShow(c.from), 1000), to_value: cut(changeShow(c.to), 1000), entity: cut(c.entity, 50), item_id: cut(c.id, 100) }));
   const edits = [{ id: +(DU.layerId ?? 0), adds: [{ attributes: main }] }, { id: +(DU.tableId ?? 1), adds: rows.map(a => ({ attributes: a })) }];
