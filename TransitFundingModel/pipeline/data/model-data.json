@@ -5,7 +5,6 @@
   "scen": "Example Transit Financial Scenario Workbook.xlsx",
   "plan": "Financial PlanG.xlsx",
   "v1g": "Funding Model V1G.xlsx",
-  "sstma": "SSTMA multijurisdiction transit services working model.xlsx",
   "fed": "Federal Funds, Oct. 28, 2026.pdf",
   "state": "State Funds, Oct. 28, 2026.pdf",
   "loc1": "Local Funds 1 of 3, Oct. 28, 2026.pdf",
@@ -16,45 +15,56 @@
   "scen": "State and local route conditions (costs tab). Its costs and rates are replaced by Funding Model V1G.",
   "plan": "Revenue conditions and match notes (Revenue %s, columns B and C) and the five-year revenue tables (Tables A1 and A2). Its FY 26-27 amounts and shares are replaced by Funding Model V1G.",
   "v1g": "Source of truth for existing transit data since Nov. 13, 2026: FY 26-27 revenue by source and agency, route allocations, and operating cost by route (Per Route Model Clean), service statistics (Operating Stats), operator rates (VRH Rates), and the FTA split.",
-  "sstma": "Multi-jurisdiction cost-share method (miles, hours, stops, ridership) and Lake Link zone structure.",
   "fed": "Federal funding fact sheet (FY 25-26 budgeted amounts, purpose, match, restrictions).",
   "state": "State funding fact sheet.",
   "loc1": "Local funding fact sheet, part 1 of 3 (TART partners, Placer County TOT, Washoe RTC, Town of Truckee, TTD local appropriation).",
   "loc2": "Local funding fact sheet, part 2 of 3 (Nevada State Parks, Tahoe Douglas Visitor Authority, NLTE partners, Lake Link public partners).",
   "loc3": "Local funding fact sheet, part 3 of 3 (Lake Link private partners)."
  },
- "sourceFileLinks": {
-  "fed": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/FederalFunds-10.28.2026.pdf"
-   }
-  ],
-  "state": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/StateFunds-10.28.2026.pdf"
-   }
-  ],
-  "loc1": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/LocalFunds1of3-7columns-10.28.2026.pdf"
-   }
-  ],
-  "loc2": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/LocalFunds2of3-7columns-10.28.2026.pdf"
-   }
-  ],
-  "loc3": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/LocalFunds3of3-6columns-10.28.2026.pdf"
-   }
-  ]
+ "sourceFileUrls": {
+  "fed": "https://www.trpa.gov/wp-content/uploads/FederalFunds-10.28.2026.pdf",
+  "state": "https://www.trpa.gov/wp-content/uploads/StateFunds-10.28.2026.pdf",
+  "loc1": "https://www.trpa.gov/wp-content/uploads/LocalFunds1of3-7columns-10.28.2026.pdf",
+  "loc2": "https://www.trpa.gov/wp-content/uploads/LocalFunds2of3-7columns-10.28.2026.pdf",
+  "loc3": "https://www.trpa.gov/wp-content/uploads/LocalFunds3of3-6columns-10.28.2026.pdf",
+  "trpa": "https://github.com/trpa-agency/TransitStudy/blob/main/TransitFundingModel/docs/Domain%20Lead%20Answers%202026-10-23.md",
+  "trpa2": "https://github.com/trpa-agency/TransitStudy/blob/main/TransitFundingModel/docs/TRPA%20Answers%202026-11-13.md"
  },
+ "sourceFileGroups": [
+  {
+   "key": "memo",
+   "name": "Transit Study Funding Memo Inputs",
+   "note": "Working files prepared for the Tahoe Transit Study funding memo. They provide FY 26-27 operating costs, service statistics, operator rates, revenue amounts, and route allocations. They also provide the FTA split, match requirements, five-year revenue projections, and the state and local conditions on each route.",
+   "members": [
+    "plan",
+    "scen",
+    "v1g"
+   ]
+  },
+  {
+   "key": "factSheets",
+   "name": "Transit Study Funding Fact Sheets",
+   "note": "TRPA's transit funding fact sheets, Oct. 28, 2026 versions. They give the amount, purpose, match, and restrictions for each federal, state, and local source.",
+   "members": [
+    "fed",
+    "state",
+    "loc1",
+    "loc2",
+    "loc3"
+   ],
+   "listMembers": true
+  },
+  {
+   "key": "tartSystemsPlan",
+   "name": "TART 2025 Systems Plan Update",
+   "note": "Placer County, November 18, 2025. Current TART frequency, the preferred service scenario, and the cost of 30-minute peak service.",
+   "members": [
+    "tartPlan",
+    "tartMemo"
+   ],
+   "listMembers": true
+  }
+ ],
  "references": {
   "tartPlan": {
    "name": "TART 2025 Systems Plan Update, Board presentation, Item 04A, Placer County Board of Supervisors, November 18, 2025",
@@ -65,6 +75,21 @@
    "name": "TART 2025 Systems Plan Update, staff report, Placer County Public Works, November 18, 2025",
    "note": "Current 60-minute frequency on all TART fixed routes, and the peak-season and year-round 30-minute options.",
    "url": "https://www.placer.ca.gov/DocumentCenter/View/99284/04A"
+  },
+  "ftaSplit": {
+   "name": "Lake Tahoe FTA Sub-Allocation (5307, 5339, 5310), FY 26 full-year apportionments, TRPA",
+   "note": "Earned-share split of the Lake Tahoe UZA apportionment by urban revenue miles, population, and ridership, and the 75 percent operations share of 5307. Same inputs as the V1G FTA Allocation Split tab.",
+   "url": "https://www.trpa.gov/wp-content/uploads/FY26FTA-Full-Year-5307_5339_5310-ApportionmentFINAL.pdf"
+  },
+  "ftaMou": {
+   "name": "Memorandum of Understanding between TMPO, Tahoe Transportation District, and Placer County on transit planning and programming of federal funds, 2016",
+   "note": "Section 3 and Exhibit A set the 5307 and 5339 sub-allocation method. Exhibit A adds a base allocation per operator before the earned share. The FY 26 split uses earned share only.",
+   "url": "https://www.trpa.gov/wp-content/uploads/Tahoe_Transit_MOU_Final-2017.pdf"
+  },
+  "ttdFpc20261104": {
+   "name": "TTD Finance and Personnel Committee meeting packet, November 4, 2026",
+   "note": "Attachment A, Transit Fund statement of operations for July and August 2026. Emerald Bay Shuttle (micro-transit) farebox revenue of $12,740 year to date against a board-approved FY 2027 budget of $25,000.",
+   "url": "https://tahoetransportation.org/wp-content/uploads/2026/10/TTD-Finance-Comm-Mtg-Agenda-Packet-2026-11-4.pdf"
   }
  },
  "scenarios": {
@@ -94,8 +119,16 @@
   "FTA 5339 (Lake Tahoe UZA and NV DOT)": "FTA 5339 Bus and Bus Facilities",
   "FTA 5339 (Lake Tahoe UZA)": "FTA 5339 Bus and Bus Facilities",
   "TDA LTF, TRPA apportionment": "TDA Local Transportation Fund",
-  "TDA STA, TRPA apportionment": "TDA State Transit Assistance"
+  "TDA STA, TRPA apportionment": "TDA State Transit Assistance",
+  "Transient occupancy tax": "Placer County TOT"
  },
+ "ungroupPrograms": [
+  "Emerald Bay Shuttle pilot",
+  "Lake Link funding agreement",
+  "Lake Link partner contribution",
+  "Resort contribution",
+  "County contribution"
+ ],
  "dataUpdates": {
   "serviceUrl": "https://services5.arcgis.com/fXXSUzHD5JjcOt1v/arcgis/rest/services/service_97add89ea7044725abf93da481f35bfa_form/FeatureServer",
   "layerId": 0,
@@ -110,8 +143,8 @@
   },
   {
    "id": "SSTMA",
-   "name": "South Shore TMA (Lake Link)",
-   "short": "Lake Link"
+   "name": "South Shore Transportation Management Association (SSTMA)",
+   "short": "SSTMA"
   },
   {
    "id": "TART",
@@ -152,13 +185,16 @@
    "id": "NEV",
    "name": "Nevada County",
    "short": "Nevada Co.",
-   "state": "CA"
+   "state": "CA",
+   "resultsName": "Nevada County and Town of Truckee",
+   "resultsShort": "Nevada Co. and Truckee"
   },
   {
    "id": "TRK",
    "name": "Town of Truckee",
    "short": "Truckee",
-   "state": "CA"
+   "state": "CA",
+   "resultsWith": "NEV"
   },
   {
    "id": "DOU",
@@ -2416,14 +2452,14 @@
   },
   {
    "id": "ttd-fares30",
-   "name": "Fares – Emerald Bay Shuttle",
+   "name": "Emerald Bay Shuttle fares",
    "level": "fare",
    "recipient": "TTD",
    "program": "Passenger fares",
    "enabled": true,
    "status": "budgeted",
    "amountMode": "manual",
-   "amount": 0.0,
+   "amount": 25000.0,
    "prior": null,
    "growth": 0.02,
    "lastYear": 1,
@@ -2458,11 +2494,11 @@
    "restrictionText": "",
    "purpose": "",
    "grantor": "Riders ($5 one-way)",
-   "notes": "Funding Model V1G shows $0 in Emerald Bay Shuttle fares for FY 26-27 (Fare Revenue, D51), so the model uses $0 per TRPA (Nov. 13, 2026). Route 30 charges $5 one way (Fare Rates tab).",
+   "notes": "FY 26-27 fares are TTD's board-approved FY 2027 farebox budget of $25,000 for the Emerald Bay Shuttle, per TRPA (Nov. 24, 2026). Source: TTD July to August 2026 statement of operations (TTD Finance Committee packet, Nov. 4, 2026), which shows $12,740 collected in July 2026. August fares were not yet booked. Funding Model V1G shows $0 (Fare Revenue, D51). Route 30 charges $5 one way (Fare Rates tab).",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean D51",
+    "amount": "TTD Finance and Personnel Committee meeting packet, November 4, 2026 › Attachment A, Transit Fund statement of operations, FareBox Revenue budget",
     "projection": "Financial PlanG.xlsx › T2-4 Table A1 G135: 2% base ridership growth",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean D51"
+    "build": "FY 26-27 amount: TTD Finance and Personnel Committee meeting packet, November 4, 2026 › Attachment A, Transit Fund statement of operations, FareBox Revenue budget"
    },
    "user": false
   },
@@ -4693,7 +4729,7 @@
   },
   {
    "id": "tnt-fares",
-   "name": "Fares – North Lake Tahoe Express",
+   "name": "North Lake Tahoe Express fares",
    "level": "fare",
    "recipient": "TNTTMA",
    "program": "Passenger fares",
@@ -4989,8 +5025,8 @@
   }
  ],
  "build": {
-  "id": "20261123a",
-  "builtAt": "2026-11-23T23:22:22",
+  "id": "20261124a",
+  "builtAt": "2026-11-24T23:41:51",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",

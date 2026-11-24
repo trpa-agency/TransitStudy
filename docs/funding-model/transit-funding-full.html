@@ -362,6 +362,7 @@
   .newsvc { margin-top: 0.8rem; border: 1px solid var(--gray-border); border-radius: 8px; padding: 0.6rem 0.9rem; background: var(--gray-bg); }
   .newsvc summary { cursor: pointer; font-weight: 700; color: var(--ct-blue-text); }
   .newsvc[open] summary { margin-bottom: 0.4rem; }
+  .newsvc-h { margin: 0.9rem 0 0.3rem; font-size: 0.92rem; }
   .newsvc-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.6rem 0.9rem; margin: 0.5rem 0 0.6rem; }
   .newsvc-form .wide { grid-column: 1 / -1; }
   .newsvc-form input[type=text], .newsvc-form input[type=number], .newsvc-form select { font: inherit; width: 100%; }
@@ -378,7 +379,8 @@
   .ag-cell.c-error { background: var(--ct-red-light) !important; color: var(--ct-red-text); }
   .ag-cell.c-warning { background: var(--ct-gold-light) !important; }
   .ag-cell.muted { color: var(--gray-text); }
-  .ag-cell.na { background: var(--gray-bg); }   /* another agency's service: this source cannot pay for it */
+  .ag-cell.na { background: var(--gray-bg); }
+  .ag-cell[col-id=iss] { cursor: pointer; }   /* another agency's service: this source cannot pay for it */
   .ag-row.row-off { color: var(--gray-muted); }
   .ag-row.row-off .ag-cell { text-decoration: line-through; text-decoration-color: rgba(138,147,163,0.6); }
   /* Service plan elements not yet included: grayed out, not struck through */
@@ -513,6 +515,8 @@
   .jur-card tr.sub td { font-weight: 700; }
   .jur-card tr.dif td { font-weight: 700; border-bottom: 0; }
   .jur-card tr.dif.neg td { color: var(--ct-red-text); }
+  .jur-card tr.mem td { font-size: 0.78rem; color: var(--gray-text); }
+  .jur-card tr.mem td:first-child { padding-left: 1rem; }
   .ag-tables { display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 0.8rem; margin-top: 0.4rem; padding-left: 48px; }
   .ag-tables > div { overflow-x: auto; }
   .ag-tables .region { grid-column: 1 / -1; max-width: 520px; }
@@ -606,7 +610,7 @@
   </span>
   <span class="scenario-actions">
     <calcite-button id="btnExport" appearance="outline" kind="brand" scale="s" icon-start="file-excel" title="Download this scenario as an Excel workbook: inputs, results by agency and service, five-year outlook, rule checks, and changes">Export to Excel</calcite-button>
-    <calcite-button id="btnSubmit" appearance="outline" kind="brand" scale="s" icon-start="send" title="Send your changes to TRPA for review, to update the model for everyone" disabled>Submit a data update</calcite-button>
+    <calcite-button id="btnSubmit" appearance="outline" kind="brand" scale="s" icon-start="send" title="Send your data changes to TRPA, with any comments or feedback on the model">Submit Data Updates</calcite-button>
     <calcite-button id="btnReset" appearance="outline" kind="neutral" scale="s" icon-start="reset" title="Discard all edits and return to the source data">Reset</calcite-button>
     <calcite-button id="btnPrint" appearance="transparent" kind="neutral" scale="s" icon-start="print" title="Print the current view">Print</calcite-button>
   </span>
@@ -617,10 +621,10 @@
   <div class="tabgroup" data-g="none"><span class="tg-label">&nbsp;</span><div class="tg-btns">
     <button type="button" role="tab" id="tab-overview" data-tab="overview" aria-controls="panel-overview" aria-selected="true" tabindex="0">Overview</button></div></div>
   <div class="tabgroup" data-g="today"><span class="tg-label">Today</span><div class="tg-btns">
-    <button type="button" role="tab" id="tab-existing" data-tab="existing" aria-controls="panel-existing" aria-selected="false" tabindex="-1">Existing funding conditions</button></div></div>
+    <button type="button" role="tab" id="tab-existing" data-tab="existing" aria-controls="panel-existing" aria-selected="false" tabindex="-1">Existing funding snapshot</button></div></div>
   <div class="tabgroup" data-g="inputs"><span class="tg-label">Inputs users can change</span><div class="tg-btns">
-    <button type="button" role="tab" id="tab-inputs" data-tab="inputs" aria-controls="panel-inputs" aria-selected="false" tabindex="-1">Inputs and assumptions</button>
-    <button type="button" role="tab" id="tab-alloc" data-tab="alloc" aria-controls="panel-alloc" aria-selected="false" tabindex="-1">Allocation and rules</button></div></div>
+    <button type="button" role="tab" id="tab-inputs" data-tab="inputs" aria-controls="panel-inputs" aria-selected="false" tabindex="-1">Service and funding inputs</button>
+    <button type="button" role="tab" id="tab-alloc" data-tab="alloc" aria-controls="panel-alloc" aria-selected="false" tabindex="-1">Funding allocations by service</button></div></div>
   <div class="tabgroup" data-g="results"><span class="tg-label">Results and future</span><div class="tg-btns">
     <button type="button" role="tab" id="tab-results" data-tab="results" aria-controls="panel-results" aria-selected="false" tabindex="-1">One-year outlook</button>
     <button type="button" role="tab" id="tab-outlook" data-tab="outlook" aria-controls="panel-outlook" aria-selected="false" tabindex="-1">Five-year outlook</button>
@@ -641,20 +645,20 @@
       <div class="ov-tiles">
         <div class="ov-tile" style="--tg:var(--ct-teal)">
           <span class="kicker">Today</span>
-          <h3>Existing funding conditions</h3>
+          <h3>Existing funding snapshot</h3>
           <p class="note">A snapshot of how all transit operating revenue sources are currently budgeted in fiscal year (FY) 26-27.</p>
-          <div class="go"><button type="button" class="linkbtn" data-go="existing">Existing funding conditions</button></div>
+          <div class="go"><button type="button" class="linkbtn" data-go="existing">Existing funding snapshot</button></div>
         </div>
         <div class="ov-tile" style="--tg:var(--ct-blue)">
           <span class="kicker">Inputs users can change</span>
           <h3>Inputs, assumptions, and rules</h3>
           <p class="note">These pages allow users to edit service hours, operating cost rates, funding amounts, model assumptions, and how each funding source is split across routes. Use the <b>Reset</b> button in the top right corner to reset to original inputs.</p>
-          <div class="go"><button type="button" class="linkbtn" data-go="inputs">Inputs and assumptions</button><button type="button" class="linkbtn" data-go="alloc">Allocation and rules</button></div>
+          <div class="go"><button type="button" class="linkbtn" data-go="inputs">Service and funding inputs</button><button type="button" class="linkbtn" data-go="alloc">Funding allocations by service</button></div>
         </div>
         <div class="ov-tile" style="--tg:var(--ct-green)">
           <span class="kicker">Results and future</span>
           <h3>One-year and five-year outlooks</h3>
-          <p class="note">The One-year outlook shows the balance for a selected fiscal year by route, agency, and jurisdiction. The Five-year outlook projects each agency's balance through FY 30-31. The Agreements and risk page lists funding agreements and time-limited funds. All three pages update as users change inputs and assumptions.</p>
+          <p class="note">The One-year outlook shows the balance for a selected fiscal year by route, agency, and jurisdiction. The Five-year outlook projects each agency's balance through FY 30-31. The Agreements and risk page lists funding agreements and time-limited funds. All three pages update as users change service and funding inputs.</p>
           <div class="go"><button type="button" class="linkbtn" data-go="results">One-year outlook</button><button type="button" class="linkbtn" data-go="outlook">Five-year outlook</button><button type="button" class="linkbtn" data-go="agreements">Agreements and risk</button></div>
         </div>
         <div class="ov-tile" style="--tg:var(--ct-sage)">
@@ -677,35 +681,35 @@
       <div class="cols-2">
         <div class="card">
           <h3>Cost and revenue by agency</h3>
-          <p class="note">Revenue each agency receives, by funding level, against the cost of the services it runs. Hatched federal funds exceed the federal share cap and have no eligible operating use.</p>
+          <p class="note">Revenue each agency receives, by funding level, against the cost of the services it runs. Hatched federal funds are left for other eligible uses, such as capital or administration, beyond the federal share of operating cost.</p>
           <div id="chExAgency" class="chart" role="img" aria-label="Horizontal stacked bars of revenue by funding level for each agency, with a marker for operating cost"></div>
-          <p class="source">Source: FY 26-27 cost and revenue estimates from the Tahoe Transit Study<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>.</p>
+          <p class="source">Source: FY 26-27 cost and revenue estimates from the Tahoe Transit Study<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>.</p>
         </div>
         <div class="card">
           <h3 id="exLevelsTitle">Revenue by funding level</h3>
           <p class="note" id="exLevelsNote">FY 26-27 operating revenue budgeted at each funding level. Select a bar or a level below to see its sources.</p>
           <div class="row lv-drill" id="exLevelsBtns" role="group" aria-label="Show revenue for one funding level"></div>
           <div id="chExLevels" class="chart" role="img" aria-label="Bars of FY 26-27 operating revenue by funding level"></div>
-          <p class="source">Source: FY 26-27 operator budgets compiled for the Tahoe Transit Study<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>.</p>
+          <p class="source">Source: FY 26-27 operator budgets compiled for the Tahoe Transit Study<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>.</p>
         </div>
       </div>
       <div class="card">
         <div class="card-head"><div><h3>Where the money goes</h3><p class="note">Funding level, then the agency that receives it, then the service it is applied to, using route shares estimated for the Tahoe Transit Study.</p></div>
           <div class="tools"><div class="seg" role="radiogroup" aria-label="Left column of the flow chart" id="sankeyMode"><button type="button" role="radio" aria-checked="true" data-v="level">By funding level</button><button type="button" role="radio" aria-checked="false" data-v="program">By program</button></div></div></div>
         <div id="chSankey" class="chart" style="min-height:600px" role="img" aria-label="Flow diagram from funding sources to agencies to services"></div>
-        <p class="source">Hover a band for its amount. Route shares estimated for the Tahoe Transit Study<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>.</p>
+        <p class="source">Hover a band for its amount. Route shares estimated for the Tahoe Transit Study<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>.</p>
       </div>
       <div class="card">
         <h3>Operating cost by service</h3>
         <p class="note">Vehicle service hours times the operator's cost per hour, or the budgeted amount where no hourly rate applies.</p>
         <div id="chExSvc" class="chart" role="img" aria-label="Horizontal bars of operating cost by service, grouped by operator"></div>
-        <p class="source">Source: operator service hours and cost per hour compiled for the Tahoe Transit Study<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>.</p>
+        <p class="source">Source: operator service hours and cost per hour compiled for the Tahoe Transit Study<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>.</p>
       </div>
       <div class="card">
-        <div class="card-head"><div><h3>Funding source inventory</h3><p class="note">Amounts, match requirements, and restrictions for each source as received by each agency. Edit these on Inputs and assumptions.</p></div></div>
+        <div class="card-head"><div><h3>Funding source inventory</h3><p class="note">Amounts, match requirements, and restrictions for each source as received by each agency. Edit these on Service and funding inputs.</p></div></div>
         <div class="row" style="margin-bottom:0.55rem" id="srcFilters" role="group" aria-label="Filter by funding level"></div>
         <div id="srcCards"></div>
-        <p class="source">Source: TRPA transit funding fact sheets (Oct. 28, 2026)<sup class="cn"><a data-src="5" title="Federal Funds, Oct. 28, 2026.pdf">5</a>,<a data-src="6" title="State Funds, Oct. 28, 2026.pdf">6</a>,<a data-src="7" title="Local Funds 1 of 3, Oct. 28, 2026.pdf">7</a>,<a data-src="8" title="Local Funds 2 of 3, Oct. 28, 2026.pdf">8</a>,<a data-src="9" title="Local Funds 3 of 3, Oct. 28, 2026.pdf">9</a></sup> and the Tahoe Transit Study<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>.</p>
+        <p class="source">Source: TRPA transit funding fact sheets (Oct. 28, 2026)<sup class="cn"><a data-src="2" title="Transit Study Funding Fact Sheets">2</a></sup> and the Tahoe Transit Study<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>.</p>
       </div>
     </div>
   </section>
@@ -744,11 +748,11 @@
                   <li><strong>Services:</strong> In <a href="#in-services">Services and operating costs</a>, change a service's agency, operator, trips, hours, miles, or cost per hour.</li>
                   <li><strong>New services:</strong> In <a href="#in-plan">Service plan elements</a>, check <em>Include</em> on a service from the Tahoe Transit Study plan. To model a service that is not in the plan, open <em>Add a new service</em> and enter its operator, start year, and annual cost or service hours.</li>
                   <li><strong>Jurisdiction miles:</strong> In <a href="#in-juris">Jurisdiction miles by service</a>, type the annual miles each service runs in each jurisdiction. Your numbers replace the even-split placeholders.</li>
-                  <li><strong>Route shares:</strong> How each source splits across routes is on the <a href="#" data-go="alloc">Allocation and rules</a> page.</li>
+                  <li><strong>Route shares:</strong> How each source splits across routes is on the <a href="#" data-go="alloc">Funding allocations by service</a> page.</li>
                 </ul>
               </li>
               <li><strong>Want to start over?</strong> Select <em>Reset</em> at the top of the page to return the whole scenario to the source data.</li>
-              <li><strong>Submit a change to the inputs:</strong> If your agency's numbers differ from what is shown, select <em>Submit a data update</em> at the top of the page. TRPA will review each request and update the model for everyone.</li>
+              <li><strong>Submit a change or feedback:</strong> If your agency's numbers differ from what is shown, or you have comments on the model, select <em>Submit Data Updates</em> at the top of the page. You can add comments or feedback on the model there too. Submitted changes are typically incorporated within a few days.</li>
             </ul>
           </details>
           <div class="card in-sec" id="in-assume">
@@ -756,9 +760,9 @@
             <div class="assume">
               <label class="fld"><span class="checks"><label><input type="checkbox" id="assumeCarry" /> Carry each agency's surplus into the next fiscal year</label></span>
                 <span class="hint">An agency's ending surplus becomes revenue the following year. Deficits are not carried; they show as a shortfall to close in that year. Off by default: modeled costs for TART and TNT/TMA appear understated, so their surpluses may not be real.</span></label>
-              <label class="fld">Federal funds above the federal share cap
-                <select id="assumeFed"><option value="exclude">Exclude from the balance (no eligible operating use)</option><option value="count">Count in the balance</option></select>
-                <span class="hint">Federal operating funds can pay only their share of net cost, generally 50 percent and 80 percent for ADA paratransit. Funds above that cap cannot be spent on operations.</span></label>
+              <label class="fld">Federal funds for other eligible uses (capital or administration)
+                <select id="assumeFed"><option value="exclude">Leave out of the operating balance</option><option value="count">Count in the operating balance</option></select>
+                <span class="hint">Federal operating funds pay up to their share of net operating cost, generally 50 percent and 80 percent for ADA paratransit. Federal funds beyond that share are set aside for other eligible uses, such as capital or administration.</span></label>
             </div>
             <h3 style="margin-top:0.9rem">Opening balance carried into FY 26-27</h3>
             <p class="note">Enter each agency's FY 25-26 ending operating reserve if known. Leave at $0 to start from the FY 26-27 budget alone.</p>
@@ -773,32 +777,25 @@
               </div>
             </div>
             <div id="gridServices" class="grid tall"></div>
-            <p class="source">Source: operator service data and FY 26-27 cost estimates compiled for the Tahoe Transit Study<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>, and route conditions from the study's scenario analysis<sup class="cn"><a data-src="2" title="Example Transit Financial Scenario Workbook.xlsx">2</a></sup>. The Main Line counts as its three segments, with cost split by service hours.</p>
+            <p class="source">Source: operator service data and FY 26-27 cost estimates compiled for the Tahoe Transit Study<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>, and route conditions from the study's scenario analysis<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>. The Main Line counts as its three segments, with cost split by service hours.</p>
             <div class="callout blue"><strong>Private and non-federalized operators.</strong> Add ski, resort, or airport shuttles with "Federalized" unchecked to see them in the regional picture. The model blocks federal funds from them.</div>
           </div>
           <div class="card in-sec" id="in-operators">
             <div class="card-head"><div><h2>Operator cost rates</h2><p class="note">Fully allocated operating cost per vehicle service hour and the annual escalator used for the five-year outlook.</p></div></div>
             <div id="gridOperators" class="grid short"></div>
-            <p class="source">Source: operator cost per hour compiled for the Tahoe Transit Study<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>.</p>
+            <p class="source">Source: operator cost per hour compiled for the Tahoe Transit Study<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>.</p>
           </div>
           <div class="card in-sec" id="in-juris">
             <div class="card-head"><div><h2>Jurisdiction miles by service</h2><p class="note">Annual service miles each service runs in each jurisdiction. The split sets the California and Nevada portions used by state-restricted sources, caps jurisdiction-restricted sources, and drives the jurisdiction results. Until miles by jurisdiction are available, each service's total service miles are split evenly as a placeholder. Services with no service miles in the data show no placeholder miles. Enter miles for each jurisdiction to set their split.</p></div></div>
             <div id="gridJuris" class="grid"></div>
-            <p class="source">Placeholders split each service equally among the jurisdictions it serves<sup class="cn"><a data-src="2" title="Example Transit Financial Scenario Workbook.xlsx">2</a></sup>. Lake Link zones follow TRPA direction (Nov. 20, 2026): Zone 1 is 75 percent City of South Lake Tahoe and 25 percent Douglas County, Zone 2 is Douglas County, and Zone 3 is City of South Lake Tahoe. SSTMA's cost-share method averages shares of miles, hours, stops, and ridership<sup class="cn"><a data-src="4" title="SSTMA multijurisdiction transit services working model.xlsx">4</a></sup>.</p>
+            <p class="source">Placeholders split each service equally among the jurisdictions it serves<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>. Lake Link zones: Zone 1 is 75 percent City of South Lake Tahoe and 25 percent Douglas County, Zone 2 is Douglas County, and Zone 3 is City of South Lake Tahoe.</p>
           </div>
           <div class="card in-sec" id="in-plan">
-            <div class="card-head"><div><h2>Service plan elements</h2><p class="note">Recommended changes from the Tahoe Transit Study service plan, with their annual marginal cost, and any new services you add below. Check "Include" to add one to the scenario. It then appears as a service users can fund on Allocation and rules.</p></div>
+            <div class="card-head"><div><h2>Service plan elements</h2><p class="note">Add a new service, or include changes from the Tahoe Transit Study service plan with their annual marginal cost. Check "Include" to add one to the scenario. It then appears as a service users can fund on Funding allocations by service.</p></div>
 </div>
-            <div id="gridPlan" class="grid" style="height:auto"></div>
-            <details class="newsvc no-print" id="in-peak">
-              <summary>TART 30-minute peak: how the cost splits across routes</summary>
-              <p class="note">The TART 30-minute peak row adds its cost to these routes. The TART 2025 Systems Plan gives a systemwide total of $2,683,400 and 16,100 added service hours a year. The model splits both by each route's annual service hours. The split is a placeholder until TART provides a route breakdown. Editing a route's service hours under Services and costs changes its share.</p>
-              <div id="gridPeak" class="grid" style="height:auto"></div>
-              <p class="source" id="peakSource">TART 2025 Systems Plan Update.</p>
-            </details>
             <details class="newsvc no-print" id="newSvcBox">
               <summary>Add a new service</summary>
-              <p class="note">Model a service that is not in the plan. Enter either its annual cost in the year it starts, or its annual service hours. Hours are priced at the operator's cost per hour. Either way, the cost grows each year after by the operator's escalator. To fund a new service, choose its start year or later in the Fiscal year menu, then set its shares on Allocation and rules.</p>
+              <p class="note">Model a service that is not in the plan. Enter either its annual cost in the year it starts, or its annual service hours. Hours are priced at the operator's cost per hour. Either way, the cost grows each year after by the operator's escalator. To fund a new service, choose its start year or later in the Fiscal year menu, then set its shares on Funding allocations by service.</p>
               <div class="newsvc-form">
                 <label class="fld wide">Service name<input type="text" id="nsName" placeholder="For example: Kings Beach to Incline express" /></label>
                 <label class="fld">Agency<select id="nsAgency"></select></label>
@@ -813,8 +810,20 @@
               </div>
               <p class="fm-err" id="nsErr" role="alert"></p>
               <calcite-button id="nsAdd" appearance="solid" kind="brand" scale="s" icon-start="plus">Add service</calcite-button>
+              <h4 class="newsvc-h">Services you added</h4>
+              <div id="gridNewSvc" class="grid" style="height:auto"></div>
             </details>
-            <p class="source">Source: Tahoe Transit Study service plan<sup class="cn"><a data-src="1" title="Financial PlanG.xlsx">1</a></sup>.</p>
+            <details class="newsvc" id="planBox" open>
+              <summary>Tahoe Transit Study service plan elements</summary>
+              <div id="gridPlan" class="grid" style="height:auto;margin-top:0.4rem"></div>
+              <details class="newsvc no-print" id="in-peak">
+                <summary>TART 30-minute peak: how the cost splits across routes</summary>
+                <p class="note">The TART 30-minute peak row adds its cost to these routes. The TART 2025 Systems Plan gives a systemwide total of $2,683,400 and 16,100 added service hours a year. The model splits both by each route's annual service hours. The split is a placeholder until TART provides a route breakdown. Editing a route's service hours under Services and costs changes its share.</p>
+                <div id="gridPeak" class="grid" style="height:auto"></div>
+                <p class="source" id="peakSource">TART 2025 Systems Plan Update.</p>
+              </details>
+            </details>
+            <p class="source">Source: Tahoe Transit Study service plan<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>.</p>
           </div>
           <div class="card in-sec" id="in-sources">
             <div class="card-head">
@@ -825,20 +834,20 @@
               </div>
             </div>
             <div id="gridSources" class="grid tall"></div>
-            <p class="source">Source: TRPA transit funding fact sheets (Oct. 28, 2026)<sup class="cn"><a data-src="5" title="Federal Funds, Oct. 28, 2026.pdf">5</a>,<a data-src="6" title="State Funds, Oct. 28, 2026.pdf">6</a>,<a data-src="7" title="Local Funds 1 of 3, Oct. 28, 2026.pdf">7</a>,<a data-src="8" title="Local Funds 2 of 3, Oct. 28, 2026.pdf">8</a>,<a data-src="9" title="Local Funds 3 of 3, Oct. 28, 2026.pdf">9</a></sup> and the Tahoe Transit Study<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>.</p>
+            <p class="source">Source: TRPA transit funding fact sheets (Oct. 28, 2026)<sup class="cn"><a data-src="2" title="Transit Study Funding Fact Sheets">2</a></sup> and the Tahoe Transit Study<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>.</p>
           </div>
           <div class="card in-sec" id="in-proj">
             <div class="card-head"><div><h2>Revenue projections by source</h2><p class="note">Type a value into any future year to override the rule for that year. Clear the cell to return to the rule.</p></div>
               <div class="tools"><span class="input-legend"><b></b>Input</span><span class="input-legend"><b class="ed"></b>Changed from source</span></div></div>
             <div id="gridProjection" class="grid tall"></div>
-            <p class="source">Source: Tahoe Transit Study financial plan<sup class="cn"><a data-src="1" title="Financial PlanG.xlsx">1</a></sup>. FTA growth 1 percent per year. TDA follows RTP projected population change (0.025 percent per year).</p>
+            <p class="source">Source: Tahoe Transit Study financial plan<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>. FTA growth 1 percent per year. TDA follows RTP projected population change (0.025 percent per year).</p>
           </div>
           <div class="card in-sec" id="in-fta">
             <h2>FTA 5307 sub-allocation between TTD and Placer County</h2>
-            <p class="note">The Lake Tahoe urbanized area (UZA) apportionment is split by an earned-share formula: the average of each operator's share of urban revenue miles, population, and ridership. 75 percent of 5307 goes to operations. The method is documented in the FTA sub-allocation MOU between the agencies.</p>
+            <p class="note">The Lake Tahoe urbanized area (UZA) apportionment is split by an earned-share formula: the average of each operator's share of urban revenue miles, population, and ridership. 75 percent of 5307 goes to operations. The method comes from the <a data-ref="ftaMou" target="_blank" rel="noopener">2016 transit MOU</a> between TRPA, TTD, and Placer County. The MOU also gives each operator a base allocation before the earned share. The FY 26 split leaves the base out, and so does the model.</p>
             <div class="fta-grid" id="ftaGrid" style="margin-top:0.6rem"></div>
             <div class="fta-out" id="ftaOut"></div>
-            <p class="source">Source: Tahoe Transit Study FTA split<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>. FY 26-27 values are the FY 25-26 apportionment plus 1 percent, an estimate.</p>
+            <p class="source">Source: <a data-ref="ftaSplit" target="_blank" rel="noopener">FY 26 Lake Tahoe FTA sub-allocation</a> (TRPA), as entered in the Tahoe Transit Study FTA split<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>. FY 26-27 values are the FY 25-26 apportionment plus 1 percent, an estimate.</p>
           </div>
           <div class="card in-sec" id="in-changes">
             <h2>Changes from the source data</h2>
@@ -883,7 +892,7 @@
         </div>
         <div class="row" style="gap:0.9rem;margin-bottom:0.4rem"><span class="input-legend"><b></b>Input share</span><span class="input-legend"><b class="er"></b>Breaks a rule</span><span class="input-legend"><b class="wa"></b>Outside intended use</span><span class="input-legend"><b class="ed"></b>Changed from source</span></div>
         <div id="gridAlloc" class="grid tall"></div>
-        <p class="source">Starting route shares are estimates from the Tahoe Transit Study<sup class="cn"><a data-src="3" title="Funding Model V1G.xlsx">3</a></sup>. Hover a colored cell to read the rule it breaks.</p>
+        <p class="source">Starting route shares are estimates from the Tahoe Transit Study<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>. Hover a colored cell to read the rule it breaks. Select a source's Checks count for an explanation of each flag and note.</p>
       </div>
       <div class="card" id="issuesCard">
         <div class="card-head">
@@ -906,9 +915,9 @@
         <ul>
           <li><strong>By route:</strong> Each service's operating cost and the funding applied to it. A gap means its funding does not cover its cost.</li>
           <li><strong>By agency:</strong> Each agency's revenue, the cost of the services it runs, and its ending balance.</li>
-          <li><strong>By jurisdiction:</strong> The cost each jurisdiction's share of service leaves for local funds, compared with the local funding it pays.</li>
+          <li><strong>By jurisdiction:</strong> The cost each jurisdiction's share of service leaves unfunded, compared with the local funding it contributes.</li>
           <li><strong>Flags and notes:</strong> The count at the top of the page. Select it to see each rule the funding breaks.</li>
-          <li><strong>Change the results:</strong> Edit funding amounts, services, and costs on <a href="#" data-goin="in-howto">Inputs and assumptions</a>, or route shares on <a href="#" data-go="alloc">Allocation and rules</a>. Your changes are listed below.</li>
+          <li><strong>Change the results:</strong> Edit funding amounts, services, and costs on <a href="#" data-goin="in-howto">Service and funding inputs</a>, or route shares on <a href="#" data-go="alloc">Funding allocations by service</a>. Your changes are listed below.</li>
         </ul>
       </details>
       <div class="card uchg" id="resChanges"></div>
@@ -939,12 +948,12 @@
           <li><strong>Revenue and cost:</strong> Bars are revenue each year by funding level. The dashed line is operating cost in the source data. The solid line is operating cost with your changes, including any services you add.</li>
           <li><strong>Ending balance by agency:</strong> Each agency's revenue minus the cost of the services it runs. Bars below zero are deficits. The table under each chart shows the numbers.</li>
           <li><strong>Funding cliffs:</strong> Sources that end within the five years are listed at the bottom of the page.</li>
-          <li><strong>Change the results:</strong> On Inputs and assumptions, you can:
+          <li><strong>Change the results:</strong> On Service and funding inputs, you can:
             <ul>
               <li>Add planned services, or the TART 30-minute peak, in <a href="#" data-goin="in-plan">Service plan elements</a>, or model a service that is not in the plan.</li>
               <li>Change funding amounts in <a href="#" data-goin="in-sources">Funding sources</a>, or future years in <a href="#" data-goin="in-proj">Revenue projections</a>.</li>
               <li>Change cost per hour or the yearly escalator in <a href="#" data-goin="in-operators">Operator cost rates</a>.</li>
-              <li>Carry surpluses forward, count federal funds above the cap, or set opening balances in <a href="#" data-goin="in-assume">Model assumptions</a>.</li>
+              <li>Carry surpluses forward, count federal funds for other uses in the operating balance, or set opening balances in <a href="#" data-goin="in-assume">Model assumptions</a>.</li>
             </ul>
           </li>
         </ul>
@@ -954,7 +963,7 @@
         <div class="card-head"><div><h2>Revenue and cost, FY 26-27 to FY 30-31 <span class="upd">Updates with inputs</span></h2>
           <p class="note" style="max-width:100ch" id="outlookNote">Costs escalate by each operator's rate. Each source follows its own projection rule. The dashed line is operating cost in the source data. The solid line includes your changes.</p></div></div>
         <div id="chOutlook" class="chart" style="min-height:380px" role="img" aria-label="Stacked revenue bars by year with cost lines"></div>
-        <p class="source">Projection rules for each source are under Revenue projections on Inputs and assumptions.</p>
+        <p class="source">Projection rules for each source are under Revenue projections on Service and funding inputs.</p>
       </div>
       <div class="card">
         <div class="card-head"><div><h3>Ending balance by agency</h3><p class="note" id="outlookAgNote">Revenue minus the cost of services operated, each year on its own. Bars below zero are deficits.</p></div>
@@ -1033,34 +1042,45 @@
   <calcite-button slot="footer-end" id="dlgConfirmOk" appearance="solid" kind="danger" scale="s">Reset</calcite-button>
 </calcite-dialog>
 
-<calcite-dialog id="dlgSubmit" heading="Submit a data update" modal width-scale="m" scale="s">
+<calcite-dialog id="dlgSubmit" heading="Submit data updates" modal width-scale="m" scale="s">
   <div class="suggest-body" id="dlgSubmitForm">
-    <p>Use this when real numbers have changed, such as an adopted budget, a new contract, or updated service miles. TRPA reviews each request and updates the model for everyone. Until then, your edits stay in this browser only.</p>
+    <p>Send TRPA your data changes, your feedback on the model, or both. Data changes are for real numbers that have changed, such as an adopted budget, a new contract, or updated service miles. Submitted changes are typically incorporated within a few days. Until then, your edits stay in this browser only.</p>
     <p id="dlgSubmitCount"></p>
     <ul class="submit-list" id="dlgSubmitList"></ul>
     <div class="submit-form">
       <label class="fld">Your name<input type="text" id="subName" autocomplete="name" /></label>
       <label class="fld">Agency<select id="subAgency"></select></label>
-      <label class="fld wide">Notes (optional)<textarea id="subNotes" rows="4" placeholder="Where the new numbers come from, and anything TRPA should know. For example: TTD FY 26-27 adopted budget, June 2026, page 12."></textarea></label>
+      <label class="fld wide">Any additional comments or feedback on the model<textarea id="subNotes" rows="4" placeholder="For example: where new numbers come from (TTD FY 26-27 adopted budget, page 12), something that looks wrong, or a feature you would like."></textarea></label>
     </div>
-    <p class="note">Check that the changes above are right. Select <em>Submit to TRPA</em> to send them.</p>
+    <p class="note" id="dlgSubmitHint"></p>
     <p class="fm-err" id="dlgSubmitErr" role="alert"></p>
   </div>
   <div class="suggest-body" id="dlgSubmitDone" hidden>
-    <p><strong>Submitted.</strong> TRPA received your <span id="dlgSubmitN"></span> and will review them. Approved changes are added to the model for everyone.</p>
-    <p>What should happen to your edits in this browser?</p>
+    <p><strong>Submitted.</strong> TRPA received your <span id="dlgSubmitN"></span></p>
+    <p id="dlgSubmitAsk">What should happen to your edits in this browser?</p>
   </div>
   <calcite-button slot="footer-start" id="dlgSubmitCopy" appearance="transparent" kind="brand" scale="s" icon-start="copy" hidden>Copy change list</calcite-button>
   <calcite-button slot="footer-end" id="dlgSubmitCancel" appearance="outline" kind="neutral" scale="s">Cancel</calcite-button>
   <calcite-button slot="footer-end" id="dlgSubmitOk" appearance="solid" kind="brand" scale="s" icon-start="send">Submit to TRPA</calcite-button>
   <calcite-button slot="footer-end" id="dlgSubmitKeep" appearance="outline" kind="brand" scale="s" hidden>Keep my edits</calcite-button>
   <calcite-button slot="footer-end" id="dlgSubmitReset" appearance="solid" kind="brand" scale="s" hidden>Reset to source data</calcite-button>
+  <calcite-button slot="footer-end" id="dlgSubmitClose" appearance="solid" kind="brand" scale="s" hidden>Close</calcite-button>
 </calcite-dialog>
 
 <calcite-dialog id="dlgMove" heading="Move funding with this service?" modal width-scale="m" scale="s">
   <div class="suggest-body" id="dlgMoveBody"></div>
   <calcite-button slot="footer-end" id="dlgMoveNo" appearance="outline" kind="neutral" scale="s">Move service only</calcite-button>
   <calcite-button slot="footer-end" id="dlgMoveYes" appearance="solid" kind="brand" scale="s">Move service and funding</calcite-button>
+</calcite-dialog>
+
+<calcite-dialog id="dlgFlags" heading="Flags and notes" modal width-scale="m" scale="s">
+  <div class="suggest-body" id="dlgFlagsBody"></div>
+  <calcite-button slot="footer-end" id="dlgFlagsDone" appearance="solid" kind="brand" scale="s">Close</calcite-button>
+</calcite-dialog>
+
+<calcite-dialog id="dlgAllocOver" heading="That share is more than the source has" modal width-scale="s" scale="s">
+  <div class="suggest-body" id="dlgAllocOverBody"></div>
+  <calcite-button slot="footer-end" id="dlgAllocOverOk" appearance="solid" kind="brand" scale="s">OK</calcite-button>
 </calcite-dialog>
 
 <calcite-dialog id="dlgSuggest" heading="Suggest an allocation?" modal width-scale="m" scale="s">
@@ -1089,7 +1109,6 @@ window.TRANSIT_MODEL_DATA = {
   "scen": "Example Transit Financial Scenario Workbook.xlsx",
   "plan": "Financial PlanG.xlsx",
   "v1g": "Funding Model V1G.xlsx",
-  "sstma": "SSTMA multijurisdiction transit services working model.xlsx",
   "fed": "Federal Funds, Oct. 28, 2026.pdf",
   "state": "State Funds, Oct. 28, 2026.pdf",
   "loc1": "Local Funds 1 of 3, Oct. 28, 2026.pdf",
@@ -1100,45 +1119,56 @@ window.TRANSIT_MODEL_DATA = {
   "scen": "State and local route conditions (costs tab). Its costs and rates are replaced by Funding Model V1G.",
   "plan": "Revenue conditions and match notes (Revenue %s, columns B and C) and the five-year revenue tables (Tables A1 and A2). Its FY 26-27 amounts and shares are replaced by Funding Model V1G.",
   "v1g": "Source of truth for existing transit data since Nov. 13, 2026: FY 26-27 revenue by source and agency, route allocations, and operating cost by route (Per Route Model Clean), service statistics (Operating Stats), operator rates (VRH Rates), and the FTA split.",
-  "sstma": "Multi-jurisdiction cost-share method (miles, hours, stops, ridership) and Lake Link zone structure.",
   "fed": "Federal funding fact sheet (FY 25-26 budgeted amounts, purpose, match, restrictions).",
   "state": "State funding fact sheet.",
   "loc1": "Local funding fact sheet, part 1 of 3 (TART partners, Placer County TOT, Washoe RTC, Town of Truckee, TTD local appropriation).",
   "loc2": "Local funding fact sheet, part 2 of 3 (Nevada State Parks, Tahoe Douglas Visitor Authority, NLTE partners, Lake Link public partners).",
   "loc3": "Local funding fact sheet, part 3 of 3 (Lake Link private partners)."
  },
- "sourceFileLinks": {
-  "fed": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/FederalFunds-10.28.2026.pdf"
-   }
-  ],
-  "state": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/StateFunds-10.28.2026.pdf"
-   }
-  ],
-  "loc1": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/LocalFunds1of3-7columns-10.28.2026.pdf"
-   }
-  ],
-  "loc2": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/LocalFunds2of3-7columns-10.28.2026.pdf"
-   }
-  ],
-  "loc3": [
-   {
-    "label": "Open the PDF",
-    "url": "https://www.trpa.gov/wp-content/uploads/LocalFunds3of3-6columns-10.28.2026.pdf"
-   }
-  ]
+ "sourceFileUrls": {
+  "fed": "https://www.trpa.gov/wp-content/uploads/FederalFunds-10.28.2026.pdf",
+  "state": "https://www.trpa.gov/wp-content/uploads/StateFunds-10.28.2026.pdf",
+  "loc1": "https://www.trpa.gov/wp-content/uploads/LocalFunds1of3-7columns-10.28.2026.pdf",
+  "loc2": "https://www.trpa.gov/wp-content/uploads/LocalFunds2of3-7columns-10.28.2026.pdf",
+  "loc3": "https://www.trpa.gov/wp-content/uploads/LocalFunds3of3-6columns-10.28.2026.pdf",
+  "trpa": "https://github.com/trpa-agency/TransitStudy/blob/main/TransitFundingModel/docs/Domain%20Lead%20Answers%202026-10-23.md",
+  "trpa2": "https://github.com/trpa-agency/TransitStudy/blob/main/TransitFundingModel/docs/TRPA%20Answers%202026-11-13.md"
  },
+ "sourceFileGroups": [
+  {
+   "key": "memo",
+   "name": "Transit Study Funding Memo Inputs",
+   "note": "Working files prepared for the Tahoe Transit Study funding memo. They provide FY 26-27 operating costs, service statistics, operator rates, revenue amounts, and route allocations. They also provide the FTA split, match requirements, five-year revenue projections, and the state and local conditions on each route.",
+   "members": [
+    "plan",
+    "scen",
+    "v1g"
+   ]
+  },
+  {
+   "key": "factSheets",
+   "name": "Transit Study Funding Fact Sheets",
+   "note": "TRPA's transit funding fact sheets, Oct. 28, 2026 versions. They give the amount, purpose, match, and restrictions for each federal, state, and local source.",
+   "members": [
+    "fed",
+    "state",
+    "loc1",
+    "loc2",
+    "loc3"
+   ],
+   "listMembers": true
+  },
+  {
+   "key": "tartSystemsPlan",
+   "name": "TART 2025 Systems Plan Update",
+   "note": "Placer County, November 18, 2025. Current TART frequency, the preferred service scenario, and the cost of 30-minute peak service.",
+   "members": [
+    "tartPlan",
+    "tartMemo"
+   ],
+   "listMembers": true
+  }
+ ],
  "references": {
   "tartPlan": {
    "name": "TART 2025 Systems Plan Update, Board presentation, Item 04A, Placer County Board of Supervisors, November 18, 2025",
@@ -1149,6 +1179,21 @@ window.TRANSIT_MODEL_DATA = {
    "name": "TART 2025 Systems Plan Update, staff report, Placer County Public Works, November 18, 2025",
    "note": "Current 60-minute frequency on all TART fixed routes, and the peak-season and year-round 30-minute options.",
    "url": "https://www.placer.ca.gov/DocumentCenter/View/99284/04A"
+  },
+  "ftaSplit": {
+   "name": "Lake Tahoe FTA Sub-Allocation (5307, 5339, 5310), FY 26 full-year apportionments, TRPA",
+   "note": "Earned-share split of the Lake Tahoe UZA apportionment by urban revenue miles, population, and ridership, and the 75 percent operations share of 5307. Same inputs as the V1G FTA Allocation Split tab.",
+   "url": "https://www.trpa.gov/wp-content/uploads/FY26FTA-Full-Year-5307_5339_5310-ApportionmentFINAL.pdf"
+  },
+  "ftaMou": {
+   "name": "Memorandum of Understanding between TMPO, Tahoe Transportation District, and Placer County on transit planning and programming of federal funds, 2016",
+   "note": "Section 3 and Exhibit A set the 5307 and 5339 sub-allocation method. Exhibit A adds a base allocation per operator before the earned share. The FY 26 split uses earned share only.",
+   "url": "https://www.trpa.gov/wp-content/uploads/Tahoe_Transit_MOU_Final-2017.pdf"
+  },
+  "ttdFpc20261104": {
+   "name": "TTD Finance and Personnel Committee meeting packet, November 4, 2026",
+   "note": "Attachment A, Transit Fund statement of operations for July and August 2026. Emerald Bay Shuttle (micro-transit) farebox revenue of $12,740 year to date against a board-approved FY 2027 budget of $25,000.",
+   "url": "https://tahoetransportation.org/wp-content/uploads/2026/10/TTD-Finance-Comm-Mtg-Agenda-Packet-2026-11-4.pdf"
   }
  },
  "scenarios": {
@@ -1178,8 +1223,16 @@ window.TRANSIT_MODEL_DATA = {
   "FTA 5339 (Lake Tahoe UZA and NV DOT)": "FTA 5339 Bus and Bus Facilities",
   "FTA 5339 (Lake Tahoe UZA)": "FTA 5339 Bus and Bus Facilities",
   "TDA LTF, TRPA apportionment": "TDA Local Transportation Fund",
-  "TDA STA, TRPA apportionment": "TDA State Transit Assistance"
+  "TDA STA, TRPA apportionment": "TDA State Transit Assistance",
+  "Transient occupancy tax": "Placer County TOT"
  },
+ "ungroupPrograms": [
+  "Emerald Bay Shuttle pilot",
+  "Lake Link funding agreement",
+  "Lake Link partner contribution",
+  "Resort contribution",
+  "County contribution"
+ ],
  "dataUpdates": {
   "serviceUrl": "https://services5.arcgis.com/fXXSUzHD5JjcOt1v/arcgis/rest/services/service_97add89ea7044725abf93da481f35bfa_form/FeatureServer",
   "layerId": 0,
@@ -1194,8 +1247,8 @@ window.TRANSIT_MODEL_DATA = {
   },
   {
    "id": "SSTMA",
-   "name": "South Shore TMA (Lake Link)",
-   "short": "Lake Link"
+   "name": "South Shore Transportation Management Association (SSTMA)",
+   "short": "SSTMA"
   },
   {
    "id": "TART",
@@ -1236,13 +1289,16 @@ window.TRANSIT_MODEL_DATA = {
    "id": "NEV",
    "name": "Nevada County",
    "short": "Nevada Co.",
-   "state": "CA"
+   "state": "CA",
+   "resultsName": "Nevada County and Town of Truckee",
+   "resultsShort": "Nevada Co. and Truckee"
   },
   {
    "id": "TRK",
    "name": "Town of Truckee",
    "short": "Truckee",
-   "state": "CA"
+   "state": "CA",
+   "resultsWith": "NEV"
   },
   {
    "id": "DOU",
@@ -3500,14 +3556,14 @@ window.TRANSIT_MODEL_DATA = {
   },
   {
    "id": "ttd-fares30",
-   "name": "Fares – Emerald Bay Shuttle",
+   "name": "Emerald Bay Shuttle fares",
    "level": "fare",
    "recipient": "TTD",
    "program": "Passenger fares",
    "enabled": true,
    "status": "budgeted",
    "amountMode": "manual",
-   "amount": 0.0,
+   "amount": 25000.0,
    "prior": null,
    "growth": 0.02,
    "lastYear": 1,
@@ -3542,11 +3598,11 @@ window.TRANSIT_MODEL_DATA = {
    "restrictionText": "",
    "purpose": "",
    "grantor": "Riders ($5 one-way)",
-   "notes": "Funding Model V1G shows $0 in Emerald Bay Shuttle fares for FY 26-27 (Fare Revenue, D51), so the model uses $0 per TRPA (Nov. 13, 2026). Route 30 charges $5 one way (Fare Rates tab).",
+   "notes": "FY 26-27 fares are TTD's board-approved FY 2027 farebox budget of $25,000 for the Emerald Bay Shuttle, per TRPA (Nov. 24, 2026). Source: TTD July to August 2026 statement of operations (TTD Finance Committee packet, Nov. 4, 2026), which shows $12,740 collected in July 2026. August fares were not yet booked. Funding Model V1G shows $0 (Fare Revenue, D51). Route 30 charges $5 one way (Fare Rates tab).",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean D51",
+    "amount": "TTD Finance and Personnel Committee meeting packet, November 4, 2026 › Attachment A, Transit Fund statement of operations, FareBox Revenue budget",
     "projection": "Financial PlanG.xlsx › T2-4 Table A1 G135: 2% base ridership growth",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean D51"
+    "build": "FY 26-27 amount: TTD Finance and Personnel Committee meeting packet, November 4, 2026 › Attachment A, Transit Fund statement of operations, FareBox Revenue budget"
    },
    "user": false
   },
@@ -5777,7 +5833,7 @@ window.TRANSIT_MODEL_DATA = {
   },
   {
    "id": "tnt-fares",
-   "name": "Fares – North Lake Tahoe Express",
+   "name": "North Lake Tahoe Express fares",
    "level": "fare",
    "recipient": "TNTTMA",
    "program": "Passenger fares",
@@ -6073,8 +6129,8 @@ window.TRANSIT_MODEL_DATA = {
   }
  ],
  "build": {
-  "id": "20261123a",
-  "builtAt": "2026-11-23T23:22:22",
+  "id": "20261124a",
+  "builtAt": "2026-11-24T23:41:51",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",
@@ -6109,6 +6165,27 @@ const MINUS = '−';
 
 /* Source data comes from data/model-data.js. Nothing below hardcodes a number from the workbooks. */
 const DATA = (window.TRANSIT_MODEL_DATA && window.TRANSIT_MODEL_DATA.schema === DATA_SCHEMA) ? window.TRANSIT_MODEL_DATA : null;
+/* TRPA staff direction is tracked in the data and docs only. On the page, drop dated TRPA attributions such as
+   "per TRPA (Oct. 23, 2026)" or "TRPA (Nov. 13, 2026):" from notes, citations, and data notes. */
+const STAFF_D = '(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)[a-z]*\\.?\\s+\\d{1,2},\\s+\\d{4}';
+function dropStaffRefs(s) {
+  if (typeof s !== 'string' || !/TRPA/.test(s)) return s;
+  let t = s
+    .replace(new RegExp(`^Per TRPA(?: direction| review)?\\s*\\(${STAFF_D}\\),\\s*(\\w)`, 'g'), (m, c) => c.toUpperCase())
+    .replace(new RegExp(`,?\\s+(?:as\\s+)?per TRPA(?: direction| review)?\\s*\\(${STAFF_D}\\)`, 'g'), '')
+    .replace(new RegExp(`\\s*\\(TRPA(?: direction| review)?,?\\s*${STAFF_D}\\)`, 'g'), '')
+    .replace(new RegExp(`(^|[.;]\\s+)TRPA(?: direction)?\\s*\\(${STAFF_D}\\)\\s*:\\s*(\\w)`, 'g'), (m, p, c) => p + c.toUpperCase())
+    .replace(new RegExp(`,?\\s*(?:which\\s+)?TRPA\\s+(?:set|chose|confirmed|decided)(?:\\s+this)?\\s+on\\s+${STAFF_D}`, 'g'), '')
+    .replace(new RegExp(`TRPA(?: direction)?\\s*\\(${STAFF_D}\\)`, 'g'), 'TRPA')
+    .replace(/\s+([.,;:])/g, '$1').replace(/;\s*;/g, ';').replace(/,\s*\./g, '.').replace(/\s{2,}/g, ' ').trim();
+  if (/^[\s;,]*(?:TRPA[\s;,]*)*$/.test(t)) t = '';   // a citation that named only TRPA
+  return t;
+}
+function dropStaffDeep(o) {
+  if (Array.isArray(o)) return o.forEach((v, i) => { if (typeof v === 'string') o[i] = dropStaffRefs(v); else dropStaffDeep(v); });
+  if (o && typeof o === 'object') for (const k of Object.keys(o)) { if (k === 'id' || k === 'url') continue; if (typeof o[k] === 'string') o[k] = dropStaffRefs(o[k]); else dropStaffDeep(o[k]); }
+}
+if (DATA) ['services', 'lines', 'operators', 'dataNotes', 'agreements', 'scenarios', 'fta'].forEach(k => dropStaffDeep(DATA[k]));
 const BUILD = DATA ? DATA.build : { id: 'none', builtAt: '', workbooks: {}, warnings: [] };
 const F = DATA ? DATA.sourceFiles : {};
 
@@ -6184,26 +6261,42 @@ function patchState(p) {
    the data build name a file, then the tab and cell. On screen the file name becomes
    a superscript number. citeHtml keeps the tab and cell; citeNums returns only the numbers.
    ══════════════════════════════════════════════════════════════════════════ */
-const SRC_ORDER = ['plan', 'scen', 'v1g', 'sstma', 'fed', 'state', 'loc1', 'loc2', 'loc3'];
-const SOURCES = SRC_ORDER.filter(k => F[k]).map(k => ({ key: k, name: F[k], note: ((DATA && DATA.sourceFileNotes) || {})[k] || '', links: ((DATA && DATA.sourceFileLinks) || {})[k] || [] }))
-  .concat([{ key: 'trpa', name: 'TRPA staff direction on model assumptions, October 23, 2026', note: 'Match treatment of fares, federal shares, scope, scenario presets, and placeholder decisions.' },
-    { key: 'trpa2', name: 'TRPA staff answers to model questions, November 13, 2026', note: 'Funding Model V1G as the source for existing transit data, its costs and route allocations, sources to keep or drop, and scenario preset settings.' }])
-  .concat(Object.entries((DATA && DATA.references) || {}).map(([k, r]) => ({ key: k, name: r.name, note: r.note || '', url: r.url || '' })));
+const SRC_ORDER = ['plan', 'scen', 'v1g', 'fed', 'state', 'loc1', 'loc2', 'loc3'];
+const SRC_URL = (DATA && DATA.sourceFileUrls) || {};
+// Source groups (sourceFileGroups in model.yaml): each group is one numbered source. Citations still name their file in the data.
+const FILE_GROUPS = (DATA && DATA.sourceFileGroups) || [];
+const GROUP_OF = {}; FILE_GROUPS.forEach(g => (g.members || []).forEach(k => { GROUP_OF[k] = g.key; }));
+const fileTitle = n => String(n || '').replace(/\.(xlsx|pdf)$/i, '');
+// Source dates show month and year only ("Oct. 28, 2026" and "October 28, 2026" read "Oct. 2026"). Display only: citations
+// match the full names in the data.
+const MONTH_ABBR = { jan: 'Jan.', feb: 'Feb.', mar: 'March', apr: 'April', may: 'May', jun: 'June', jul: 'July', aug: 'Aug.', sep: 'Sept.', oct: 'Oct.', nov: 'Nov.', dec: 'Dec.' };
+const monthYear = s => String(s || '').replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2},\s+(\d{4})/g, (m, mo, y) => `${MONTH_ABBR[mo.slice(0, 3).toLowerCase()]} ${y}`);
+const REFS = (DATA && DATA.references) || {};
+// Every citable item in order: source files, TRPA answers, then published documents
+const SRC_ATOMS = SRC_ORDER.filter(k => F[k]).map(k => ({ key: k, name: F[k], note: ((DATA && DATA.sourceFileNotes) || {})[k] || '', url: SRC_URL[k] || '', file: true }))
+  .concat(Object.entries(REFS).map(([k, r]) => ({ key: k, name: r.name, note: r.note || '', url: r.url || '' })));
+const SOURCES = [];
+SRC_ATOMS.forEach(a => {
+  const gk = GROUP_OF[a.key];
+  if (!gk) { SOURCES.push(a); return; }
+  if (SOURCES.some(s => s.key === gk)) return;
+  const g = FILE_GROUPS.find(x => x.key === gk);
+  const sub = x => { const n = x.file ? fileTitle(x.name).replace(/,\s+[A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4}$/, '') : x.name;   // file members drop their date: the group note gives it
+    return n.startsWith(g.name + ', ') ? n.slice(g.name.length + 2).replace(/^./, c => c.toUpperCase()) : n; };
+  SOURCES.push({ key: gk, name: g.name, note: g.note || '', url: '', items: g.listMembers ? SRC_ATOMS.filter(x => GROUP_OF[x.key] === gk).map(x => ({ name: sub(x), url: x.url, note: x.file ? '' : x.note })) : null });
+});
 const SRC_NUM = Object.fromEntries(SOURCES.map((s, i) => [s.key, i + 1]));
+Object.entries(GROUP_OF).forEach(([k, gk]) => { SRC_NUM[k] = SRC_NUM[gk]; });
 const SUPD = '⁰¹²³⁴⁵⁶⁷⁸⁹';
-const SHORT_NAME = Object.fromEntries(SOURCES.map((s, i) => [i + 1, { plan: 'financial plan', scen: 'scenario workbook', v1g: 'funding model', sstma: 'SSTMA working model', fed: 'federal fact sheet', state: 'state fact sheet', loc1: 'local fact sheet', loc2: 'local fact sheet', loc3: 'local fact sheet', tartPlan: 'TART Systems Plan presentation', tartMemo: 'TART Systems Plan staff report', trpa: 'TRPA direction' }[s.key]]));
+// Links to published reference documents: <a data-ref="key"> takes its href from references in model.yaml
+document.querySelectorAll('a[data-ref]').forEach(a => { const r = ((DATA && DATA.references) || {})[a.dataset.ref]; if (r && r.url) a.href = r.url; else a.removeAttribute('href'); });
+const FILE_SHORT = { plan: 'financial plan', scen: 'scenario workbook', v1g: 'funding model', fed: 'federal fact sheet', state: 'state fact sheet', loc1: 'local fact sheet', loc2: 'local fact sheet', loc3: 'local fact sheet' };
 const supText = n => String(n).split('').map(c => SUPD[+c]).join('');
 const reEsc = x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const FILE_RES = SOURCES.filter(s => s.key !== 'trpa' && s.key !== 'trpa2').map(s => {
-  const base = s.name.replace(/\.(xlsx|pdf)$/i, '');
-  const pat = base.split(/\s*[–-]\s*/).map(p => reEsc(p).replace(/\s+/g, '\\s+')).join('\\s*[–-]\\s*');
-  return { n: SRC_NUM[s.key], re: new RegExp(pat + '(?:\\.(?:xlsx|pdf))?', 'i') };
-});
-FILE_RES.push({ n: SRC_NUM.scen, re: /Scenario Workbook(?:\.xlsx)?/i });
-const TRPA_RE = /\(?TRPA(?:,| \() ?Oct\. 23, 2026\)?/;
-const TRPA_REG = new RegExp(TRPA_RE.source, 'g');
-const TRPA2_RE = /\(?TRPA(?:,| \() ?Nov\. 13, 2026\)?/;
-const TRPA2_REG = new RegExp(TRPA2_RE.source, 'g');
+const fileRe = name => { const base = name.replace(/\.(xlsx|pdf)$/i, ''); const pat = base.split(/\s*[–-]\s*/).map(p => reEsc(p).replace(/\s+/g, '\\s+')).join('\\s*[–-]\\s*'); return new RegExp(pat + '(?:\\.(?:xlsx|pdf))?', 'i'); };
+const FILE_RES = SRC_ORDER.filter(k => F[k]).map(k => ({ n: SRC_NUM[k], short: FILE_SHORT[k] || 'source', re: fileRe(F[k]) }))
+  .concat(SRC_ATOMS.filter(s => !s.file).map(s => ({ n: SRC_NUM[s.key], short: s.name, re: fileRe(s.name) })));
+FILE_RES.push({ n: SRC_NUM.scen, short: 'scenario workbook', re: /Scenario Workbook(?:\.xlsx)?/i });
 /* parse a citation string into runs of [detail, number] */
 function citeParse(str) {
   const out = []; if (!str) return out;
@@ -6212,8 +6305,6 @@ function citeParse(str) {
     for (let seg of part.split(';')) {
       seg = seg.trim(); if (!seg) continue;
       let n = null;
-      if (TRPA_RE.test(seg)) { n = SRC_NUM.trpa; seg = seg.replace(TRPA_REG, '').trim(); }
-      if (TRPA2_RE.test(seg)) { n = SRC_NUM.trpa2; seg = seg.replace(TRPA2_REG, '').trim(); }
       for (const f of FILE_RES) { const m = seg.match(f.re); if (m) { n = f.n; seg = (seg.slice(0, m.index) + seg.slice(m.index + m[0].length)).replace(/^\s*[›>]\s*/, '').replace(/\s*[›>]\s*/, ' ').replace(/\(\s*\)/, '').trim(); break; } }
       if (n != null && cur != null && n !== cur && segs.length) segs[segs.length - 1].n = cur;
       if (n != null) cur = n;
@@ -6224,16 +6315,14 @@ function citeParse(str) {
   }
   return out;
 }
-const supHtml = ns => ns.length ? `<sup class="cn">${ns.map(n => `<a data-src="${n}" title="${esc((SOURCES[n - 1] || {}).name || '')}">${n}</a>`).join(',')}</sup>` : '';
+const supHtml = ns => (ns = [...new Set(ns.filter(Boolean))]).length ? `<sup class="cn">${ns.map(n => `<a data-src="${n}" title="${esc(monthYear((SOURCES[n - 1] || {}).name || ''))}">${n}</a>`).join(',')}</sup>` : '';
 function citeHtml(str) { return citeParse(str).map(segs => segs.map(s => esc(s.t) + (s.n ? supHtml([s.n]) : '')).join('; ')).join(' · '); }
 function citeText(str) { if (!str) return ''; return citeParse(str).map(segs => segs.map(s => s.t + (s.n ? supText(s.n) : '')).join('; ')).join(' · '); }
 function citeNums(str) { const ns = new Set(); citeParse(str).forEach(segs => segs.forEach(s => { if (s.n) ns.add(s.n); })); return [...ns].sort((a, b) => a - b); }
 /* free text that may name a file or TRPA direction: replace names with superscripts */
 function textSub(str, sup) {
   let t = String(str || '');
-  t = t.replace(/\s*\(TRPA, Oct\. 23, 2026\)/g, () => sup(SRC_NUM.trpa)).replace(TRPA_REG, () => 'TRPA' + sup(SRC_NUM.trpa));
-  t = t.replace(/\s*\(TRPA, Nov\. 13, 2026\)/g, () => sup(SRC_NUM.trpa2)).replace(TRPA2_REG, () => 'TRPA' + sup(SRC_NUM.trpa2));
-  for (const f of FILE_RES) t = t.replace(new RegExp(f.re.source + '\\s*›\\s*([^;|)]*)', 'gi'), (m, d) => d.trim() + sup(f.n)).replace(new RegExp('(\\bthe\\s+)?' + f.re.source, 'gi'), () => 'the ' + SHORT_NAME[f.n] + sup(f.n));
+  for (const f of FILE_RES) t = t.replace(new RegExp(f.re.source + '\\s*›\\s*([^;|)]*)', 'gi'), (m, d) => d.trim() + sup(f.n)).replace(new RegExp('(\\bthe\\s+)?' + f.re.source, 'gi'), () => 'the ' + f.short + sup(f.n));
   return t.replace(/ {2,}/g, ' ').replace(/ ([.,;])/g, '$1');
 }
 /* Workbook tab and cell references ("Revenue %s D55", "VRH Rates K36", "Table A1 O65") are kept in the data but not shown. */
@@ -6325,13 +6414,13 @@ const FIELD_LABELS = { amount: 'FY 26-27 amount', prior: 'FY 25-26 amount', grow
   matchEligible: 'Counts as match', matchOnly: 'Match-only credit', enabled: 'Included', include: 'Included', vsh: 'Service hours', vsm: 'Service miles', trips: 'Passenger trips',
   rateOverride: 'Cost per hour', costOverride: 'Annual cost', rate: 'Cost per hour', escal: 'Annual escalator', level: 'Funding level', recipient: 'Receiving agency', commitment: 'Commitment basis',
   status: 'Status', area: 'Urban/rural', type: 'Service type', operator: 'Operator', federalized: 'Federalized', amountMode: 'Amount source', name: 'Name', alloc: 'Allocation', rules: 'Eligibility rules', agency: 'Agency' };
-function fieldLabel(path) { if (path.startsWith('overrides.')) return 'Amount in ' + YEARS[+path.split('.')[1]]; if (path.startsWith('rules.')) return 'Rule: ' + path.slice(6); if (path.startsWith('costSchedule.')) return 'Cost in ' + YEARS[+path.split('.')[1]]; if (path.startsWith('juris.')) return 'Share: ' + jurName(path.slice(6)); if (path.startsWith('alloc.pct.')) return 'Share to ' + svcShort(path.slice(10)); if (path.startsWith('fta.')) return 'FTA split: ' + path.slice(4); if (path === 'assume.carry') return 'Carry surpluses forward'; if (path === 'assume.fedExcess') return 'Federal funds above the cap'; if (path.startsWith('assume.opening.')) return 'Opening balance: ' + agShort(path.slice(15)); if (path === 'assume.merge.adminSavings') return 'Merger: SSTMA admin cost removed'; if (path === 'assume.merge.partnerKept') return 'Merger: Lake Link partner funds kept'; if (path === 'assume.merge.compliance') return 'Merger: added federal compliance cost'; if (path === 'juris') return 'Jurisdiction miles'; if (path === 'jurisMiles') return 'Jurisdiction miles entered'; if (path === 'merged') return 'Merged into TTD'; if (path === 'mergedPartner') return 'Partner funds under the merger'; if (path === 'peak30') return '30-minute peak frequency'; if (path === 'assume.peak30Start') return '30-minute peak service: first fiscal year'; if (path === 'assume.peak30Cost') return '30-minute peak service: annual cost (FY 26-27 dollars)'; return FIELD_LABELS[path] || path; }
+function fieldLabel(path) { if (path.startsWith('overrides.')) return 'Amount in ' + YEARS[+path.split('.')[1]]; if (path.startsWith('rules.')) return 'Rule: ' + path.slice(6); if (path.startsWith('costSchedule.')) return 'Cost in ' + YEARS[+path.split('.')[1]]; if (path.startsWith('juris.')) return 'Share: ' + jurName(path.slice(6)); if (path.startsWith('alloc.pct.')) return 'Share to ' + svcShort(path.slice(10)); if (path.startsWith('fta.')) return 'FTA split: ' + path.slice(4); if (path === 'assume.carry') return 'Carry surpluses forward'; if (path === 'assume.fedExcess') return 'Federal funds for other eligible uses'; if (path.startsWith('assume.opening.')) return 'Opening balance: ' + agShort(path.slice(15)); if (path === 'assume.merge.adminSavings') return 'Merger: SSTMA admin cost removed'; if (path === 'assume.merge.partnerKept') return 'Merger: Lake Link partner funds kept'; if (path === 'assume.merge.compliance') return 'Merger: added federal compliance cost'; if (path === 'juris') return 'Jurisdiction miles'; if (path === 'jurisMiles') return 'Jurisdiction miles entered'; if (path === 'merged') return 'Merged into TTD'; if (path === 'mergedPartner') return 'Partner funds under the merger'; if (path === 'peak30') return '30-minute peak frequency'; if (path === 'assume.peak30Start') return '30-minute peak service: first fiscal year'; if (path === 'assume.peak30Cost') return '30-minute peak service: annual cost (FY 26-27 dollars)'; return FIELD_LABELS[path] || path; }
 function entityName(entity, id) { if (entity === 'assume') return 'Model assumptions';if (entity === 'line') return (lineById(id) || {}).name || id; if (entity === 'service') return (svcById(id) || {}).name || id; if (entity === 'operator') return (S.operators.find(o => o.id === id) || {}).name || id; if (entity === 'fta') return 'FTA 5307 sub-allocation'; return id; }
 function logChange(entity, id, path, from, to) {
   const key = `${entity}:${id}:${path}`;
   if (!(key in S.edited)) S.edited[key] = from === undefined ? null : from;
   if (same(S.edited[key], to)) delete S.edited[key];
-  S.changes.unshift({ t: new Date().toISOString(), entity, id, name: entityName(entity, id), field: fieldLabel(path), from: from === undefined ? null : from, to });
+  S.changes.unshift({ t: new Date().toISOString(), entity, id, name: entityName(entity, id), field: fieldLabel(path), path, from: from === undefined ? null : from, to });
   if (S.changes.length > 500) S.changes.length = 500;
 }
 const isEdited = (entity, id, path) => Object.prototype.hasOwnProperty.call(S.edited, `${entity}:${id}:${path}`);
@@ -6356,7 +6445,7 @@ function svcActive(s, y) { return !!s.include && !(s.activeYears && !s.activeYea
    route's annual service hours, as a placeholder until the plan gives a route breakdown. */
 const PEAK30 = (DATA && DATA.scenarios && DATA.scenarios.peak30) || null;
 const peakCost = st => { const v = st && st.assume ? st.assume.peak30Cost : null; return v == null || v === '' ? (PEAK30 ? PEAK30.cost : 0) : +v; };
-const PEAK30_CITE = PEAK30 ? (PEAK30.cite || []).map(k => SRC_NUM[k]).filter(Boolean) : [];
+const PEAK30_CITE = PEAK30 ? [...new Set((PEAK30.cite || []).map(k => SRC_NUM[k]).filter(Boolean))] : [];
 const isFixedRoute = s => !!PEAK30 && PEAK30.routes.includes(s.id);
 const peakStart = st => { const v = st && st.assume ? st.assume.peak30Start : null; return v == null || v === '' ? 1 : Math.max(0, Math.min(YEARS.length - 1, +v)); };
 function peakShare(st, s) { const t = sum(st.services.filter(isFixedRoute).map(x => +x.vsh || 0)); return t ? (+s.vsh || 0) / t : 0; }
@@ -6416,6 +6505,17 @@ function projectionText(l) {
 function jurTotal(s) { return sum(Object.values(s.juris || {})); }
 function fracStates(s, states) { const j = s.juris || {}; const t = jurTotal(s); if (!t) return 1; let a = 0; for (const k in j) if (JUR[k] && states.includes(JUR[k].state)) a += +j[k] || 0; return a / t; }
 function fracJur(s, jid) { const t = jurTotal(s); return t ? (+(s.juris || {})[jid] || 0) / t : 0; }
+// Results groups: a jurisdiction with resultsWith is reported inside another (Town of Truckee inside Nevada County).
+const jurMembers = jid => [jid].concat(JURIS.filter(j => j.resultsWith === jid).map(j => j.id));
+function jurResultsView(R) {
+  return JURIS.filter(j => !j.resultsWith || !JUR[j.resultsWith]).map(j => {
+    const ids = jurMembers(j.id), Js = ids.map(id => R.juris[id]).filter(Boolean);
+    const g = { id: j.id, ids, name: ids.length > 1 ? (j.resultsName || j.name) : j.name, short: ids.length > 1 ? (j.resultsShort || j.short) : j.short, state: j.state,
+      members: ids.map(id => ({ id, name: JUR[id].name, contrib: R.juris[id].contrib })) };
+    for (const k of ['cost', 'nonLocal', 'local', 'contrib']) g[k] = sum(Js.map(J => J[k]));
+    g.need = g.cost - g.nonLocal; g.diff = g.contrib - g.need; return g;
+  }).filter(g => g.cost || g.contrib);
+}
 function stateText(s) { const ca = fracStates(s, ['CA']); if (!jurTotal(s)) return 'no listed jurisdiction'; if (ca >= 0.999) return 'California'; if (ca <= 0.001) return 'Nevada'; return `both states (${pct(ca, 0)} California)`; }
 
 function ruleEval(l, s) {
@@ -6551,6 +6651,7 @@ function compute(st, y) {
   }
   for (const L of Object.values(R.line)) { const l = L.l; if (l.enabled && l.contributor && R.juris[l.contributor] && !l.matchOnly) R.juris[l.contributor].contrib += L.amount; }
   for (const J of Object.values(R.juris)) { J.need = J.cost - J.nonLocal; J.diff = J.contrib - J.need; }
+  R.jurView = jurResultsView(R);
   // totals
   const T = R.tot; T.cost = sum(Object.values(R.svc).map(s => s.cost)); T.rev = zeroLevels();
   for (const A of Object.values(R.agency)) for (const k of LEVEL_ORDER) T.rev[k] += A.rev[k];
@@ -6789,6 +6890,7 @@ function makeGrid(key, el, opts) {
   if (g && GRID_EL[key] === el && !(g.isDestroyed && g.isDestroyed())) {
     g.setGridOption('columnDefs', opts.columnDefs);
     g.setGridOption('pinnedBottomRowData', opts.pinnedBottomRowData || []);
+    g.setGridOption('pinnedTopRowData', opts.pinnedTopRowData || []);
     g.setGridOption('rowData', opts.rowData);
     if (opts.quickFilterText !== undefined) g.setGridOption('quickFilterText', opts.quickFilterText);
     g.refreshCells({ force: true });
@@ -6813,12 +6915,11 @@ const sevBadge = s => s === 'error' ? '<span class="badge danger">Flag</span>' :
 function renderStatus() {
   const n = Object.keys(S.edited).length;
   $('editCount').textContent = n ? `${n} value${n === 1 ? '' : 's'} changed from source data` : 'No edits from source data';
-  $('btnSubmit').disabled = !n;
   const T = R.tot;
   $('issuePillText').textContent = `${T.nErr} flag${T.nErr === 1 ? '' : 's'} · ${T.nWarn} note${T.nWarn === 1 ? '' : 's'} (${YEARS[YEAR]})`;
   $('issuePill').querySelector('.dot').style.background = T.nErr ? 'var(--ct-red-text)' : T.nWarn ? 'var(--ct-gold)' : 'var(--ct-green-text)';
   const pk = Object.keys(PRESETS).filter(k => S.presets[k]);
-  $('presetChips').innerHTML = pk.map(k => `<button type="button" class="chip" data-preset="${k}" title="Preset applied. Open Inputs and assumptions to change it.">Preset: ${esc(PRESETS[k].name)}</button>`).join('');
+  $('presetChips').innerHTML = pk.map(k => `<button type="button" class="chip" data-preset="${k}" title="Preset applied. Open Service and funding inputs to change it.">Preset: ${esc(PRESETS[k].name)}</button>`).join('');
   $('presetChips').querySelectorAll('[data-preset]').forEach(b => b.addEventListener('click', () => { goTab('inputs'); setTimeout(() => $('in-presets').scrollIntoView({ behavior: 'smooth' }), 120); }));
 }
 let TOAST_T = null;
@@ -6854,16 +6955,16 @@ function renderOverview() {
   document.querySelectorAll('#panel-overview [data-go]').forEach(b => { if (!b.dataset.wired) { b.dataset.wired = '1'; b.addEventListener('click', () => goTab(b.dataset.go)); } });
 }
 
-/* ── Existing funding conditions (source data, FY 26-27; scenario edits do not change it) ── */
+/* ── Existing funding snapshot (source data, FY 26-27; scenario edits do not change it) ── */
 let SRC_FILTER = 'all';
 /* Revenue by funding level, with a drill-down: select a level to see its sources.
-   Local revenue is shown by the jurisdiction that pays it; other levels by program, combined across agencies. */
+   Local revenue is shown by the jurisdiction that pays it, fares by fare source, and other levels by program, combined across agencies. */
 let EX_LEVEL = null;
 function levelBreakdown(R0, k) {
   const by = {};
   for (const L of Object.values(R0.line)) {
     const l = L.l; if (l.level !== k || !l.enabled || l.matchOnly || l.status === 'capital' || !(L.amount > 0.5)) continue;
-    const g = k === 'local' ? ((JURIS.find(j => j.id === l.contributor) || {}).name || 'Other local or more than one') : k === 'state' ? (STATE_NAMES[stateOf(l)] || 'Other state') : srcProgram(l);
+    const g = k === 'local' ? ((JURIS.find(j => j.id === l.contributor) || {}).name || 'Other local or more than one') : k === 'fare' ? l.name : srcProgram(l);
     by[g] = (by[g] || 0) + L.amount;
   }
   return Object.entries(by).sort((a, b) => b[1] - a[1]);
@@ -6885,12 +6986,12 @@ function chartExLevels(R0) {
     ], layout({ height: 330, hovermode: 'closest', xaxis: { type: 'category' }, yaxis: { tickprefix: '$', tickformat: '~s' }, bargap: 0.35, showlegend: false }), PCFG);
   } else {
     const rows = levelBreakdown(R0, k), lab = LEVELS[k].label;
-    $('exLevelsTitle').textContent = k === 'local' ? 'Local revenue by jurisdiction' : k === 'state' ? 'State revenue by state' : `${lab} revenue by program`;
+    $('exLevelsTitle').textContent = k === 'local' ? 'Local revenue by jurisdiction' : k === 'fare' ? 'Passenger fares by source' : `${lab} revenue by program`;
     $('exLevelsNote').textContent = (k === 'local'
       ? 'FY 26-27 local revenue by the jurisdiction that pays it. Placer County\'s share is mostly transient occupancy tax. Jurisdictions with no local source tagged to them are not shown.'
-      : k === 'state' ? 'FY 26-27 state revenue by the state that pays it.'
+      : k === 'fare' ? 'FY 26-27 passenger fare revenue by fare source. Sources budgeted at $0 are not shown.'
       : `FY 26-27 ${lab.toLowerCase()} revenue by program. A program received by more than one agency is one bar.`) + ` Total ${money(T.rev[k])}.`;
-    el.setAttribute('aria-label', `Horizontal bars of FY 26-27 ${lab.toLowerCase()} revenue by ${k === 'local' ? 'jurisdiction' : k === 'state' ? 'state' : 'program'}`);
+    el.setAttribute('aria-label', `Horizontal bars of FY 26-27 ${lab.toLowerCase()} revenue by ${k === 'local' ? 'jurisdiction' : k === 'fare' ? 'source' : 'program'}`);
     const r = rows.slice().reverse();   // largest at the top
     Plotly.react(el, [{ type: 'bar', orientation: 'h', y: r.map(x => x[0]), x: r.map(x => x[1]), marker: { color: LEVELS[k].color },
         text: r.map(x => moneyShort(x[1])), textposition: 'outside', cliponaxis: false, hovertemplate: '%{y}: %{x:$,.0f}<extra></extra>' }],
@@ -6903,7 +7004,7 @@ function renderExisting() {
   const R0 = RB_SERIES[0], T = R0.tot;
   $('exAsOf').innerHTML = `FY 26-27 budgets and costs from the funding model${supHtml([SRC_NUM.v1g])}. This page always shows the source data. User edits change the One-year outlook and Five-year outlook tabs. ` +
     `Region: ${moneyShort(T.cost)} operating cost across ${T.nSvc} services, and ${moneyShort(T.revTotal)} in operating revenue from ${T.nLines} sources. ` +
-    (T.fedExcess > 1 ? `Of that revenue, ${moneyShort(T.fedExcess)} is federal money above the federal share cap with no eligible operating use.` : '');
+    (T.fedExcess > 1 ? `Of that revenue, ${moneyShort(T.fedExcess)} is federal money set aside for other eligible uses, such as capital or administration.` : '');
   chartAgencyInto('chExAgency', R0, false);
   chartExLevels(R0);
   chartSankey('chSankey', R0);
@@ -6933,7 +7034,7 @@ function renderFindings() {
   const agTxt = shown.map(a => { const b = R.agency[a.id].balance; return `${a.short} ${b >= 0 ? 'surplus of' : 'deficit of'} ${moneyShort(Math.abs(b))}`; });
   out.push(`<strong>Agency ending balances:</strong> ${listWords(agTxt)}. The region-wide total of ${T.balance < 0 ? MINUS : ''}${moneyShort(Math.abs(T.balance))} nets one agency's surplus against another's deficit. Funds do not move between agencies without an agreement.` + (T.carryIn > 1 ? ` These include ${moneyShort(T.carryIn)} carried from the prior year.` : ''));
   const exc = shown.filter(a => R.agency[a.id].fedExcess > 1);
-  if (exc.length) out.push(`<strong>Federal funds above the share cap:</strong> ${listWords(exc.map(a => `${a.short} ${moneyShort(R.agency[a.id].fedExcess)}`))}. Federal operating funds can pay only their share of net cost, so this money has no eligible operating use and is ${S.assume.fedExcess === 'count' ? 'counted in the balances under the user assumption on Inputs and assumptions' : 'left out of the balances'}.`);
+  if (exc.length) out.push(`<strong>Federal funds for other eligible uses:</strong> ${listWords(exc.map(a => `${a.short} ${moneyShort(R.agency[a.id].fedExcess)}`))}. This is federal money beyond the federal share of operating cost, set aside for uses such as capital or administration. It is ${S.assume.fedExcess === 'count' ? 'counted in the operating balances under the user assumption on Service and funding inputs' : 'left out of the operating balances'}.`);
   const otDep = shown.filter(a => { const A = R.agency[a.id]; return A.balance > 1 && (A.commit.onetime || 0) > 1; });
   if (otDep.length) out.push(`<strong>Surplus built on one-time money:</strong> ${listWords(otDep.map(a => { const A = R.agency[a.id]; const top = Object.values(R.line).filter(L => L.l.recipient === a.id && L.l.commitment === 'onetime' && L.amount > 0).sort((x, y) => y.amount - x.amount).slice(0, 2).map(L => esc(L.l.name)); return `${a.short}'s ${moneyShort(A.balance)} surplus includes ${moneyShort(A.commit.onetime)} in one-time or time-limited funds (largest: ${listWords(top)})`; }))}. These do not recur.`);
   const last = SERIES[SERIES.length - 1];
@@ -6949,15 +7050,15 @@ function renderFindings() {
   const capIss = R.issues.filter(i => i.rule === 'Federal share cap');
   if (capIss.length) out.push(`<strong>Federal share on routes:</strong> applied federal funds exceed the operating share cap on ${listWords([...new Set(capIss.map(i => esc(i.svcName)))])}.`);
   const stIss = R.issues.filter(i => i.sev === 'error' && i.rule !== 'Federal share cap' && i.line);
-  if (stIss.length) { const names = [...new Set(stIss.map(i => i.lineName))]; out.push(`<strong>Eligibility:</strong> ${stIss.length} allocation${stIss.length === 1 ? '' : 's'} break a source restriction, involving ${listWords(names.slice(0, 3).map(esc))}${names.length > 3 ? ` and ${names.length - 3} more` : ''}. See Allocation and rules.`); }
+  if (stIss.length) { const names = [...new Set(stIss.map(i => i.lineName))]; out.push(`<strong>Eligibility:</strong> ${stIss.length} allocation${stIss.length === 1 ? '' : 's'} break a source restriction, involving ${listWords(names.slice(0, 3).map(esc))}${names.length > 3 ? ` and ${names.length - 3} more` : ''}. See Funding allocations by service.`); }
   const prefIss = R.issues.filter(i => i.sev === 'warning' && (i.rule === 'State preference' || i.rule === 'Jurisdiction preference' || i.rule === 'Intended use'));
-  if (prefIss.length) { const svNames = [...new Set(prefIss.map(i => i.svcName))]; out.push(`<strong>Used outside the stated preference:</strong> ${moneyShort(sum(prefIss.map(i => i.amt)))} is applied to services the source is only "ideally" meant for (${listWords(svNames.slice(0, 3).map(esc))}${svNames.length > 3 ? ` and ${svNames.length - 3} more` : ''}). TRPA allows this to leverage the whole system${supHtml([SRC_NUM.trpa])}. Each instance shows as a note.`); }
+  if (prefIss.length) { const svNames = [...new Set(prefIss.map(i => i.svcName))]; out.push(`<strong>Used outside the stated preference:</strong> ${moneyShort(sum(prefIss.map(i => i.amt)))} is applied to services the source is only "ideally" meant for (${listWords(svNames.slice(0, 3).map(esc))}${svNames.length > 3 ? ` and ${svNames.length - 3} more` : ''}). TRPA allows this to leverage the whole system. Each instance shows as a note.`); }
   const gaps = Object.values(R.svc).filter(s => s.gap < -1).sort((a, b) => a.gap - b.gap);
   if (gaps.length) out.push(`<strong>Route gaps:</strong> the largest unfunded costs at the route level are ${listWords(gaps.slice(0, 3).map(s => `${esc(s.s.short)} (${moneyShort(-s.gap)})`))}.`);
   $('resFindings').innerHTML = out.map(x => `<li>${x}</li>`).join('');
 }
 
-/* Revenue bars with federal funds above the cap hatched, plus carryover. Used by agency and outlook charts. */
+/* Revenue bars with federal funds for other eligible uses hatched, plus carryover. Used by agency and outlook charts. */
 const HATCH = { shape: '/', fgcolor: TOK('--c-federal'), bgcolor: '#fff', size: 7, solidity: 0.35 };
 function revTraces(cats, getA, horiz) {
   const tr = [];
@@ -6969,7 +7070,7 @@ function revTraces(cats, getA, horiz) {
     if (lv === 'federal') {
       const use = cats.map((_, i) => getA(i).rev.federal - (getA(i).fedExcess || 0)), ex = cats.map((_, i) => getA(i).fedExcess || 0);
       if (use.some(v => v)) tr.push(Object.assign({ type: 'bar', name: 'Federal', marker: { color: LEVELS.federal.color, line: { color: '#fff', width: 1.5 } }, hovertemplate: hov }, xy(use)));
-      if (ex.some(v => v > 1)) tr.push(Object.assign({ type: 'bar', name: 'Federal above cap', marker: { color: '#fff', pattern: HATCH, line: { color: LEVELS.federal.color, width: 1 } }, hovertemplate: hov }, xy(ex)));
+      if (ex.some(v => v > 1)) tr.push(Object.assign({ type: 'bar', name: 'Federal, other eligible uses', marker: { color: '#fff', pattern: HATCH, line: { color: LEVELS.federal.color, width: 1 } }, hovertemplate: hov }, xy(ex)));
       continue;
     }
     const v = cats.map((_, i) => getA(i).rev[lv]);
@@ -7131,7 +7232,8 @@ function renderCosts() {
     { field: 'note', headerName: 'Notes', minWidth: 220, flex: 1, valueFormatter: p => textPlain(p.value), tooltipValueGetter: p => textPlain(p.value) || null, cellClass: 'muted' },
     { headerName: '', colId: 'del', width: 86, sortable: false, filter: false, cellRenderer: p => { if (!U(p)) return ''; const b = document.createElement('button'); b.className = 'grid-btn'; b.textContent = 'Remove'; b.title = 'Remove this new service'; b.addEventListener('click', () => removeNewService(p.data.id)); return b; } }
   ];
-  makeGrid('plan', $('gridPlan'), { domLayout: 'autoHeight', columnDefs: pcols, rowData: S.services.filter(s => s.plan && !s.user).concat(peakRow, S.services.filter(s => s.plan && s.user)), getRowId: p => p.data.id, rowClassRules: { 'row-dim': p => !p.data.include }, onCellValueChanged: () => setTimeout(refresh, 0) });
+  makeGrid('plan', $('gridPlan'), { domLayout: 'autoHeight', columnDefs: pcols, rowData: S.services.filter(s => s.plan && !s.user).concat(peakRow), getRowId: p => p.data.id, rowClassRules: { 'row-dim': p => !p.data.include }, onCellValueChanged: () => setTimeout(refresh, 0) });
+  makeGrid('newsvc', $('gridNewSvc'), { domLayout: 'autoHeight', overlayNoRowsTemplate: '<span class="note">No services added yet.</span>', columnDefs: pcols, rowData: S.services.filter(s => s.plan && s.user), getRowId: p => p.data.id, rowClassRules: { 'row-dim': p => !p.data.include }, onCellValueChanged: () => setTimeout(refresh, 0) });
   // Peak frequency inputs (TART 30-minute peak row in Service plan elements): read-only split of the total
   const kcols = [
     { field: 'name', headerName: 'TART fixed route', minWidth: 200, flex: 1, pinned: 'left' },
@@ -7153,7 +7255,8 @@ const STATE_NAMES = { CA: 'California', NV: 'Nevada' };
 /* The state that pays a state-level source: set in Details, otherwise read from its grantor. */
 const stateOf = l => l.stateOf || (/Nevada/i.test(l.grantor || '') ? 'NV' : /California/i.test(l.grantor || '') ? 'CA' : null);
 const SRC_GROUPS = (DATA && DATA.sourceGroups) || {};   // program name to group name, from seed/model.yaml
-const srcProgram = l => SRC_GROUPS[l.program] || l.program || l.name;
+const SRC_UNGROUP = new Set((DATA && DATA.ungroupPrograms) || []);   // programs listed line by line
+const srcProgram = l => SRC_UNGROUP.has(l.program) ? l.name : (SRC_GROUPS[l.program] || l.program || l.name);
 function sourceRows() {
   const order = [], by = {};
   S.lines.forEach(l => { const k = srcProgram(l); if (!by[k]) { by[k] = []; order.push(k); } by[k].push(l); });
@@ -7355,6 +7458,22 @@ function bindForm(root, l) {
 /* ── Allocation matrix ── */
 let ALLOC_MODE = 'pct', ALLOC_AGENCY = 'ALL', ALLOC_SEL = null;
 function allocServices() { return S.services.filter(s => svcActive(s, YEAR) && (svcCost(S, s, YEAR) > 0 || s.plan)); }
+/* A source cannot pay out more than it has: the shares in one row may total at most 100 percent. On a share that would
+   push the row past that, explain why in a popup and keep the old value. */
+function allocFits(l, sid, share) {
+  const cur = (l.alloc || {}).mode === 'auto' ? ((R.line[l.id] || {}).pct || {}) : ((l.alloc || {}).pct || {});
+  const others = Object.entries(cur).filter(([k, v]) => k !== sid && +v > 0);
+  const used = sum(others.map(([, v]) => +v)), room = Math.max(0, 1 - used);
+  if (share <= room + 1e-5) return true;
+  const amt = (R.line[l.id] || {}).amount || 0, name = (svcById(sid) || {}).name || sid;
+  const list = others.sort((a, b) => b[1] - a[1]).map(([k, v]) => `<li>${esc((svcById(k) || {}).name || k)}: ${pct(+v, 1)} (${money(+v * amt)})</li>`).join('');
+  $('dlgAllocOverBody').innerHTML = `<p>${esc(l.name)} has ${money(amt)} in ${YEARS[YEAR]}. A source can pay out only what it has, so the shares across its services can total at most 100 percent.</p>`
+    + `<p>You entered ${pct(share, 1)} (${money(share * amt)}) for ${esc(name)}.${others.length ? ` The other services already use ${pct(used, 1)} (${money(used * amt)}):` : ''}</p>`
+    + (others.length ? `<ul>${list}</ul>` : '')
+    + `<p>${room > 1e-5 ? `You can give ${esc(name)} up to ${pct(room, 1)} (${money(room * amt)}) now.` : `To give ${esc(name)} a share, lower another service's share first.`}${others.length && room > 1e-5 ? ' For more, lower another service\'s share first.' : ''}</p>`;
+  $('dlgAllocOver').open = true;
+  return false;
+}
 function setPct(l, sid, p) {
   if ((l.alloc || {}).mode === 'auto') { const cur = Object.assign({}, (R.line[l.id] || {}).pct || {}); setField('line', l, 'alloc', { mode: 'manual', pct: cur, note: 'Edited by hand' }); }
   const np = Object.assign({}, l.alloc.pct || {}); if (!p) delete np[sid]; else np[sid] = p;
@@ -7389,31 +7508,33 @@ function renderAlloc() {
   }
   sel.value = ALLOC_AGENCY;
   const T = R.tot;
-  $('allocCallout').innerHTML = `Starting shares are the FY 26-27 route allocations estimated for the Tahoe Transit Study${supHtml([SRC_NUM.v1g])}. They split most sources by share of service hours or miles, not by each source's rules. They produce <strong>${T.nErr} flags and ${T.nWarn} notes</strong> in ${YEARS[YEAR]}. <strong>Suggest allocation</strong> replaces the shares for the agency shown with a rules-based split: earmarked sources first, federal funds up to each route's share cap, then flexible funds to each route's remaining cost. Reset returns to the funding model shares.`;
+  $('allocCallout').innerHTML = `Starting shares are the FY 26-27 route allocations estimated for the Tahoe Transit Study${supHtml([SRC_NUM.v1g])}. They split most sources by share of service hours or miles, not by each source's rules. They produce <strong>${T.nErr} flags and ${T.nWarn} notes</strong> in ${YEARS[YEAR]}. <strong>Suggest allocation</strong> replaces the shares for the agency shown with a rules-based split: earmarked sources first, federal funds up to each route's share cap, then flexible funds to each route's remaining cost. Reset returns to the starting shares.`;
   const svcs = allocServices();
   const hideZero = $('allocHideZero').checked;
   const rows = S.lines.filter(l => (ALLOC_AGENCY === 'ALL' || l.recipient === ALLOC_AGENCY) && l.status !== 'capital' && (!hideZero || lineAmount(S, l, YEAR) > 0));
   const groups = AGENCIES.filter(a => svcs.some(s => s.agency === a.id)).map(a => ({ headerName: a.short, marryChildren: true, children: svcs.filter(s => s.agency === a.id).map(s => ({
     colId: 's:' + s.id, headerName: s.short, headerTooltip: `${s.name} · ${money(svcCost(S, s, YEAR))}`, width: ALLOC_MODE === 'pct' ? 92 : 110, type: 'rightAligned', headerClass: 'num', filter: false,
-    cellDataType: 'number', editable: p => p.data.enabled && (p.data.recipient === 'REGION' || p.data.recipient === s.agency), valueGetter: p => { const L = R.line[p.data.id]; if (!L) return null; if (ALLOC_MODE === 'pct') return L.pct[s.id] ? +(L.pct[s.id] * 100).toFixed(2) : null; return L.alloc[s.id] || null; },
-    valueFormatter: p => p.value == null ? '' : (ALLOC_MODE === 'pct' ? pct(p.value / 100) : money(p.value)), valueParser: p => parseNum(p.newValue),
-    valueSetter: p => { const v = parseNum(p.newValue); const L = R.line[p.data.id]; let share; if (v == null) share = 0; else if (ALLOC_MODE === 'pct') share = v / 100; else share = L && L.amount ? v / L.amount : 0; setPct(p.data, s.id, share); return true; },
-    cellClass: p => { if (p.data.recipient !== 'REGION' && p.data.recipient !== s.agency) return 'num na'; const k = R.pair[p.data.id + '|' + s.id]; return 'num input ' + (k ? 'c-' + k.sev : ''); },
-    tooltipValueGetter: p => { const k = R.pair[p.data.id + '|' + s.id]; return k ? k.msgs.join('\n') : null; }
+    cellDataType: 'number', editable: p => !p.node.rowPinned && p.data.enabled && (p.data.recipient === 'REGION' || p.data.recipient === s.agency), valueGetter: p => { if (p.node.rowPinned) return svcCost(S, s, YEAR); const L = R.line[p.data.id]; if (!L) return null; if (ALLOC_MODE === 'pct') return L.pct[s.id] ? +(L.pct[s.id] * 100).toFixed(2) : null; return L.alloc[s.id] || null; },
+    valueFormatter: p => p.value == null ? '' : (p.node.rowPinned || ALLOC_MODE !== 'pct' ? money(p.value) : pct(p.value / 100)), valueParser: p => parseNum(p.newValue),
+    valueSetter: p => { const v = parseNum(p.newValue); const L = R.line[p.data.id]; let share; if (v == null) share = 0; else if (ALLOC_MODE === 'pct') share = v / 100; else share = L && L.amount ? v / L.amount : 0; if (share < 0) return false; if (!allocFits(p.data, s.id, share)) return false; setPct(p.data, s.id, share); return true; },
+    cellClass: p => { if (p.node.rowPinned) return 'num'; if (p.data.recipient !== 'REGION' && p.data.recipient !== s.agency) return 'num na'; const k = R.pair[p.data.id + '|' + s.id]; return 'num input ' + (k ? 'c-' + k.sev : ''); },
+    tooltipValueGetter: p => { if (p.node.rowPinned) return `${s.name}: operating cost in ${YEARS[YEAR]}`; const k = R.pair[p.data.id + '|' + s.id]; return k ? k.msgs.join('\n') + '\nSelect this source\'s Checks count for details.' : null; }
   })) }));
   const cols = [
-    { field: 'name', headerName: 'Funding source', pinned: 'left', minWidth: 230, width: 250, tooltipValueGetter: p => rulesText(p.data), cellClass: p => (isEdited('line', p.data.id, 'alloc') || isEdited('line', p.data.id, 'alloc.pct') ? 'edited' : '') },
+    { field: 'name', headerName: 'Funding source', pinned: 'left', minWidth: 230, width: 250, tooltipValueGetter: p => p.node.rowPinned ? null : rulesText(p.data), cellClass: p => p.node.rowPinned ? '' : (isEdited('line', p.data.id, 'alloc') || isEdited('line', p.data.id, 'alloc.pct') ? 'edited' : '') },
     { field: 'recipient', headerName: 'Agency', width: 92, pinned: 'left', valueFormatter: p => agShort(p.value) },
-    numCol({ colId: 'amt', headerName: YEARS[YEAR], width: 112, pinned: 'left', valueGetter: p => lineAmount(S, p.data, YEAR) }),
-    { colId: 'method', headerName: 'Split', width: 150, pinned: 'left', valueGetter: p => { const a = p.data.alloc || {}; return a.mode === 'auto' ? 'By ' + (BASIS[a.basis || 'vsh']) : a.method === 'suggested' ? 'Suggested' : (isEdited('line', p.data.id, 'alloc') || isEdited('line', p.data.id, 'alloc.pct')) ? 'By hand (edited)' : 'Funding model shares'; }, cellClass: p => (p.data.alloc || {}).mode === 'auto' ? 'input' : '', tooltipValueGetter: p => citeText((p.data.cites || {}).alloc) || (p.data.alloc || {}).note || null },
+    numCol({ colId: 'amt', headerName: YEARS[YEAR], width: 112, pinned: 'left', valueGetter: p => p.node.rowPinned ? sum(svcs.map(x => svcCost(S, x, YEAR))) : lineAmount(S, p.data, YEAR) }),
+    { colId: 'method', headerName: 'Split', width: 150, pinned: 'left', valueGetter: p => { if (p.node.rowPinned) return ''; const a = p.data.alloc || {}; return a.mode === 'auto' ? 'By ' + (BASIS[a.basis || 'vsh']) : a.method === 'suggested' ? 'Suggested' : (isEdited('line', p.data.id, 'alloc') || isEdited('line', p.data.id, 'alloc.pct')) ? 'By hand (edited)' : 'Study estimate'; }, cellClass: p => (p.data.alloc || {}).mode === 'auto' ? 'input' : '', tooltipValueGetter: p => citeText((p.data.cites || {}).alloc) || (p.data.alloc || {}).note || null },
     ...groups,
-    numCol({ colId: 'unalloc', headerName: 'Not applied', width: 112, valueGetter: p => { const L = R.line[p.data.id]; if (!L) return null; return ALLOC_MODE === 'pct' ? +(((L.amount ? L.unallocated / L.amount : (1 - L.pctTotal))) * 100).toFixed(2) : L.unallocated; },
+    numCol({ colId: 'unalloc', headerName: 'Not applied', width: 112, valueGetter: p => { if (p.node.rowPinned) return null; const L = R.line[p.data.id]; if (!L) return null; return ALLOC_MODE === 'pct' ? +(((L.amount ? L.unallocated / L.amount : (1 - L.pctTotal))) * 100).toFixed(2) : L.unallocated; },
       valueFormatter: p => p.value == null || Math.abs(p.value) < (ALLOC_MODE === 'pct' ? 0.05 : 1) ? '' : (ALLOC_MODE === 'pct' ? pct(p.value / 100) : money(p.value)), cellClass: p => 'num ' + (p.value < (ALLOC_MODE === 'pct' ? -0.05 : -1) ? 'c-error' : '') }),
-    { colId: 'iss', headerName: 'Checks', width: 96, valueGetter: p => { const n = R.issues.filter(i => i.line === p.data.id && i.sev !== 'info'); return n.length; }, cellRenderer: p => { const e = R.issues.filter(i => i.line === p.data.id && i.sev === 'error').length, w = R.issues.filter(i => i.line === p.data.id && i.sev === 'warning').length; return (e ? `<span class="badge danger">${e} flag${e === 1 ? '' : 's'}</span> ` : '') + (w ? `<span class="badge warning">${w}</span>` : '') || ''; } }
+    { colId: 'iss', headerName: 'Checks', width: 96, tooltipValueGetter: p => !p.node.rowPinned && p.value ? 'Select for an explanation of each check' : null, valueGetter: p => { if (p.node.rowPinned) return null; const n = R.issues.filter(i => i.line === p.data.id && i.sev !== 'info'); return n.length; }, cellRenderer: p => { const e = R.issues.filter(i => i.line === p.data.id && i.sev === 'error').length, w = R.issues.filter(i => i.line === p.data.id && i.sev === 'warning').length; return (e ? `<span class="badge danger">${e} flag${e === 1 ? '' : 's'}</span> ` : '') + (w ? `<span class="badge warning">${w}</span>` : '') || ''; } }
   ];
-  makeGrid('alloc', $('gridAlloc'), { columnDefs: cols, rowData: rows, getRowId: p => p.data.id, rowClassRules: { 'row-off': p => !p.data.enabled }, rowSelection: { mode: 'singleRow', checkboxes: false, enableClickSelection: true },
+  makeGrid('alloc', $('gridAlloc'), { columnDefs: cols, rowData: rows, getRowId: p => p.data.id, rowClassRules: { 'row-off': p => !p.node.rowPinned && !p.data.enabled, 'row-total': p => !!p.node.rowPinned },
+    pinnedTopRowData: [{ id: '_cost', name: 'Operating cost of each service', recipient: '' }], rowSelection: { mode: 'singleRow', checkboxes: false, enableClickSelection: true },
     onSelectionChanged: e => { const r = e.api.getSelectedRows()[0]; ALLOC_SEL = r ? r.id : null; syncSplitBox(); },
-    onCellValueChanged: () => setTimeout(refresh, 0), onCellDoubleClicked: p => { if (p.colDef.field === 'name') openLineEditor(p.data.id); } });
+    onCellValueChanged: () => setTimeout(refresh, 0), onCellDoubleClicked: p => { if (p.colDef.field === 'name') openLineEditor(p.data.id); },
+    onCellClicked: p => { if (!p.node.rowPinned && p.colDef.colId === 'iss') openFlags(p.data.id); } });
   if (ALLOC_SEL && GRIDS.alloc.getRowNode(ALLOC_SEL)) GRIDS.alloc.getRowNode(ALLOC_SEL).setSelected(true); else { ALLOC_SEL = null; }
   syncSplitBox();
   // Issues
@@ -7447,7 +7568,7 @@ function resultsRoute() {
   $('gridResults').hidden = false; $('resCards').hidden = true;
   $('resTitle').textContent = `Results by service, ${YEARS[YEAR]}`;
   $('resNote').textContent = 'Funding applied to each service by level, against its cost. Federal share and match are checked per service. Click a row to see every source on it.';
-  $('resSource').innerHTML = textHtml('Fares count as local match (TRPA, Oct. 23, 2026). Net cost equals cost unless a fare line is marked as fare replacement.') + ' ' + esc('Match required is what the federal sources on the service need in non-federal funds at their share caps; match applied counts fares, state, local, private, and other funds plus match-only credits.');
+  $('resSource').innerHTML = textHtml('Fares count as local match. Net cost equals cost unless a fare line is marked as fare replacement.') + ' ' + esc('Match required is what the federal sources on the service need in non-federal funds at their share caps; match applied counts fares, state, local, private, and other funds plus match-only credits.');
   const svs = Object.values(R.svc).filter(s => s.cost > 0 || s.cash > 0 || s.s.plan).sort((a, b) => b.cost - a.cost);
   const y = svs.map(s => s.s.short);
   const traces = LEVEL_ORDER.filter(lv => svs.some(s => s.byLevel[lv])).map(lv => ({ type: 'bar', orientation: 'h', name: LEVELS[lv].label, y, x: svs.map(s => s.byLevel[lv]), marker: { color: LEVELS[lv].color, line: { color: '#fff', width: 1 } }, hovertemplate: '%{x:$,.0f}' }));
@@ -7477,7 +7598,7 @@ function resultsAgency() {
   $('gridResults').hidden = false; $('resCards').hidden = true;
   $('resTitle').textContent = `Results by agency, ${YEARS[YEAR]}`;
   $('resNote').textContent = 'Revenue each agency receives, the cost of the services it operates, and its ending balance. Hatched federal funds exceed the federal share cap.';
-  $('resSource').textContent = 'Ending balance is revenue, plus any surplus carried from the prior year when carryover is on, minus federal funds above the share cap, minus the cost of services operated. Match-only credits are excluded from revenue.';
+  $('resSource').textContent = 'Ending balance is revenue, plus any surplus carried from the prior year when carryover is on, minus federal funds set aside for other eligible uses, minus the cost of services operated. Match-only credits are excluded from revenue.';
   chartAgencyInto('chResults', R, true);
   const rows = AGENCIES.filter(a => R.agency[a.id].cost || R.agency[a.id].revTotal).map(a => { const A = R.agency[a.id]; return Object.assign({ id: a.id, name: a.name, cost: A.cost, revTotal: A.revTotal, applied: A.applied, unallocated: A.unallocated, balance: A.balance, fedExcess: A.fedExcess, carryIn: A.carryIn, routeGap: A.routeGap, risk: A.risk, nSvc: A.nSvc }, A.rev); });
   const cols = [
@@ -7486,7 +7607,7 @@ function resultsAgency() {
     numCol({ field: 'cost', headerName: 'Cost', width: 118 }),
     ...LEVEL_ORDER.map(k => numCol({ field: k, headerName: LEVELS[k].label, width: 112, valueFormatter: p => p.value ? money(p.value) : '' })),
     numCol({ field: 'revTotal', headerName: 'Revenue', width: 122 }),
-    numCol({ field: 'fedExcess', headerName: 'Federal above share cap', width: 150, valueFormatter: p => p.value > 0.5 ? money(-p.value) : '' }),
+    numCol({ field: 'fedExcess', headerName: 'Federal, other eligible uses', width: 190, valueFormatter: p => p.value > 0.5 ? money(-p.value) : '' }),
     numCol({ field: 'carryIn', headerName: 'Carried from prior year', width: 150, valueFormatter: p => p.value > 0.5 ? money(p.value) : '' }),
     numCol({ field: 'balance', headerName: 'Ending balance', width: 130, cellClass: p => 'num ' + (p.value < -1 ? 'c-error' : '') }),
     numCol({ field: 'unallocated', headerName: 'Not applied', width: 118 }),
@@ -7499,39 +7620,50 @@ function resultsAgency() {
 }
 function resultsJuris() {
   $('resTitle').textContent = `Results by jurisdiction, ${YEARS[YEAR]}`;
-  $('resNote').textContent = 'Each service\'s cost is split among the jurisdictions it runs in, by service miles. "Cost left for local funds" is the share of cost minus the federal, state, private, and fare funding applied to it. "Paid by the jurisdiction" is the local funding tagged to that jurisdiction. A negative difference means the jurisdiction is estimated to pay less than the local cost of its share.';
-  $('resSource').textContent = 'Illustrative: most jurisdiction miles are placeholders (equal splits). Contributions count local sources by the jurisdiction picked as their funding level in Details. Town of Truckee contributes to routes attributed to Nevada County and Placer County.';
-  const js = JURIS.filter(j => R.juris[j.id].cost || R.juris[j.id].contrib);
+  $('resNote').textContent = 'Each service\'s cost is split among the jurisdictions it runs in, by service miles. "Unfunded balance of service" is the share of cost minus the federal, state, private, and fare funding applied to it. "Contributed by jurisdiction" is the local funding tagged to that jurisdiction. A negative difference means the jurisdiction is estimated to contribute less than the unfunded balance of its share.';
+  $('resSource').textContent = 'Illustrative: most jurisdiction miles are placeholders (equal splits). Contributions count local sources by the jurisdiction picked as their funding level in Details. Nevada County and Town of Truckee show as one group. Routes to Truckee carry a Nevada County share until miles by jurisdiction arrive.';
+  const js = R.jurView;
   const x = js.map(j => j.short);
+  // One stacked bar per jurisdiction: other funds, then its own contribution, then what is still unfunded. The marker is the cost of its service.
+  const JJ = js;
+  const byMember = js.map(j => j.members.length > 1 ? '<br>' + j.members.map(mm => `${mm.name}: ${moneyShort(mm.contrib)}`).join('<br>') : '');
+  const gap = JJ.map(J => Math.max(0, J.cost - J.nonLocal - J.contrib));
   Plotly.react('chResults', [
-    { type: 'bar', name: 'Cost left for local funds', x, y: js.map(j => R.juris[j.id].need), marker: { color: COST_COLOR }, hovertemplate: '%{y:$,.0f}' },
-    { type: 'bar', name: 'Paid by the jurisdiction', x, y: js.map(j => R.juris[j.id].contrib), marker: { color: LEVELS.local.color }, hovertemplate: '%{y:$,.0f}' }
-  ], layout({ barmode: 'group', height: 340, hovermode: 'x unified', xaxis: { type: 'category' }, yaxis: { tickprefix: '$', tickformat: '~s' }, bargap: 0.3, bargroupgap: 0.08 }), PCFG);
+    { type: 'bar', name: 'Federal, state, private, and fares', x, y: JJ.map(J => J.nonLocal), marker: { color: LEVELS.federal.color, line: { color: '#fff', width: 1.5 } }, hovertemplate: '%{y:$,.0f}' },
+    { type: 'bar', name: 'Contributed by jurisdiction', x, y: JJ.map(J => J.contrib), customdata: byMember, marker: { color: LEVELS.local.color, line: { color: '#fff', width: 1.5 } }, hovertemplate: '%{y:$,.0f}%{customdata}' },
+    { type: 'bar', name: 'Still unfunded', x, y: gap, marker: { color: '#fff', pattern: { shape: '/', fgcolor: COST_COLOR, bgcolor: '#fff', size: 7, solidity: 0.35 }, line: { color: COST_COLOR, width: 1 } }, hovertemplate: '%{y:$,.0f}' },
+    // Cost of service: a thick dashed line drawn wider than each bar, labeled with its amount. The two scatter traces carry the legend entry and the hover value.
+    { type: 'scatter', mode: 'lines', name: 'Cost of service', x: [x[0]], y: [null], line: { color: COST_COLOR, width: 3, dash: 'dash' }, hoverinfo: 'skip' },
+    { type: 'scatter', mode: 'markers', name: 'Cost of service', showlegend: false, x, y: JJ.map(J => J.cost), marker: { size: 1, color: 'rgba(0,0,0,0)' }, hovertemplate: '%{y:$,.0f}' }
+  ], layout({ barmode: 'stack', height: 380, hovermode: 'x unified', xaxis: { type: 'category' }, yaxis: { tickprefix: '$', tickformat: '~s' }, bargap: 0.35, legend: { orientation: 'h', x: 0, y: -0.16, traceorder: 'normal' },
+    shapes: JJ.map((J, i) => ({ type: 'line', xref: 'x', yref: 'y', x0: i - 0.42, x1: i + 0.42, y0: J.cost, y1: J.cost, line: { color: COST_COLOR, width: 3, dash: 'dash' }, layer: 'above' })),
+    annotations: JJ.map((J, i) => ({ x: i, y: J.cost, xref: 'x', yref: 'y', text: 'Cost ' + moneyShort(J.cost).replace(' million', 'M'), showarrow: false, yshift: 11, font: { size: 12, color: COST_COLOR }, bgcolor: 'rgba(255,255,255,0.85)', borderpad: 1 })) }), PCFG);
   // Services in each jurisdiction: all of a service when its miles are entirely there, otherwise a portion with its share
-  const svcList = jid => {
-    const vs = Object.values(R.svc).filter(v => v.cost > 0).map(v => ({ n: v.s.short, f: fracJur(v.s, jid) })).filter(o => o.f > 0.0005);
+  const svcList = ids => {
+    const vs = Object.values(R.svc).filter(v => v.cost > 0).map(v => ({ n: v.s.short, f: sum(ids.map(id => fracJur(v.s, id))) })).filter(o => o.f > 0.0005);
     const all = vs.filter(o => o.f >= 0.9995).map(o => o.n), part = vs.filter(o => o.f < 0.9995).map(o => `${o.n} (${pct(o.f, 0)})`);
     return [all.length ? `All of ${all.join(', ')}.` : '', part.length ? `Portions of ${part.join(', ')}.` : ''].filter(Boolean).join(' ') || 'No service attributed.';
   };
-  const rows = js.map(j => { const J = R.juris[j.id]; return { id: j.id, name: j.name, state: j.state, svcs: svcList(j.id),  cost: J.cost, nonLocal: J.nonLocal, need: J.need, local: J.local, contrib: J.contrib, diff: J.diff }; });
+  const rows = js.map(J => ({ id: J.id, name: J.name, state: J.state, svcs: svcList(J.ids), members: J.members, cost: J.cost, nonLocal: J.nonLocal, need: J.need, local: J.local, contrib: J.contrib, diff: J.diff }));
   const cols = [
     { field: 'name', headerName: 'Jurisdiction', minWidth: 200, flex: 1.2, pinned: 'left' },
     { field: 'state', headerName: 'State', width: 80, cellDataType: 'text', filter: 'agTextColumnFilter' },
     numCol({ field: 'cost', headerName: 'Cost of its share of service', width: 180, headerTooltip: 'Service cost split by the miles each service runs in the jurisdiction' }),
     numCol({ field: 'nonLocal', headerName: 'Other funds applied', width: 160, headerTooltip: 'Federal, state, private, and fare funding applied to that share' }),
-    numCol({ field: 'need', headerName: 'Cost left for local funds', width: 180, headerTooltip: 'Cost of its share minus other funds applied' }),
-    numCol({ field: 'contrib', headerName: 'Paid by the jurisdiction', width: 180, headerTooltip: 'Local funding tagged to this jurisdiction in Details' }),
-    numCol({ field: 'diff', headerName: 'Difference', width: 130, headerTooltip: 'Paid by the jurisdiction minus cost left for local funds. Negative means it pays less than the local cost of its share.', cellClass: p => 'num ' + (p.value < -1 ? 'c-warning' : '') })
+    numCol({ field: 'need', headerName: 'Unfunded balance of service', width: 180, headerTooltip: 'Cost of its share minus other funds applied' }),
+    numCol({ field: 'contrib', headerName: 'Contributed by jurisdiction', width: 180, headerTooltip: 'Local funding tagged to this jurisdiction in Details' }),
+    numCol({ field: 'diff', headerName: 'Difference', width: 130, headerTooltip: 'Contributed by jurisdiction minus unfunded balance of service. Negative means it contributes less than the unfunded balance of its share.', cellClass: p => 'num ' + (p.value < -1 ? 'c-warning' : '') })
   ];
   makeGrid('results', $('gridResults'), { columnDefs: cols, rowData: rows, getRowId: p => p.data.id, singleClickEdit: false });   // kept for the CSV export
-  // One card per jurisdiction, read top to bottom: cost, minus other funds, cost left for local funds, paid by the jurisdiction, difference
+  // One card per jurisdiction, read top to bottom: cost, minus other funds, unfunded balance of service, contributed by jurisdiction, difference
   $('gridResults').hidden = true; $('resCards').hidden = false;
   const m = v => (v < -0.5 ? MINUS : '') + '$' + Math.round(Math.abs(v)).toLocaleString('en-US');
   $('resCards').innerHTML = rows.map(r => `<div class="jur-card"><h4>${esc(r.name)} <span class="st">${esc(r.state)}</span></h4><p class="svcs">${esc(r.svcs)}</p><table><tbody>
       <tr><td>Cost of all service running in ${esc(r.name)}, by each route's share of miles</td><td>${m(r.cost)}</td></tr>
       <tr><td>Minus federal, state, private, and fare funding applied to those services</td><td>${m(-r.nonLocal)}</td></tr>
-      <tr class="sub"><td>Cost left for local funds</td><td>${m(r.need)}</td></tr>
-      <tr><td>Paid by the jurisdiction, local funding tagged to ${esc(r.name)}</td><td>${m(r.contrib)}</td></tr>
+      <tr class="sub"><td>Unfunded balance of service</td><td>${m(r.need)}</td></tr>
+      <tr><td>Contributed by jurisdiction, local funding tagged to ${esc(r.name)}</td><td>${m(r.contrib)}</td></tr>
+      ${r.members.length > 1 ? r.members.map(mm => `<tr class="mem"><td>${esc(mm.name)}</td><td>${m(mm.contrib)}</td></tr>`).join('') : ''}
       <tr class="dif ${r.diff < -1 ? 'neg' : ''}"><td>Difference</td><td>${m(r.diff)}</td></tr>
     </tbody></table></div>`).join('');
 }
@@ -7564,14 +7696,14 @@ function renderOutlook() {
   const cn = $('cliffNote');
   if (ends.length) {
     ends.sort((a, b) => a.lastY - b.lastY || b.lastAmt - a.lastAmt);
-    cn.innerHTML = `<h3>Funding cliffs</h3><p>These sources end within the plan period. No replacement funding is defined${supHtml([SRC_NUM.trpa])}. Treat them as the gap to plan for.</p>`
+    cn.innerHTML = `<h3>Funding cliffs</h3><p>These sources end within the plan period. No replacement funding is defined. Treat them as the gap to plan for.</p>`
       + `<ul>${ends.map(e => `<li><strong>${esc(e.name)}:</strong> ${moneyShort(e.lastAmt)} through ${YEARS[e.lastY]}</li>`).join('')}</ul>`;
     cn.hidden = false;
   } else cn.hidden = true;
   const as = S.assume;
   $('outlookAgNote').textContent = as.carry
     ? 'Surplus carried from the prior year, plus revenue, minus the cost of services operated. Each agency\'s surplus carries into the next year. Deficits do not carry. Bars below zero are deficits.'
-    : 'Revenue minus the cost of services operated, each year on its own. Carryover is off by default and can be turned on under Inputs and assumptions. Bars below zero are deficits.';
+    : 'Revenue minus the cost of services operated, each year on its own. Carryover is off by default and can be turned on under Service and funding inputs. Bars below zero are deficits.';
   chartOutlook('chOutlook', 400);
   const ags = AGENCIES.filter(a => SERIES.some(r => r.agency[a.id].cost || r.agency[a.id].revTotal));
   const traces = [], ann = [], n = ags.length, cols = Math.min(n, 4);
@@ -7592,7 +7724,7 @@ function renderOutlook() {
   const cm = v => { const a = Math.abs(v), sg = v < 0 ? MINUS : ''; return sg + '$' + (a >= 1e6 ? (a / 1e6).toFixed(2) + 'M' : a >= 1e3 ? Math.round(a / 1e3) + 'K' : Math.round(a)); };
   const tbl = (title, get, cls) => {
     const has = k => SERIES.some(r => (get(r)[k] || 0) > 0.5);
-    const cols = [['Cost', 'cost'], ['Revenue', 'revTotal']].concat(has('fedExcess') ? [['Above cap', 'fedExcess']] : []).concat(has('carryIn') ? [['Carried in', 'carryIn']] : []).concat([['Balance', 'balance']]);
+    const cols = [['Cost', 'cost'], ['Revenue', 'revTotal']].concat(has('fedExcess') ? [['Other uses', 'fedExcess']] : []).concat(has('carryIn') ? [['Carried in', 'carryIn']] : []).concat([['Balance', 'balance']]);
     return `<div class="${cls || ''}"><h4>${esc(title)}</h4><table><thead><tr><th></th>${cols.map(c => `<th>${c[0]}</th>`).join('')}</tr></thead><tbody>`
       + YEARS.map((yl, y) => { const A = get(SERIES[y]); return `<tr><td>${yl.replace('FY ', '')}</td>${cols.map(([, k]) => { const v = (A[k] || 0) * (k === 'fedExcess' ? -1 : 1);
           return `<td class="${k === 'balance' ? (v < -0.5 ? 'neg bal' : 'bal') : ''}">${Math.abs(v) < 0.5 && k !== 'balance' ? '' : cm(v)}</td>`; }).join('')}</tr>`; }).join('')
@@ -7601,7 +7733,7 @@ function renderOutlook() {
   const box = $('outlookTables'); box.style.setProperty('--n', cols);
   box.innerHTML = ags.map(a => tbl(a.short, R => R.agency[a.id])).join('') + tbl('Region', R => R.tot, 'region');
 }
-/* Revenue projections grid (Inputs and assumptions) */
+/* Revenue projections grid (Service and funding inputs) */
 function renderProjection() {
   const pcols = [
     { field: 'name', headerName: 'Funding source', pinned: 'left', minWidth: 230, flex: 1.4 },
@@ -7645,7 +7777,7 @@ function renderAgreements() {
   if (noneL.length) gaps.push(`<li><strong>Uncommitted partners.</strong> ${listWords(noneL.map(l => esc(l.name)))} contributed ${moneyShort(sum(noneL.map(l => l.prior)))} in FY 25-26 without a current commitment. Multi-year contribution agreements would let the plan count on them.</li>`);
   const one = Object.values(R.line).filter(L => L.l.enabled && L.amount > 0 && L.l.commitment === 'onetime');
   if (one.length) gaps.push(`<li><strong>Time-limited funds in ${YEARS[0]}.</strong> ${moneyShort(sum(one.map(L => L.amount)))} from ${listWords(one.map(L => esc(L.l.name)))} ends within the plan period. Identify successor funding before it ends.</li>`);
-  const jdiff = JURIS.filter(j => R.juris[j.id].need > 1 && R.juris[j.id].contrib < R.juris[j.id].need * 0.5).map(j => j.name);
+  const jdiff = R.jurView.filter(j => j.need > 1 && j.contrib < j.need * 0.5).map(j => j.name);
   if (jdiff.length) gaps.push(`<li><strong>Local shares not matched by contributions.</strong> At placeholder shares, ${listWords(jdiff)} contribute less than half of the local share of the service attributed to them. Use the jurisdiction results to test a funding allocation formula.</li>`);
   $('agreeGaps').innerHTML = gaps.length ? gaps.join('') : '<li>The model finds no agreement risks in this scenario.</li>';
 }
@@ -7702,11 +7834,40 @@ function addNewService() {
   logChange('service', id, 'include', null, true);
   refresh();
   $('nsName').value = ''; $('nsAmount').value = ''; $('nsJuris').querySelectorAll('input').forEach(x => { x.checked = false; });
-  toast(`Added ${name}. To fund it, choose ${YEARS[y0]} or later in the Fiscal year menu, then set its shares on Allocation and rules.`);
+  toast(`Added ${name}. To fund it, choose ${YEARS[y0]} or later in the Fiscal year menu, then set its shares on Funding allocations by service.`);
 }
 function removeNewService(id) {
   const i = S.services.findIndex(x => x.id === id); if (i < 0 || !S.services[i].user) return;
   logChange('service', id, 'include', true, null); S.services.splice(i, 1); refresh();
+}
+/* Flags and notes popup on Funding allocations by service: a cell shows the checks for one source on one service;
+   the Checks column shows every check for that source. Each check gets a plain explanation. */
+const RULE_HELP = {
+  'Federal share cap': 'Federal operating funds can pay only their federal share of a service\'s net cost, generally 50 percent (80 percent for ADA paratransit). The amount above that share cannot pay this service\'s operating cost. It can go to other eligible uses, such as capital or administration.',
+  'Local match': 'Federal funds need a non-federal match. The non-federal funds applied to this service are short of the match the federal funds require.',
+  'Eligible portion': 'The source can pay only for part of this service, such as its California or Nevada share. More than that portion is applied.',
+  'Over-allocated': 'Shares for this source add up to more than 100 percent, so more money is applied than the source has.',
+  'State restriction': 'The source can pay only for service in certain states, and this service runs elsewhere.',
+  'Jurisdiction restriction': 'The source can pay only for service in one jurisdiction, and this service has no miles there.',
+  'Route restriction': 'The source can pay only for certain routes, and this is not one of them.',
+  'Operator restriction': 'The source can pay only for certain operating agencies.',
+  'Service type restriction': 'The source can pay only for certain types of service, such as fixed route or paratransit.',
+  'Urban/rural restriction': 'The source can pay only for urban or only for rural service.',
+  'Federal eligibility': 'Federal funds cannot pay for a service that is not federalized.',
+  'Intended use': 'The source is meant for other services. This use is allowed but outside its stated intent.',
+  'State preference': 'The source is ideally used in another state. This use is allowed.',
+  'Jurisdiction preference': 'The source is ideally used in another jurisdiction. This use is allowed.'
+};
+function openFlags(lineId, svcId) {
+  const l = lineById(lineId); if (!l) return;
+  const list = R.issues.filter(i => i.line === lineId && (!svcId || i.svc === svcId) && i.sev !== 'info').sort((a, b) => (a.sev === 'error' ? 0 : 1) - (b.sev === 'error' ? 0 : 1));
+  if (!list.length) return;
+  const sv = svcId ? (R.svc[svcId] || {}).s : null;
+  $('dlgFlags').heading = sv ? `${l.name} on ${sv.name}` : `${l.name}: flags and notes`;
+  $('dlgFlagsBody').innerHTML = `<p class="note">${YEARS[YEAR]}. Flags mark a use that breaks a rule. Notes mark a use that is allowed but outside the source's intent.</p>`
+    + list.map(i => `<div class="callout" style="margin:0.45rem 0">${sevBadge(i.sev)} <strong>${esc(i.rule)}</strong>${!svcId && i.svcName ? ' · ' + esc(i.svcName) : ''}${i.amt ? ' · ' + money(i.amt) : ''}<br>${esc(i.msg)}${RULE_HELP[i.rule] ? `<br><span class="note">${esc(RULE_HELP[i.rule])}</span>` : ''}</div>`).join('')
+    + `<p class="note" style="margin-top:0.6rem">To fix a flag, change this source's shares in the grid, or select <em>Suggest allocation</em>. To change the source's rules, double-click its name to open Details.</p>`;
+  $('dlgFlags').open = true;
 }
 /* Changing a service's agency moves its cost. Offer to move the funding sources that pay only for that service.
    Sources that also pay for the old agency's other services, and the FTA 5307 split, stay put. */
@@ -7715,15 +7876,18 @@ function offerMoveSources(svc, from, to) {
   const used = S.lines.filter(l => l.enabled && l.recipient === from && ((R.line[l.id] || {}).pct || {})[svc.id] > 0.0005);
   const only = used.filter(l => l.amountMode !== 'fta5307' && R.line[l.id].pct[svc.id] >= 0.999);
   const shared = used.filter(l => !only.includes(l));
-  if (!only.length) { if (shared.length) toast(`${svc.name} moved to ${agShort(to)}. Its ${agShort(from)} funding also pays for other services and stays with ${agShort(from)}.`); return; }
+  const how = 'To change a funding source\'s receiving agency, open Details next to the source in Funding sources, on Service and funding inputs.';
+  if (!only.length) { if (used.length) toast(`${svc.name} moved to ${agShort(to)}. Its funding sources stay with ${agShort(from)}. ${how}`); return; }
   MOVE = { svc, from, to, only };
   const li = ls => ls.map(l => `<li>${esc(l.name)}, ${moneyShort(lineBase(S, l))}</li>`).join('');
-  const F = esc((AG[from] || {}).name || from), T = esc((AG[to] || {}).name || to), N = esc(svc.name);
+  const F = esc(agShort(from)), T = esc(agShort(to)), N = esc(svc.name);
   $('dlgMove').heading = `Move funding with ${svc.name}?`;
-  $('dlgMoveBody').innerHTML = `<p>${N} now belongs to ${T}. These ${F} funding sources pay only for ${N}. Move them to ${T} too?</p><ul class="submit-list">${li(only)}</ul>`
-    + (shared.length ? `<p>These sources also pay for other ${F} services. They stay with ${F}:</p><ul class="submit-list">${li(shared)}</ul>` : '')
-    + `<p>If you move the service only, its funding stays with ${F}. A source can pay only for its own agency's services, so ${N} shows a funding gap at ${T} and the money sits unspent at ${F}.</p>`
-    + `<p class="suggest-undo">Federal eligibility does not change. If ${T} is an FTA recipient and ${N} should be federalized, check Federalized in Services and operating costs.</p>`;
+  $('dlgMoveBody').innerHTML = `<p>${N} now belongs to ${T}. Its cost moved with it. Its funding sources still belong to ${F}, and a source can pay only for its own agency's services.</p>`
+    + `<p><strong>These ${F} sources pay only for ${N}.</strong> Move them to ${T} too?</p><ul class="submit-list">${li(only)}</ul>`
+    + (shared.length ? `<p>These ${F} sources also pay for other ${F} services. They stay with ${F}:</p><ul class="submit-list">${li(shared)}</ul>` : '')
+    + `<p class="suggest-undo">If you keep the funding with ${F}, ${N} shows a funding gap. ${how} If ${N} should use federal funds, check Federalized in Services and operating costs.</p>`;
+  $('dlgMoveNo').textContent = `Keep funding with ${agShort(from)}`;
+  $('dlgMoveYes').textContent = `Move funding to ${agShort(to)}`;
   $('dlgMove').open = true;
 }
 function doMoveSources() {
@@ -7737,24 +7901,44 @@ function netChanges() {
   const out = new Map();
   for (const c of S.changes) {   // newest first
     const k = c.entity + '|' + c.id + '|' + c.field;
-    if (!out.has(k)) out.set(k, { name: c.name, field: c.field, from: c.from, to: c.to, entity: c.entity, id: c.id }); else out.get(k).from = c.from;
+    if (!out.has(k)) out.set(k, { name: c.name, field: c.field, path: c.path || c.field, from: c.from, to: c.to, entity: c.entity, id: c.id }); else out.get(k).from = c.from;
   }
-  return [...out.values()].filter(c => !same(c.from, c.to));
+  return [...out.values()].filter(c => !same(c.from, c.to)).flatMap(expandChange);
+}
+/* Readable change rows. A funding split edit is stored as the whole share map; list it as one row per service whose share
+   changed, with the percent and FY 26-27 dollars, plus a row when the split method changed. Other edits pass through. */
+function expandChange(c) {
+  const path = c.path || c.field;
+  if (c.entity !== 'line' || !/^alloc(\.pct)?$/.test(path)) return [Object.assign({}, c, { path })];
+  const l = lineById(c.id), amt = l ? lineAmount(S, l, 0) : 0, whole = path === 'alloc';
+  const fA = whole ? (c.from || {}) : null, tA = whole ? (c.to || {}) : null;
+  const fp = whole ? fA.pct : (c.from || {}), tp = whole ? tA.pct : (c.to || {});
+  const method = a => a.mode === 'auto' ? 'By ' + BASIS[a.basis || 'vsh'] : 'By hand';
+  const share = v => v ? `${pct(v, 1)} (${money(v * amt)})` : 'none';
+  const out = [];
+  if (whole && method(fA) !== method(tA)) out.push(Object.assign({}, c, { path: 'alloc.mode', field: 'Split method', from: method(fA), to: method(tA) }));
+  if (fp && tp) for (const sid of [...new Set([...Object.keys(fp), ...Object.keys(tp)])]) {
+    const a = +fp[sid] || 0, b = +tp[sid] || 0; if (Math.abs(a - b) < 1e-9) continue;
+    out.push(Object.assign({}, c, { path: 'alloc.pct.' + sid, field: 'Share to ' + ((svcById(sid) || {}).name || sid), from: share(a), to: share(b) }));
+  }
+  return out;
 }
 /* Data updates go to a Survey123 survey (ArcGIS Online). The page posts one main record and one repeat row per change
    to the survey's feature service with applyEdits. Settings: dataUpdates in etl/seed/model.yaml. */
 const DU = (DATA && DATA.dataUpdates) || {};
 const changeLine = c => `${c.name}, ${c.field}: ${changeShow(c.from)} to ${changeShow(c.to)}`;
-function submitStage(done) {
+function submitStage(done, hasChanges) {
   $('dlgSubmitForm').hidden = done; $('dlgSubmitDone').hidden = !done;
   $('dlgSubmitOk').hidden = done; $('dlgSubmitCancel').hidden = done;
-  $('dlgSubmitKeep').hidden = !done; $('dlgSubmitReset').hidden = !done;
+  $('dlgSubmitKeep').hidden = !(done && hasChanges); $('dlgSubmitReset').hidden = !(done && hasChanges);
+  $('dlgSubmitClose').hidden = !(done && !hasChanges); $('dlgSubmitAsk').hidden = !hasChanges;
   $('dlgSubmitCopy').hidden = true;
 }
 function openSubmit() {
   const ch = netChanges();
-  $('dlgSubmitCount').innerHTML = `<strong>${ch.length} change${ch.length === 1 ? '' : 's'}</strong> from the source data:`;
-  $('dlgSubmitList').innerHTML = ch.map(c => `<li>${esc(changeLine(c))}</li>`).join('');
+  $('dlgSubmitCount').innerHTML = ch.length ? `<strong>${ch.length} change${ch.length === 1 ? '' : 's'}</strong> from the source data:` : '<strong>No data changes.</strong> You can still send comments or feedback below.';
+  $('dlgSubmitList').innerHTML = ch.map(c => `<li>${esc(changeLine(c))}</li>`).join(''); $('dlgSubmitList').hidden = !ch.length;
+  $('dlgSubmitHint').innerHTML = ch.length ? 'Check that the changes above are right. Select <em>Submit to TRPA</em> to send them with any comments.' : 'Select <em>Submit to TRPA</em> to send your comments.';
   if (!$('subAgency').options.length) $('subAgency').innerHTML = '<option value="">Choose one</option>'
     + [...AGENCIES.filter(a => a.id !== 'REGION').map(a => [a.id, a.name]), ...JURIS.map(j => [j.id, j.name]), ['TRPA', 'TRPA'], ['OTHER', 'Other']].map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('');
   $('dlgSubmitErr').textContent = '';
@@ -7768,13 +7952,13 @@ async function sendSubmit() {
   const name = $('subName').value.trim(), agency = $('subAgency').value, notes = $('subNotes').value.trim();
   if (!name || !agency) { $('dlgSubmitErr').textContent = 'Enter your name and your agency.'; return; }
   if (!DU.serviceUrl) { $('dlgSubmitErr').textContent = 'Submitting is not set up yet. Contact TRPA.'; return; }
-  const ch = netChanges(); if (!ch.length) { $('dlgSubmitErr').textContent = 'There are no changes to submit.'; return; }
+  const ch = netChanges(); if (!ch.length && !notes) { $('dlgSubmitErr').textContent = 'Enter a comment, or change a value in the model, before submitting.'; return; }
   const gid = newGuid();
   const main = { globalid: gid, submitter_name: cut(name, 100), agency, notes: cut(notes, 4000), change_count: ch.length,
     change_summary: cut(ch.map(changeLine).join('\n'), 20000), review_status: 'new' };
   const rows = ch.map(c => ({ globalid: newGuid(), parentglobalid: gid, item_name: cut(c.name, 255), change_field: cut(c.field, 255),
-    from_value: cut(changeShow(c.from), 1000), to_value: cut(changeShow(c.to), 1000), entity: cut(c.entity, 50), item_id: cut(c.id, 100) }));
-  const edits = [{ id: +(DU.layerId ?? 0), adds: [{ attributes: main }] }, { id: +(DU.tableId ?? 1), adds: rows.map(a => ({ attributes: a })) }];
+    from_value: cut(changeShow(c.from), 1000), to_value: cut(changeShow(c.to), 1000), entity: cut(c.entity, 50), item_id: cut(c.id + '|' + c.path, 100) }));
+  const edits = [{ id: +(DU.layerId ?? 0), adds: [{ attributes: main }] }].concat(rows.length ? [{ id: +(DU.tableId ?? 1), adds: rows.map(a => ({ attributes: a })) }] : []);
   const body = new URLSearchParams({ f: 'json', useGlobalIds: 'true', rollbackOnFailure: 'true', edits: JSON.stringify(edits) });
   $('dlgSubmitOk').loading = true;
   try {
@@ -7783,8 +7967,10 @@ async function sendSubmit() {
     if (js.error) throw new Error(js.error.message || 'the survey refused the submission');
     const bad = (Array.isArray(js) ? js : []).flatMap(l => (l.addResults || []).filter(r => !r.success));
     if (!Array.isArray(js) || bad.length) throw new Error(bad.length ? (bad[0].error || {}).description || 'some changes were not saved' : 'unexpected response');
-    $('dlgSubmitN').textContent = `${ch.length} change${ch.length === 1 ? '' : 's'}`;
-    submitStage(true);
+    $('dlgSubmitN').textContent = [ch.length ? `${ch.length} data change${ch.length === 1 ? '' : 's'}` : '', notes ? 'comments' : ''].filter(Boolean).join(' and ')
+      + (ch.length ? '. Submitted changes are typically incorporated within a few days.' : '. Thank you for the feedback.');
+    if (notes) $('subNotes').value = '';
+    submitStage(true, ch.length > 0);
   } catch (err) {
     $('dlgSubmitErr').textContent = `The submission did not go through (${err.message}). Your edits are still here. Try again, or select Copy change list and send it to TRPA.`;
     $('dlgSubmitCopy').hidden = false;
@@ -7792,14 +7978,14 @@ async function sendSubmit() {
 }
 function copySubmit() {
   const text = ['Data update request for the Regional Transit Funding Model', `Name: ${$('subName').value.trim()}`, `Agency: ${$('subAgency').selectedOptions[0] ? $('subAgency').selectedOptions[0].textContent : ''}`, '', ...netChanges().map(c => '- ' + changeLine(c))]
-    .concat($('subNotes').value.trim() ? ['', 'Notes:', $('subNotes').value.trim()] : []).join('\n');
+    .concat($('subNotes').value.trim() ? ['', 'Comments or feedback:', $('subNotes').value.trim()] : []).join('\n');
   const done = () => toast(`Copied. Send it to ${DU.contact || 'TRPA'}.`);
   const fallback = () => { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (x) {} t.remove(); };
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
 }
 const changeShow = v => v == null ? 'blank' : typeof v === 'object' ? (v.pct ? Object.entries(v.pct).map(([k, x]) => `${svcShort(k)} ${pct(x)}`).join(', ') || 'none' : Object.entries(v).map(([k, x]) => `${k} ${typeof x === 'number' && x <= 1 ? pct(x) : (typeof x === 'object' ? JSON.stringify(x) : x)}`).join(', ')) : typeof v === 'number' ? (Math.abs(v) < 1.5 && v % 1 !== 0 ? pct(v, 2) : v.toLocaleString('en-US', { maximumFractionDigits: 2 })) : String(v);
 function renderChanges() {
-  const rows = S.changes.map((ch, i) => ({ id: String(i), t: ch.t, name: ch.name, field: ch.field, from: ch.from, to: ch.to }));
+  const rows = S.changes.flatMap(expandChange).map((ch, i) => ({ id: String(i), t: ch.t, name: ch.name, field: ch.field, from: ch.from, to: ch.to }));
   const show = changeShow;
   makeGrid('changes', $('gridChanges'), { singleClickEdit: false, rowData: rows, columnDefs: [
     { field: 't', headerName: 'When', width: 150, valueFormatter: p => new Date(p.value).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) },
@@ -7808,10 +7994,10 @@ function renderChanges() {
     { field: 'to', headerName: 'To', minWidth: 110, flex: 1, valueFormatter: p => show(p.value), tooltipValueGetter: p => show(p.value) }], overlayNoRowsTemplate: '<span class="note">No changes yet. Edits users make anywhere in the model are listed here.</span>' });
 }
 function renderAssumptions() {
-  $('srcFiles').innerHTML = SOURCES.map((s, i) => `<li id="src-${i + 1}"><strong>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>` : esc(s.name)}</strong>${s.note ? '. ' + esc(s.note) : ''}${(s.links || []).length ? `. Published version: ${s.links.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`).join(', ')}` : ''}</li>`).join('');
+  $('srcFiles').innerHTML = SOURCES.map((s, i) => `<li id="src-${i + 1}"><strong>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(monthYear(s.name))}</a>` : esc(monthYear(s.name))}</strong>${s.note ? '. ' + esc(monthYear(s.note)) : ''}${s.items ? `<ul class="src-items">${s.items.map(x => `<li>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(monthYear(x.name))}</a>` : esc(monthYear(x.name))}${x.note ? '. ' + esc(monthYear(x.note)) : ''}</li>`).join('')}</ul>` : ''}</li>`).join('');
 }
 
-/* ── Inputs and assumptions ── */
+/* ── Service and funding inputs ── */
 function renderInputs() {
   renderLive();
   renderPresets();
@@ -7826,7 +8012,7 @@ const deficitList = (RR) => { const d = AGENCIES.filter(a => RR.agency[a.id].bal
 /* User input changes: the list of edits, and on the outlook pages their effect on agency balances and checks. */
 function changesListHtml() {
   const ch = netChanges();
-  if (!ch.length) return '<p class="note">No changes from the source data. Edit a blue cell on Inputs and assumptions to start.</p>';
+  if (!ch.length) return '<p class="note">No changes from the source data. Edit a blue cell on Service and funding inputs to start.</p>';
   const li = c => `<li><strong>${esc(c.name)}</strong>, ${esc(c.field)}: ${esc(changeShow(c.from))} to ${esc(changeShow(c.to))}</li>`;
   const first = ch.slice(0, 8), rest = ch.slice(8);
   return `<p class="note">${ch.length} change${ch.length === 1 ? '' : 's'} from the source data. Select Reset at the top of the page to undo them all.</p>`
@@ -7873,20 +8059,20 @@ function renderPresets() {
       const edp = isEdited('assume', 'assume', 'assume.peak30Start') ? ' edited' : '';
       opts = `<div class="preset-opts"><span class="po-head">Start of service, used only when this preset is applied</span>
         <label class="fld">First fiscal year of 30-minute service<select data-peak-start class="${edp}">${YEARS.map((yr, i) => `<option value="${i}"${i === y0 ? ' selected' : ''}>${yr}</option>`).join('')}</select></label>
-        <span class="hint">Defaults to ${YEARS[1]}, so the improvement is not in the current fiscal year${supHtml([SRC_NUM.trpa2])}. Earlier years run today's 60-minute service.</span></div>`;
+        <span class="hint">Defaults to ${YEARS[1]}, so the improvement is not in the current fiscal year. Earlier years run today's 60-minute service.</span></div>`;
     }
     if (p.compare && fx.cmp) {
       const c = fx.cmp, ar = (v, f) => v[0] === v[1] || Math.abs(v[0] - v[1]) < 1 ? `${f(v[0])}, no change` : `<span class="chg">${f(v[0])} → ${f(v[1])}</span>`;
       const n = v => String(v), m = v => moneyShort(v);
       const list = c.diff.length ? c.diff.map(([k2, d]) => `${esc(k2)} (${d > 0 ? '+' : MINUS}${Math.abs(d)})`).join('; ') : 'none';
-      extra = `<span class="pe"><strong>Separate vs consolidated, both under the rules-based allocation:</strong> FY 26-27 flags ${ar(c.flags, n)}. Notes ${ar(c.notes, n)}. TTD federal funds above the share cap ${ar(c.fedEx, m)}. TTD and Lake Link combined balance ${ar(c.bal0, m)} in FY 26-27 and ${ar(c.bal4, m)} in ${YEARS[4]}. Checks that change: ${list}.`
-        + (c.fedEx[1] > 1 ? ` The remaining ${moneyShort(c.fedEx[1])} in federal funds has no eligible operating use on any TTD service, merged or not.` : '') + `</span>`;
+      extra = `<span class="pe"><strong>Separate vs consolidated, both under the rules-based allocation:</strong> FY 26-27 flags ${ar(c.flags, n)}. Notes ${ar(c.notes, n)}. TTD federal funds for other eligible uses ${ar(c.fedEx, m)}. TTD and Lake Link combined balance ${ar(c.bal0, m)} in FY 26-27 and ${ar(c.bal4, m)} in ${YEARS[4]}. Checks that change: ${list}.`
+        + (c.fedEx[1] > 1 ? ` The remaining ${moneyShort(c.fedEx[1])} in federal funds is set aside for other eligible uses on any TTD service, merged or not.` : '') + `</span>`;
       const mg = S.assume.merge || {}, edm = k => isEdited('assume', 'assume', 'assume.merge.' + k) ? ' edited' : '';
       opts = `<div class="preset-opts"><span class="po-head">Consolidation assumptions, used only when this preset is applied</span>
         <label class="fld">SSTMA admin cost removed ($ per year)<input type="number" step="1000" min="0" data-merge="adminSavings" value="${+mg.adminSavings || 0}" class="${edm('adminSavings')}" /></label>
         <label class="fld">Lake Link partner funds kept (%)<input type="number" step="5" min="0" max="100" data-merge="partnerKept" value="${Math.round((mg.partnerKept == null ? 1 : +mg.partnerKept) * 100)}" class="${edm('partnerKept')}" /></label>
         <label class="fld">Added federal compliance cost ($ per year)<input type="number" step="1000" min="0" data-merge="compliance" value="${+mg.compliance || 0}" class="${edm('compliance')}" /></label>
-        <span class="hint">Defaults change nothing: $0 admin removed, 100 percent of partner funds kept, and $0 compliance cost. SSTMA administration costs carry over to TTD by default${supHtml([SRC_NUM.trpa2])}. The VRH Rates tab's Lake Link rate includes $92,490 in fixed contract and administration costs${supHtml([SRC_NUM.v1g])}. Partner funds are the Lake Link private contributions.</span></div>`;
+        <span class="hint">Defaults change nothing: $0 admin removed, 100 percent of partner funds kept, and $0 compliance cost. SSTMA administration costs carry over to TTD by default. The VRH Rates tab's Lake Link rate includes $92,490 in fixed contract and administration costs${supHtml([SRC_NUM.v1g])}. Partner funds are the Lake Link private contributions.</span></div>`;
     }
     return `<label class="preset${on ? ' on' : ''}"><input type="checkbox" data-preset="${k}" ${on ? 'checked' : ''} /><span class="pt">${esc(p.name)}</span><span class="pd">${esc(p.desc)}${p.cite ? supHtml(p.cite()) : ''}</span><span class="pe"><strong>${head}</strong> ${eff}</span>${extra}</label>${opts}`;
   }).join('');
@@ -7961,12 +8147,12 @@ async function buildWorkbook() {
   ws.getCell('A1').value = 'Regional Transit Funding Model: scenario export'; ws.getCell('A1').font = { bold: true, size: 15, color: { argb: hexARGB(INK) } };
   const meta = [['Scenario', S.name || ''], ['Exported', new Date().toLocaleString('en-US')], ['Data build', `${BUILD.id} (${buildDate()})`],
     ['Values changed from source data', Object.keys(S.edited).length], ['Carry surpluses into the next year', as.carry ? 'Yes' : 'No'],
-    ['Federal funds above the federal share cap', as.fedExcess === 'count' ? 'Counted in the balance' : 'Excluded from the balance']]
+    ['Federal funds for other eligible uses (capital or administration)', as.fedExcess === 'count' ? 'Counted in the operating balance' : 'Left out of the operating balance']]
     .concat(AGENCIES.filter(a => a.id !== 'REGION').map(a => [`Opening balance, ${a.short}`, +(as.opening || {})[a.id] || 0]));
   meta.forEach((m, i) => { const r = ws.getRow(3 + i); r.getCell(1).value = m[0]; r.getCell(1).font = { bold: true }; r.getCell(2).value = m[1]; if (/^Opening/.test(m[0])) r.getCell(2).numFmt = XF.usd; });
   let r = 4 + meta.length;
   ws.getCell(`A${r}`).value = 'Region summary'; ws.getCell(`A${r}`).font = { bold: true, size: 13, color: { argb: hexARGB(INK) } };
-  const sm = [['Operating cost', 'cost'], ['Operating revenue', 'revTotal'], ['Less federal funds above the share cap', 'fedExcess', -1], ['Carried from prior year', 'carryIn'], ['Ending balance', 'balance'], ['Service plan elements not included', 'planAll'], ['Flags', 'nErr', 1, 'int'], ['Notes', 'nWarn', 1, 'int']];
+  const sm = [['Operating cost', 'cost'], ['Operating revenue', 'revTotal'], ['Less federal funds for other eligible uses', 'fedExcess', -1], ['Carried from prior year', 'carryIn'], ['Ending balance', 'balance'], ['Service plan elements not included', 'planAll'], ['Flags', 'nErr', 1, 'int'], ['Notes', 'nWarn', 1, 'int']];
   xTable(ws, [{ h: 'Measure', k: 'm', w: 44 }].concat(YEARS.map((yl, y) => ({ h: yl, k: o => o.v[y], f: null, w: 16 }))), sm.map(([m, k, sg]) => ({ m, v: SERIES.map(R => Math.round((R.tot[k] || 0) * (sg || 1))), _bold: k === 'balance' })), r + 1);
   for (let j = 0; j < sm.length; j++) for (let y = 0; y < 5; y++) ws.getRow(r + 2 + j).getCell(2 + y).numFmt = sm[j][3] === 'int' ? XF.int : XF.usd;
   r += sm.length + 3;
@@ -7974,7 +8160,7 @@ async function buildWorkbook() {
    'This workbook is a snapshot. Edits typed into it do not change the model.',
    'Federal operating funds can pay only their share of net cost, generally 50 percent and 80 percent for ADA paratransit.'].forEach((t, i) => { ws.getCell(`A${r + i}`).value = t; ws.getCell(`A${r + i}`).font = { italic: true, color: { argb: hexARGB(MUTED) } }; });
   // 2. Outlook by agency
-  const M = [['Cost', 'cost', 1], ['Revenue', 'revTotal', 1], ['Less federal above share cap', 'fedExcess', -1], ['Carried from prior year', 'carryIn', 1], ['Ending balance', 'balance', 1]];
+  const M = [['Cost', 'cost', 1], ['Revenue', 'revTotal', 1], ['Less federal, other eligible uses', 'fedExcess', -1], ['Carried from prior year', 'carryIn', 1], ['Ending balance', 'balance', 1]];
   const orows = [];
   for (const a of AGENCIES) { if (!SERIES.some(R => R.agency[a.id].cost || R.agency[a.id].revTotal)) continue; for (const [m, k, sg] of M) orows.push({ a: a.short, m, v: SERIES.map(R => R.agency[a.id][k] * sg), _bold: k === 'balance' }); }
   for (const [m, k, sg] of M) orows.push({ a: 'Region', m, v: SERIES.map(R => R.tot[k] * sg), _bold: true });
@@ -7987,7 +8173,7 @@ async function buildWorkbook() {
     .concat([{ h: 'Funding applied', k: 'total', f: 'usd' }, { h: 'Surplus or gap', k: 'gap', f: 'usd' }, { h: 'Federal share of net cost', k: 'fs', f: 'pct' }, { h: 'Match required', k: 'req', f: 'usd' }, { h: 'Match applied', k: 'avail', f: 'usd' }, { h: 'Flags', k: 'err', f: 'int', w: 10 }, { h: 'Notes', k: 'warn', f: 'int', w: 10 }]), srows);
   // 4. Results by jurisdiction, every year
   const jrows = [];
-  SERIES.forEach((R, y) => JURIS.filter(j => R.juris[j.id].cost || R.juris[j.id].contrib).forEach(j => { const J = R.juris[j.id]; jrows.push({ fy: YEARS[y], name: j.name, st: j.state, cost: J.cost, nonLocal: J.nonLocal, need: J.need, local: J.local, contrib: J.contrib, diff: J.diff }); }));
+  SERIES.forEach((R, y) => R.jurView.forEach(J => jrows.push({ fy: YEARS[y], name: J.name, st: J.state, cost: J.cost, nonLocal: J.nonLocal, need: J.need, local: J.local, contrib: J.contrib, diff: J.diff })));
   xSheet(wb, 'Results by jurisdiction', [{ h: 'Fiscal year', k: 'fy', w: 11 }, { h: 'Jurisdiction', k: 'name', w: 26 }, { h: 'State', k: 'st', w: 8 }, { h: 'Share of service cost', k: 'cost', f: 'usd', w: 16 }, { h: 'Federal, state, private, fares applied', k: 'nonLocal', f: 'usd', w: 20 }, { h: 'Local share after other funds', k: 'need', f: 'usd', w: 18 }, { h: 'Local funds applied (all)', k: 'local', f: 'usd', w: 16 }, { h: 'Own contributions', k: 'contrib', f: 'usd', w: 16 }, { h: 'Contributions minus local share', k: 'diff', f: 'usd', w: 18 }], jrows,
     'Most jurisdiction miles are equal-split placeholders. Treat these results as drafts.');
   // 5. Funding sources (inputs)
@@ -8010,9 +8196,9 @@ async function buildWorkbook() {
   const irows = []; SERIES.forEach((R, y) => R.issues.forEach(i => irows.push({ fy: YEARS[y], sev: i.sev === 'error' ? 'Flag' : i.sev === 'warning' ? 'Note' : 'Info', rule: i.rule, line: i.lineName, svc: i.svcName, ag: agShort(i.agency), amt: i.amt, msg: i.msg })));
   xSheet(wb, 'Rule checks', [{ h: 'Fiscal year', k: 'fy', w: 11 }, { h: 'Level', k: 'sev', w: 10 }, { h: 'Check', k: 'rule', w: 20 }, { h: 'Funding source', k: 'line', w: 34 }, { h: 'Service', k: 'svc', w: 12 }, { h: 'Agency', k: 'ag', w: 11 }, { h: 'Amount involved', k: 'amt', f: 'usd' }, { h: 'Detail', k: 'msg', w: 70 }], irows);
   // 9. Changes
-  xSheet(wb, 'Changes', [{ h: 'When', k: r => new Date(r.t).toLocaleString('en-US'), w: 22 }, { h: 'Item', k: 'name', w: 36 }, { h: 'Field', k: 'field', w: 26 }, { h: 'From', k: r => changeShow(r.from), w: 30 }, { h: 'To', k: r => changeShow(r.to), w: 30 }], S.changes);
+  xSheet(wb, 'Changes', [{ h: 'When', k: r => new Date(r.t).toLocaleString('en-US'), w: 22 }, { h: 'Item', k: 'name', w: 36 }, { h: 'Field', k: 'field', w: 26 }, { h: 'From', k: r => changeShow(r.from), w: 30 }, { h: 'To', k: r => changeShow(r.to), w: 30 }], S.changes.flatMap(expandChange));
   // 10. Sources
-  xSheet(wb, 'Sources', [{ h: 'No.', k: 'n', w: 6 }, { h: 'Source', k: 'name', w: 60 }, { h: 'What it provides', k: 'note', w: 80 }], SOURCES.map((s, i) => ({ n: i + 1, name: s.name, note: s.note })));
+  xSheet(wb, 'Sources', [{ h: 'No.', k: 'n', w: 6 }, { h: 'Source', k: 'name', w: 60 }, { h: 'What it provides', k: 'note', w: 80 }], SOURCES.map((s, i) => ({ n: i + 1, name: monthYear(s.name) + (s.items ? ': ' + s.items.map(x => monthYear(x.name)).join('; ') : ''), note: monthYear(s.note) })));
   return wb;
 }
 async function exportXlsx() {
@@ -8054,7 +8240,7 @@ function init() {
   loadState();
   recomputeBaseline(); recompute();
   showRebaseNote();
-  // Fiscal year menus on One-year outlook and Allocation and rules. They share one year and stay in sync.
+  // Fiscal year menus on One-year outlook and Funding allocations by service. They share one year and stay in sync.
   document.querySelectorAll('.yr-sel').forEach(ys => {
     ys.innerHTML = YEARS.map((y, i) => `<option value="${i}" ${i === YEAR ? 'selected' : ''}>${y}</option>`).join('');
     ys.addEventListener('change', () => { YEAR = +ys.value || 0; document.querySelectorAll('.yr-sel').forEach(o => { o.value = String(YEAR); }); refresh({ noSave: true }); });
@@ -8111,11 +8297,16 @@ function init() {
   $('btnExport').addEventListener('click', () => { exportXlsx().catch(err => toast('Export failed: ' + err.message)); });
   $('btnSubmit').addEventListener('click', openSubmit);
   $('newSvcBox').addEventListener('toggle', fillNewServiceForm);
+  $('newSvcBox').addEventListener('toggle', () => { if ($('newSvcBox').open && GRIDS.newsvc) GRIDS.newsvc.refreshCells({ force: true }); });
   $('in-peak').addEventListener('toggle', () => { if ($('in-peak').open && GRIDS.peak) GRIDS.peak.refreshCells({ force: true }); });
   $('nsAdd').addEventListener('click', addNewService);
   $('dlgMoveYes').addEventListener('click', doMoveSources);
+  $('dlgFlagsDone').addEventListener('click', () => { $('dlgFlags').open = false; });
+  $('dlgAllocOverOk').addEventListener('click', () => { $('dlgAllocOver').open = false; });
   $('dlgMoveNo').addEventListener('click', () => { MOVE = null; $('dlgMove').open = false; });
   $('dlgSubmitCancel').addEventListener('click', () => { $('dlgSubmit').open = false; });
+  $('dlgSubmitClose').addEventListener('click', () => { $('dlgSubmit').open = false; });
+  $('subNotes').addEventListener('input', () => { $('dlgSubmitErr').textContent = ''; });
   $('dlgSubmitOk').addEventListener('click', () => { sendSubmit(); });
   $('dlgSubmitKeep').addEventListener('click', () => { $('dlgSubmit').open = false; toast('Submitted. Your edits are still in this browser.'); });
   $('dlgSubmitReset').addEventListener('click', () => { $('dlgSubmit').open = false; S = makeDefaults(); REBASE = null; showRebaseNote(); resetGrids(); refresh(); toast('Submitted, and reset to the source data.'); });

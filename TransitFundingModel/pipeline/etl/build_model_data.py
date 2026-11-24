@@ -518,6 +518,9 @@ class Build:
                         pending_minus.append((l, rt, val, keep, where))
                     else:
                         l["amount"] = self.resolve(where, "amount", l.get("amount"), val, keep)
+                    kc = ((keep or {}).get("amount") or {}).get("cite") if isinstance((keep or {}).get("amount"), dict) else None
+                    if kc:   # a kept amount can name its own source (keep.amount.cite)
+                        acite = kc
                     l.setdefault("cites", {})["amount"] = acite + ("; minus " + ", ".join(rt["minus"]) if rt.get("minus") else "")
                     parts.append(f"FY 26-27 amount: {acite}")
                 k = (keep or {}).get("alloc")
@@ -645,9 +648,9 @@ class Build:
         data = {
             "schema": m["schema"], "modelVersion": m["modelVersion"],
             "sourceFiles": m["sourceFiles"], "sourceFileNotes": m["sourceFileNotes"],
-            "sourceFileLinks": m.get("sourceFileLinks", {}),
+            "sourceFileUrls": m.get("sourceFileUrls", {}), "sourceFileGroups": m.get("sourceFileGroups", []),
             "references": m.get("references", {}), "scenarios": m.get("scenarios", {}),
-            "sourceGroups": m.get("sourceGroups", {}), "dataUpdates": m.get("dataUpdates", {}),
+            "sourceGroups": m.get("sourceGroups", {}), "ungroupPrograms": m.get("ungroupPrograms", []), "dataUpdates": m.get("dataUpdates", {}),
             "agencies": m["agencies"], "jurisdictions": m["jurisdictions"],
             "services": services, "operators": operators, "lines": lines, "fta": fta,
             "dataNotes": self.seed["notes"]["dataNotes"], "agreements": self.seed["notes"]["agreements"],

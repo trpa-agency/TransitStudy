@@ -5,33 +5,53 @@ sourceFiles:
   scen: Example Transit Financial Scenario Workbook.xlsx
   plan: Financial PlanG.xlsx
   v1g: Funding Model V1G.xlsx
-  sstma: SSTMA multijurisdiction transit services working model.xlsx
   fed: Federal Funds, Oct. 28, 2026.pdf
   state: State Funds, Oct. 28, 2026.pdf
   loc1: Local Funds 1 of 3, Oct. 28, 2026.pdf
   loc2: Local Funds 2 of 3, Oct. 28, 2026.pdf
   loc3: Local Funds 3 of 3, Oct. 28, 2026.pdf
+# Source groups on Sources and notes. Each group is one numbered source, and every citation to a member file shows the
+# group's number. The data still names the file, tab, and cell behind each value, and the build report traces every value.
+# Members can be source files (sourceFiles) or published documents (references). listMembers: true lists them under the
+# group, each linked: files by sourceFileUrls, documents by their url.
+sourceFileGroups:
+- key: memo
+  name: Transit Study Funding Memo Inputs
+  note: Working files prepared for the Tahoe Transit Study funding memo. They provide FY 26-27 operating costs, service statistics, operator rates, revenue amounts, and route allocations. They also provide the FTA split, match requirements, five-year revenue projections, and the state and local conditions on each route.
+  members: [plan, scen, v1g]
+- key: factSheets
+  name: Transit Study Funding Fact Sheets
+  note: TRPA's transit funding fact sheets, Oct. 28, 2026 versions. They give the amount, purpose, match, and restrictions for each federal, state, and local source.
+  members: [fed, state, loc1, loc2, loc3]
+  listMembers: true
+- key: tartSystemsPlan
+  name: TART 2025 Systems Plan Update
+  note: Placer County, November 18, 2025. Current TART frequency, the preferred service scenario, and the cost of 30-minute peak service.
+  members: [tartPlan, tartMemo]
+  listMembers: true
 sourceFileNotes:
   scen: State and local route conditions (costs tab). Its costs and rates are replaced by Funding Model V1G.
   plan: Revenue conditions and match notes (Revenue %s, columns B and C) and the five-year revenue tables (Tables A1 and A2). Its FY 26-27 
     amounts and shares are replaced by Funding Model V1G.
   v1g: 'Source of truth for existing transit data since Nov. 13, 2026: FY 26-27 revenue by source and agency, route allocations, and operating
     cost by route (Per Route Model Clean), service statistics (Operating Stats), operator rates (VRH Rates), and the FTA split.'
-  sstma: Multi-jurisdiction cost-share method (miles, hours, stops, ridership) and Lake Link zone structure.
   fed: Federal funding fact sheet (FY 25-26 budgeted amounts, purpose, match, restrictions).
   state: State funding fact sheet.
   loc1: Local funding fact sheet, part 1 of 3 (TART partners, Placer County TOT, Washoe RTC, Town of Truckee, TTD local appropriation).
   loc2: Local funding fact sheet, part 2 of 3 (Nevada State Parks, Tahoe Douglas Visitor Authority, NLTE partners, Lake Link public 
     partners).
   loc3: Local funding fact sheet, part 3 of 3 (Lake Link private partners).
-# Links to the fact sheets on trpa.gov (Oct. 28, 2026 versions, the newest). Each fact sheet in sourceFiles has one.
-sourceFileLinks:
-  fed: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/FederalFunds-10.28.2026.pdf'}]
-  state: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/StateFunds-10.28.2026.pdf'}]
-  loc1: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/LocalFunds1of3-7columns-10.28.2026.pdf'}]
-  loc2: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/LocalFunds2of3-7columns-10.28.2026.pdf'}]
-  loc3: [{label: Open the PDF, url: 'https://www.trpa.gov/wp-content/uploads/LocalFunds3of3-6columns-10.28.2026.pdf'}]
-# Published documents cited in the model, numbered after the workbooks, fact sheets, and TRPA direction.
+# Link for each source's title on Sources and notes. TRPA direction links to the repo copies on GitHub. Fact sheets link to
+# the Oct. 28, 2026 versions on trpa.gov. The study workbooks show as one group with no link (sourceFileGroups).
+sourceFileUrls:
+  fed: https://www.trpa.gov/wp-content/uploads/FederalFunds-10.28.2026.pdf
+  state: https://www.trpa.gov/wp-content/uploads/StateFunds-10.28.2026.pdf
+  loc1: https://www.trpa.gov/wp-content/uploads/LocalFunds1of3-7columns-10.28.2026.pdf
+  loc2: https://www.trpa.gov/wp-content/uploads/LocalFunds2of3-7columns-10.28.2026.pdf
+  loc3: https://www.trpa.gov/wp-content/uploads/LocalFunds3of3-6columns-10.28.2026.pdf
+  trpa: 'https://github.com/trpa-agency/TransitStudy/blob/main/TransitFundingModel/docs/Domain%20Lead%20Answers%202026-10-23.md'
+  trpa2: 'https://github.com/trpa-agency/TransitStudy/blob/main/TransitFundingModel/docs/TRPA%20Answers%202026-11-13.md'
+# Published documents cited in the model, numbered after the source groups and TRPA answers. A document can belong to a group (sourceFileGroups).
 references:
   tartPlan:
     name: TART 2025 Systems Plan Update, Board presentation, Item 04A, Placer County Board of Supervisors, November 18, 2025
@@ -42,6 +62,18 @@ references:
     name: TART 2025 Systems Plan Update, staff report, Placer County Public Works, November 18, 2025
     note: Current 60-minute frequency on all TART fixed routes, and the peak-season and year-round 30-minute options.
     url: https://www.placer.ca.gov/DocumentCenter/View/99284/04A
+  ftaSplit:
+    name: Lake Tahoe FTA Sub-Allocation (5307, 5339, 5310), FY 26 full-year apportionments, TRPA
+    note: Earned-share split of the Lake Tahoe UZA apportionment by urban revenue miles, population, and ridership, and the 75 percent operations share of 5307. Same inputs as the V1G FTA Allocation Split tab.
+    url: https://www.trpa.gov/wp-content/uploads/FY26FTA-Full-Year-5307_5339_5310-ApportionmentFINAL.pdf
+  ftaMou:
+    name: Memorandum of Understanding between TMPO, Tahoe Transportation District, and Placer County on transit planning and programming of federal funds, 2016
+    note: Section 3 and Exhibit A set the 5307 and 5339 sub-allocation method. Exhibit A adds a base allocation per operator before the earned share. The FY 26 split uses earned share only.
+    url: https://www.trpa.gov/wp-content/uploads/Tahoe_Transit_MOU_Final-2017.pdf
+  ttdFpc20261104:
+    name: TTD Finance and Personnel Committee meeting packet, November 4, 2026
+    note: Attachment A, Transit Fund statement of operations for July and August 2026. Emerald Bay Shuttle (micro-transit) farebox revenue of $12,740 year to date against a board-approved FY 2027 budget of $25,000.
+    url: https://tahoetransportation.org/wp-content/uploads/2026/10/TTD-Finance-Comm-Mtg-Agenda-Packet-2026-11-4.pdf
 # Funding sources grid on Inputs and assumptions: lines are grouped by program into collapsible rows.
 # Map a line's program name to the group it shows under. Programs not listed group under their own name.
 sourceGroups:
@@ -52,6 +84,15 @@ sourceGroups:
   FTA 5339 (Lake Tahoe UZA): FTA 5339 Bus and Bus Facilities
   TDA LTF, TRPA apportionment: TDA Local Transportation Fund
   TDA STA, TRPA apportionment: TDA State Transit Assistance
+  Transient occupancy tax: Placer County TOT   # the only TOT in the model today
+# Groups are by funding program or type, never by what the money pays for. These program names describe a use,
+# so their lines show one by one (per TRPA review, Nov. 24, 2026).
+ungroupPrograms:
+  - Emerald Bay Shuttle pilot
+  - Lake Link funding agreement
+  - Lake Link partner contribution
+  - Resort contribution
+  - County contribution
 # Submit as a data update (header button on the full model): who receives the request email.
 dataUpdates:
   # Survey123 survey "Funding Model Data Update Request" (ArcGIS Online, survey item fc9a1ee7eeb843189f7b50de014abf60).
@@ -77,8 +118,8 @@ agencies:
   name: Tahoe Transportation District
   short: TTD
 - id: SSTMA
-  name: South Shore TMA (Lake Link)
-  short: Lake Link
+  name: South Shore Transportation Management Association (SSTMA)
+  short: SSTMA
 - id: TART
   name: Placer County TART
   short: TART
@@ -105,10 +146,15 @@ jurisdictions:
   name: Nevada County
   short: Nevada Co.
   state: CA
+  # Results by jurisdiction show Nevada County and Town of Truckee as one group (TRPA, Nov. 24, 2026).
+  # Routes to Truckee carry a Nevada County share until miles by jurisdiction arrive.
+  resultsName: Nevada County and Town of Truckee
+  resultsShort: Nevada Co. and Truckee
 - id: TRK
   name: Town of Truckee
   short: Truckee
   state: CA
+  resultsWith: NEV
 - id: DOU
   name: Douglas County
   short: Douglas

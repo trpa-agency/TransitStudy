@@ -2,9 +2,9 @@
 
 Reads the vetted page in model/ and writes two files to editions/dist/, then copies the public
 and full pages to the hosted folder named by publish_folder in config.yaml:
-  - the public edition: the Existing funding conditions page alone, fixed to the source data,
+  - the public edition: the Existing funding snapshot page alone, fixed to the source data,
     with a link to the full model in the header
-  - the full edition: the model page, with the same Existing funding conditions heading and note
+  - the full edition: the model page, with the same Existing funding snapshot heading and note
 
 The main build, the template, and model/ are not changed.
 Usage, from pipeline/:  propy editions/build_editions.py
@@ -43,9 +43,9 @@ def swap(s: str, old: str, new: str, what: str) -> str:
 
 
 def existing_page_text(s: str, cfg: dict) -> str:
-    """Heading and note on Existing funding conditions. Used by both editions."""
+    """Heading and note on Existing funding snapshot. Used by both editions."""
     ex = cfg["existing_page"]
-    s = swap(s, '<h2>Existing funding conditions, FY 26-27 <span class="upd fixed">Source data</span></h2>',
+    s = swap(s, '<h2>Existing funding snapshot, FY 26-27 <span class="upd fixed">Source data</span></h2>',
              f'<h2>{html.escape(ex["heading"], quote=False)}</h2>', "page heading")
     # The script still fills #exAsOf, so keep it as an empty hidden element and show the fixed text beside it.
     s = swap(s, '<p class="today-note" id="exAsOf"></p>',
@@ -89,12 +89,12 @@ def make_public(s: str, cfg: dict, full_file: str) -> str:
     s = swap(s, '">Beta</span>', f'">{html.escape(pub["status_label"], quote=False)}</span>', "status chip")
     s = cut(s, '<div class="scenario-bar">', '<main class="wrap">', "scenario bar")
 
-    # Keep only Existing funding conditions: no tab bar, no Overview, no other panels, no editing dialogs.
+    # Keep only Existing funding snapshot: no tab bar, no Overview, no other panels, no editing dialogs.
     s = cut(s, '<nav class="tabbar"', "  <!-- ═════════ EXISTING FUNDING CONDITIONS ═════════ -->", "tab bar and overview")
     s = cut(s, "  <!-- ═════════ INPUTS AND ASSUMPTIONS ═════════ -->", "</main>", "other panels")
     s = cut(s, "<!-- Funding source editor -->", "<!-- Source data", "editing dialogs")
     s = swap(s, 'id="panel-existing" data-panel="existing" aria-labelledby="tab-existing" hidden>',
-             'id="panel-existing" data-panel="existing" aria-label="Existing funding conditions">', "existing panel")
+             'id="panel-existing" data-panel="existing" aria-label="Existing funding snapshot">', "existing panel")
 
     s = existing_page_text(s, cfg)
 
@@ -102,14 +102,14 @@ def make_public(s: str, cfg: dict, full_file: str) -> str:
     s, n = re.subn(r'<sup class="cn">.*?</sup>', "", s)
     if n == 0:
         raise EditionError("citations: no superscripts found. The page layout changed; update build_editions.py.")
-    s = swap(s, "const supHtml = ns => ns.length ?", "const supHtml = ns => false ?", "citation helper")
+    s = swap(s, "const supHtml = ns => (ns = [...new Set(ns.filter(Boolean))]).length ?", "const supHtml = ns => false ?", "citation helper")
 
     # Source lines: name the study, not workbook tabs (config.yaml public.source_text).
     for i, r in enumerate(pub.get("source_text") or []):
         s = swap(s, r["find"], r["replace"], f"public source text {i + 1}")
 
     # Text that refers to editing or to other tabs.
-    s = swap(s, " Edit these on Inputs and assumptions.", "", "inventory note")
+    s = swap(s, " Edit these on Service and funding inputs.", "", "inventory note")
     s = swap(s, "User edits change the One-year outlook and Five-year outlook tabs. ", "", "existing conditions note")
 
     s = swap(s, "</head>", "<style>\n  /* public edition */\n"
@@ -117,7 +117,7 @@ def make_public(s: str, cfg: dict, full_file: str) -> str:
              "  .beta-chip { font-size: 1.1rem; padding: 0.15rem 0.75rem; color: var(--ct-red-text); border-color: var(--ct-red-text); background: var(--ct-red-light); }\n"
              "</style>\n</head>", "page head")
 
-    # Script: open on Existing funding conditions, controls removed above resolve to a no-op,
+    # Script: open on Existing funding snapshot, controls removed above resolve to a no-op,
     # and nothing is read from or saved to browser storage.
     s = swap(s, "let CURRENT_TAB = 'overview';", "let CURRENT_TAB = 'existing';", "start tab")
     s = swap(s, "  renderTab('overview');\n", "  renderTab('existing');\n", "start tab")
@@ -161,7 +161,7 @@ def main() -> int:
     (out / full_file).write_text(full, encoding="utf-8", newline="\n")
     print(f"Read {src}")
     print(f"  wrote {out / cfg['public']['file']} (public edition, {len(public):,} bytes)")
-    print(f"  wrote {out / full_file} (full edition, model page with the Existing funding conditions wording)")
+    print(f"  wrote {out / full_file} (full edition, model page with the Existing funding snapshot wording)")
     # Hosted copies in the site's docs folder. The public page links to the full page by file name, so both sit together.
     if cfg.get("publish_folder"):
         pub = (HERE / cfg["publish_folder"]).resolve()

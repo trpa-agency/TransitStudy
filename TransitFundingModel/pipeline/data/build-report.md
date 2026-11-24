@@ -1,6 +1,6 @@
-# Data build 20261123a
+# Data build 20261124a
 
-Built 2026-11-23T23:22:22.
+Built 2026-11-24T23:41:51.
 
 ## Workbooks
 
@@ -18,7 +18,7 @@ These came from the workbooks and replace the values stored in etl/seed. Copy th
 
 None.
 
-## Seed values held over the workbook (9)
+## Seed values held over the workbook (10)
 
 - Service 30: `dataYear` = '26-27 estimate' (workbook '26-27'). Data year label marks the estimate
 - Service TART-WS: `stateCond` = 'California route' (workbook 'Califorrnia route'). Spelling fixed; the workbook reads 'Califorrnia route'
@@ -26,6 +26,7 @@ None.
 - Source ttd-5310: `fedShare` = 0.8 (workbook 0.5). 80 percent federal share per TRPA (Oct. 23, 2026); Revenue %s lists 50 percent. Confirm with FTA
 - Source ttd-5310co: `matchText` = '20% non-federal' (workbook '50% non-federal'). 20 percent non-federal match per TRPA (Oct. 23, 2026); Revenue %s lists 50 percent
 - Source ttd-5310co: `fedShare` = 0.8 (workbook 0.5). 80 percent federal share per TRPA (Oct. 23, 2026); Revenue %s lists 50 percent. Confirm with FTA
+- Source ttd-fares30: `amount` = 25,000 (workbook 0). TTD FY 2027 farebox budget, per TRPA (Nov. 24, 2026). V1G shows $0
 - Source tart-5310: `matchText` = '20% non-federal' (workbook '50% non-federal'). 20 percent non-federal match per TRPA (Oct. 23, 2026); Revenue %s lists 50 percent
 - Source tart-5310: `fedShare` = 0.8 (workbook 0.5). 80 percent federal share per TRPA (Oct. 23, 2026); Revenue %s lists 50 percent. Confirm with FTA
 - Source tart-washoe: shares held in the seed. The route model puts Washoe RTC on Main Line; the model places it on the Main Line Nevada segment, the only service Washoe RTC funds

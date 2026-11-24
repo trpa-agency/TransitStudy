@@ -26,8 +26,8 @@ Start with `CLAUDE.md`. It gives the reading order, the rules for changing the m
 | `model/archive/` | Earlier versions of the model page |
 | `pipeline/` | Build pipeline: reads the workbooks and seed files, writes the model page. See its README. Rebuilt October 27, 2026. |
 | `model/archive/mockups/Transit Funding Tool Concepts.html` | Three Oct. 21 concept mockups for discussion, archived Nov. 16. Figures are out of date. Concept C toggles work. |
-| `source-data/workbooks/` | Funding Model V1G (the source of truth for existing transit data since Nov. 13, 2026), Financial PlanG, Example Transit Financial Scenario Workbook, SSTMA working model |
-| Fact sheets (Task 4a) | Not in this repo. The model cites the newest versions on trpa.gov, dated Oct. 28, 2026: Federal Funds, State Funds, and Local Funds in three parts (sources 5 to 9). The links are in `sourceFileLinks` in `pipeline/etl/seed/model.yaml` and on the Sources and notes tab |
+| `source-data/workbooks/` | Funding Model V1G (the source of truth for existing transit data since Nov. 13, 2026), Financial PlanG, Example Transit Financial Scenario Workbook, and the SSTMA working model (kept for reference, not cited) |
+| Fact sheets (Task 4a) | Not in this repo. The model cites the newest versions on trpa.gov, dated Oct. 28, 2026: Federal Funds, State Funds, and Local Funds in three parts (source 2, "Transit Study Funding Fact Sheets," which lists each one). The links are in `sourceFileUrls` in `pipeline/etl/seed/model.yaml` and on the Sources and notes tab |
 | `model/archive/prototype/` | Earlier prototype app (Oct. 20, archived Nov. 16): engine, three front ends, SQLite and JSON seed data, rules doc, tests. Out of date; see its own README. |
 
 ## Not in this folder
