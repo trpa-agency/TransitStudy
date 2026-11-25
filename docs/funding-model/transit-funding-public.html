@@ -5563,7 +5563,7 @@ window.TRANSIT_MODEL_DATA = {
  ],
  "build": {
   "id": "20261125a",
-  "builtAt": "2026-11-25T00:30:44",
+  "builtAt": "2026-11-25T00:43:45",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",
@@ -7377,32 +7377,102 @@ function netChanges() {
     const k = c.entity + '|' + c.id + '|' + c.field;
     if (!out.has(k)) out.set(k, { name: c.name, field: c.field, path: c.path || c.field, from: c.from, to: c.to, entity: c.entity, id: c.id }); else out.get(k).from = c.from;
   }
-  return [...out.values()].filter(c => !same(c.from, c.to)).flatMap(expandChange);
+  const net = [...out.values()].filter(c => !same(c.from, c.to));
+  // A funding source or service the user added is one row with its current settings, not one row per field
+  const added = new Map(), rest = [];
+  for (const c of net) {
+    const obj = c.entity === 'line' ? lineById(c.id) : c.entity === 'service' ? svcById(c.id) : null;
+    const isUser = /^user-src-/.test(c.id) || (obj && obj.user);
+    if ((c.entity === 'line' || c.entity === 'service') && isUser) { if (obj && !added.has(c.id)) added.set(c.id, addedRow(c.entity, obj)); continue; }
+    rest.push(c);
+  }
+  return [...added.values()].concat(rest.flatMap(expandChange).sort(changeOrder));
+}
+const CHANGE_ENTITY_ORDER = { service: 1, operator: 2, line: 3, fta: 4, tda: 5, assume: 6 };
+function changeOrder(a, b) {
+  const e = (CHANGE_ENTITY_ORDER[a.entity] || 9) - (CHANGE_ENTITY_ORDER[b.entity] || 9); if (e) return e;
+  const n = String(a.name).localeCompare(String(b.name)); if (n) return n;
+  const key = p => String(p || '').replace(/\d+/g, d => d.padStart(4, '0'));   // overrides.2 before overrides.10
+  return key(a.path).localeCompare(key(b.path));
+}
+function addedRow(entity, o) {
+  if (entity === 'line') {
+    const yrs = YEARS.map((y, i) => [y, lineAmount(S, o, i)]).filter(([, v]) => v > 0.5).map(([y, v]) => `${y} ${money(v)}`);
+    const sv = Object.keys((R.line[o.id] || {}).pct || {}).map(svcShort);
+    const parts = [`${(AG[o.recipient] || {}).short || o.recipient}`, (LEVELS[o.level] || {}).label || o.level, o.program, yrs.length ? yrs.join(', ') : 'no amount entered'];
+    if (o.level === 'federal' && o.fedShare != null) parts.push(`federal share cap ${pct(+o.fedShare, 0)}`);
+    if (o.level === 'federal' && o.fedShareADA != null) parts.push(`ADA federal share cap ${pct(+o.fedShareADA, 0)}`);
+    if (sv.length) parts.push('applied to ' + sv.join(', '));
+    return { name: o.name, field: 'New funding source', path: 'added', from: 'none', to: parts.filter(Boolean).join('; '), entity, id: o.id };
+  }
+  const parts = [(AG[o.agency] || {}).short || o.agency, o.startYear != null ? `starts ${YEARS[o.startYear]}` : '', o.startCost ? `${money(o.startCost)} a year` : o.vsh ? `${(+o.vsh).toLocaleString('en-US')} service hours` : '', TYPES[o.type] || o.type, AREAS[o.area] || o.area];
+  return { name: o.name, field: 'New service', path: 'added', from: 'none', to: parts.filter(Boolean).join('; '), entity, id: o.id };
+}
+/* Readable labels and values for change rows (the change list, the Changes record, Excel, and Survey123). */
+const CHANGE_LABELS = { matchText: 'Match requirement', purpose: 'Purpose', grantor: 'Grantor', program: 'Program', conditionText: 'Conditions', restrictionText: 'Restrictions',
+  commitNote: 'Commitment note', contributor: 'Contributing jurisdiction', juris: 'Jurisdiction miles', notes: 'Notes', startYear: 'Start year', startCost: 'Annual cost in the start year', enabled: 'Included', include: 'Included',
+  'rules.routes': 'Eligible services', 'rules.agencies': 'Eligible agencies', 'rules.types': 'Eligible service types', 'rules.areas': 'Eligible urban or rural', 'rules.states': 'Eligible states',
+  'rules.jurisdiction': 'Jurisdiction restriction', 'rules.preferStates': 'Preferred states', 'rules.preferRoutes': 'Preferred services', 'rules.preferJurisdiction': 'Preferred jurisdiction' };
+const HIDDEN_CHANGE_PATHS = new Set(['jurisMiles', 'user']);
+function changeLabel(c) { const p = c.path || c.field; return CHANGE_LABELS[p] || fieldLabel(p); }
+function changeValue(path, v) {
+  if ((v == null || v === '') && /^overrides\.\d+$/.test(path)) return 'projected amount';
+  if (v == null || v === '' || (Array.isArray(v) && !v.length)) return 'none';
+  if (typeof v === 'boolean') return v ? 'Yes' : 'No';
+  const last = String(path).split('.').pop();
+  const list = (arr, f) => (Array.isArray(arr) ? arr : Object.values(arr)).map(f).join(', ');
+  if (path === 'rules.routes' || path === 'rules.preferRoutes') return list(v, x => (svcById(x) || {}).short || x);
+  if (path === 'rules.agencies') return list(v, x => (AG[x] || {}).short || x);
+  if (path === 'rules.types') return list(v, x => TYPES[x] || x);
+  if (path === 'rules.areas') return list(v, x => AREAS[x] || x);
+  if (path === 'rules.states' || path === 'rules.preferStates') return list(v, x => STATE_NAMES[x] || x);
+  if (path === 'rules.jurisdiction' || path === 'rules.preferJurisdiction' || path === 'contributor') return (JUR[v] || {}).name || v;
+  if (path === 'level') return (LEVELS[v] || {}).label || v;
+  if (path === 'recipient' || path === 'agency') return (AG[v] || {}).name || v;
+  if (path === 'commitment') return (COMMIT[v] || {}).label || v;
+  if (path === 'status') return STATUS[v] || v;
+  if (path === 'area') return AREAS[v] || v;
+  if (path === 'type') return TYPES[v] || v;
+  if (path === 'operator') return (S.operators.find(o => o.id === v) || {}).name || v;
+  if (path === 'amountMode') return { manual: 'Typed amount', fta5307: 'FTA split formula', tda: 'TDA split formula' }[v] || v;
+  if (path === 'lastYear' || path === 'startYear') return YEARS[+v] || v;
+  if (path === 'juris' && typeof v === 'object') {
+    const vals = Object.values(v).map(Number), shares = vals.every(x => x <= 1);
+    return Object.entries(v).map(([k, x]) => `${(JUR[k] || {}).name || k} ${shares ? pct(+x, 0) : (+x).toLocaleString('en-US') + ' miles'}`).join(', ') + (shares ? ' (placeholder shares)' : '');
+  }
+  if (['fedShare', 'fedShareADA', 'growth', 'escal'].includes(last) && typeof v === 'number') return pct(v, v * 100 % 1 ? 2 : 0);
+  if (['amount', 'prior', 'cap', 'costOverride', 'startCost'].includes(last) || /^overrides\.\d+$/.test(path) || /^costSchedule\.\d+$/.test(path)) return typeof v === 'number' ? money(v) : changeShow(v);
+  if (['rate', 'rateOverride'].includes(last) && typeof v === 'number') return `$${v.toFixed(2)} per hour`;
+  if (['vsh', 'vsm', 'trips'].includes(last) && typeof v === 'number') return v.toLocaleString('en-US');
+  return changeShow(v);
 }
 /* Readable change rows. A funding split edit is stored as the whole share map; list it as one row per service whose share
-   changed, with the percent and FY 26-27 dollars, plus a row when the split method changed. Other edits pass through. */
+   changed, with the percent and FY 26-27 dollars, plus a row when the split method changed. Values are already text after this. */
 function expandChange(c) {
   const path = c.path || c.field;
-  if (c.entity === 'tda' && path === 'tda.sta.ttdShare99313') { const f = v => v == null || v === '' ? `FTA earned share (${pct(ftaShares(S).TTD, 2)})` : pct(+v, 2); return [Object.assign({}, c, { path, from: f(c.from), to: f(c.to) })]; }
-  if (c.entity === 'tda' && path === 'tda.ltf.ttd') { const f = v => money(+v); return [Object.assign({}, c, { path, from: f(c.from), to: f(c.to) })]; }
-  if (c.entity !== 'line' || !/^alloc(\.pct)?$/.test(path)) return [Object.assign({}, c, { path })];
+  if (HIDDEN_CHANGE_PATHS.has(path)) return [];
+  const live = c.entity === 'line' ? lineById(c.id) : c.entity === 'service' ? svcById(c.id) : c.entity === 'operator' ? S.operators.find(o => o.id === c.id) : true;
+  const name = live ? entityName(c.entity, c.id) : c.name;
+  if (c.entity === 'tda' && path === 'tda.sta.ttdShare99313') { const f = v => v == null || v === '' ? `FTA earned share (${pct(ftaShares(S).TTD, 2)})` : pct(+v, 2); return [Object.assign({}, c, { name, path, from: f(c.from), to: f(c.to) })]; }
+  if (c.entity === 'tda' && path === 'tda.ltf.ttd') { const f = v => money(+v); return [Object.assign({}, c, { name, path, from: f(c.from), to: f(c.to) })]; }
+  if (c.entity !== 'line' || !/^alloc(\.pct)?$/.test(path)) return [Object.assign({}, c, { name, path, field: changeLabel(c), from: changeValue(path, c.from), to: changeValue(path, c.to) })];
   const l = lineById(c.id), amt = l ? lineAmount(S, l, 0) : 0, whole = path === 'alloc';
   const fA = whole ? (c.from || {}) : null, tA = whole ? (c.to || {}) : null;
   const fp = whole ? fA.pct : (c.from || {}), tp = whole ? tA.pct : (c.to || {});
   const method = a => a.mode === 'auto' ? 'By ' + BASIS[a.basis || 'vsh'] : 'By hand';
   const share = v => v ? `${pct(v, 1)} (${money(v * amt)})` : 'none';
   const out = [];
-  if (whole && method(fA) !== method(tA)) out.push(Object.assign({}, c, { path: 'alloc.mode', field: 'Split method', from: method(fA), to: method(tA) }));
+  if (whole && method(fA) !== method(tA)) out.push(Object.assign({}, c, { name, path: 'alloc.mode', field: 'Split method', from: method(fA), to: method(tA) }));
   if (fp && tp) for (const sid of [...new Set([...Object.keys(fp), ...Object.keys(tp)])]) {
     const a = +fp[sid] || 0, b = +tp[sid] || 0; if (Math.abs(a - b) < 1e-9) continue;
-    out.push(Object.assign({}, c, { path: 'alloc.pct.' + sid, field: 'Share to ' + ((svcById(sid) || {}).name || sid), from: share(a), to: share(b) }));
+    out.push(Object.assign({}, c, { name, path: 'alloc.pct.' + sid, field: 'Share to ' + ((svcById(sid) || {}).name || sid), from: share(a), to: share(b) }));
   }
   return out;
 }
 /* Data updates go to a Survey123 survey (ArcGIS Online). The page posts one main record and one repeat row per change
    to the survey's feature service with applyEdits. Settings: dataUpdates in etl/seed/model.yaml. */
 const DU = (DATA && DATA.dataUpdates) || {};
-const changeLine = c => `${c.name}, ${c.field}: ${changeShow(c.from)} to ${changeShow(c.to)}`;
+const changeLine = c => c.path === 'added' ? `${c.name}, ${c.field}: ${c.to}` : `${c.name}, ${c.field}: ${changeShow(c.from)} to ${changeShow(c.to)}`;
 function submitStage(done, hasChanges) {
   $('dlgSubmitForm').hidden = done; $('dlgSubmitDone').hidden = !done;
   $('dlgSubmitOk').hidden = done; $('dlgSubmitCancel').hidden = done;
@@ -7490,7 +7560,7 @@ const deficitList = (RR) => { const d = AGENCIES.filter(a => RR.agency[a.id].bal
 function changesListHtml() {
   const ch = netChanges();
   if (!ch.length) return '<p class="note">No changes from the source data. Edit a blue cell on Service and funding inputs to start.</p>';
-  const li = c => `<li><strong>${esc(c.name)}</strong>, ${esc(c.field)}: ${esc(changeShow(c.from))} to ${esc(changeShow(c.to))}</li>`;
+  const li = c => c.path === 'added' ? `<li><strong>${esc(c.name)}</strong>, ${esc(c.field)}: ${esc(c.to)}</li>` : `<li><strong>${esc(c.name)}</strong>, ${esc(c.field)}: ${esc(changeShow(c.from))} to ${esc(changeShow(c.to))}</li>`;
   const first = ch.slice(0, 8), rest = ch.slice(8);
   return `<p class="note">${ch.length} change${ch.length === 1 ? '' : 's'} from the source data. Select Reset at the top of the page to undo them all.</p>`
     + `<ul class="chg-list">${first.map(li).join('')}</ul>`
