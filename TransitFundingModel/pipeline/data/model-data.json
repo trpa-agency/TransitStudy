@@ -55,6 +55,17 @@
    "listMembers": true
   },
   {
+   "key": "tda",
+   "name": "Transportation Development Act (TDA)",
+   "note": "California's TDA funds transit through the Local Transportation Fund, a quarter-cent sales tax returned to the county where it was collected, and State Transit Assistance, from the sales tax on diesel fuel. TRPA apportions both for the California side of the Tahoe region.",
+   "members": [
+    "tdaAlloc2627",
+    "tdaHandbookTrpa",
+    "tdaGuidebookCa"
+   ],
+   "listMembers": true
+  },
+  {
    "key": "tartSystemsPlan",
    "name": "TART 2025 Systems Plan Update",
    "note": "Placer County, November 18, 2025. Current TART frequency, the preferred service scenario, and the cost of 30-minute peak service.",
@@ -75,6 +86,21 @@
    "name": "TART 2025 Systems Plan Update, staff report, Placer County Public Works, November 18, 2025",
    "note": "Current 60-minute frequency on all TART fixed routes, and the peak-season and year-round 30-minute options.",
    "url": "https://www.placer.ca.gov/DocumentCenter/View/99284/04A"
+  },
+  "tdaAlloc2627": {
+   "name": "TRPA FY 2026-27 transit funding allocations staff report, November 2026",
+   "note": "LTF and STA allocations to TTD and TART for FY 26-27, prepared for the TRPA Governing Board's November 2026 meeting (Attachments A and B).",
+   "url": "https://www.trpa.gov/wp-content/uploads/Transportation-Committee-Agenda-Item-No.-5B-Consent-Calendar-Item-No.-6A-Transit-Fundingv.2.pdf"
+  },
+  "tdaHandbookTrpa": {
+   "name": "TRPA Transportation Development Act Handbook, March 2023",
+   "note": "How TRPA apportions, allocates, and audits LTF and STA in the Tahoe region.",
+   "url": "https://www.trpa.gov/wp-content/uploads/2023-TDA-Handbook.pdf"
+  },
+  "tdaGuidebookCa": {
+   "name": "Caltrans Transportation Development Act Statutes and California Codes of Regulations, July 2018",
+   "note": "The state law and regulations behind TDA.",
+   "url": "https://dot.ca.gov/-/media/dot-media/programs/rail-mass-transportation/documents/f0009844-tda-07-2018-a11y.pdf"
   },
   "ftaSplit": {
    "name": "Lake Tahoe FTA Sub-Allocation (5307, 5339, 5310), FY 26 full-year apportionments, TRPA",
@@ -1624,7 +1650,8 @@
    "program": "TDA LTF, TRPA apportionment",
    "enabled": true,
    "status": "budgeted",
-   "amountMode": "manual",
+   "amountMode": "tda",
+   "tdaFund": "ltf",
    "amount": 1263326.0,
    "prior": 1200000,
    "growth": 0.00025,
@@ -1668,13 +1695,13 @@
    "grantor": "State of California (sales tax), apportioned by TRPA",
    "notes": "",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean D16",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 10 B10, C10",
     "restrictions": "State Funds, Oct. 28, 2026.pdf › Local Transportation Funds (LTF)",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 16 (FY 26-27 route allocations)",
     "projection": "Financial PlanG.xlsx › T2-4 Table A1 note 2: RTP projected population change, 0.025% per year",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean D16 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 16 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C"
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 16 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C"
    },
    "user": false
   },
@@ -1686,7 +1713,8 @@
    "program": "TDA STA, TRPA apportionment",
    "enabled": true,
    "status": "budgeted",
-   "amountMode": "manual",
+   "amountMode": "tda",
+   "tdaFund": "sta",
    "amount": 581801.0,
    "prior": 400000,
    "growth": 0.00025,
@@ -1730,13 +1758,13 @@
    "grantor": "State of California (fuel sales tax), apportioned by TRPA",
    "notes": "",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean D18",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 12",
     "restrictions": "State Funds, Oct. 28, 2026.pdf › State Transportation Assistance (STA)",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 18 (FY 26-27 route allocations)",
     "projection": "Financial PlanG.xlsx › T2-4 Table A1 note 2",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean D18 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 18 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C"
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 18 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C"
    },
    "user": false
   },
@@ -3381,7 +3409,8 @@
    "program": "TDA Local Transportation Fund",
    "enabled": true,
    "status": "budgeted",
-   "amountMode": "manual",
+   "amountMode": "tda",
+   "tdaFund": "ltf",
    "amount": 913053.0,
    "prior": null,
    "growth": 0.00025,
@@ -3425,11 +3454,11 @@
    "grantor": "State of California, apportioned by TRPA",
    "notes": "Fact sheet FY 25-26 TART totals: LTF $2,023,819 and STA $1,110,118 (TRPA and PCTPA combined). Not allocated on Revenue %s; placeholder split by service hours on TART fixed routes and paratransit in California.",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean E16",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 11",
     "projection": "Financial PlanG.xlsx › T5-7 Table A2 note 2: population change",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean E16 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 16 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C",
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 16 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 16 (FY 26-27 route allocations)"
    },
    "user": false
@@ -3499,7 +3528,8 @@
    "program": "TDA State Transit Assistance",
    "enabled": true,
    "status": "budgeted",
-   "amountMode": "manual",
+   "amountMode": "tda",
+   "tdaFund": "sta",
    "amount": 510729.0,
    "prior": null,
    "growth": 0.00025,
@@ -3543,11 +3573,11 @@
    "grantor": "State of California, apportioned by TRPA",
    "notes": "Fact sheet FY 25-26 TART totals: LTF $2,023,819 and STA $1,110,118 (TRPA and PCTPA combined). Not allocated on Revenue %s; placeholder split by service hours on TART fixed routes and paratransit in California.",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean E18",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 13",
     "projection": "Financial PlanG.xlsx › T5-7 Table A2 note 2: population change",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean E18 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 18 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C",
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 18 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 18 (FY 26-27 route allocations)"
    },
    "user": false
@@ -3616,9 +3646,9 @@
    "recipient": "TART",
    "program": "SGR",
    "enabled": true,
-   "status": "budgeted",
+   "status": "capital",
    "amountMode": "manual",
-   "amount": 100084.0,
+   "amount": 102483.0,
    "prior": 102929,
    "growth": 0.00025,
    "lastYear": null,
@@ -3659,13 +3689,13 @@
    "restrictionText": "Eligible transit maintenance and match for capital projects",
    "purpose": "Transit infrastructure repair and service improvements.",
    "grantor": "State of California (gas tax and vehicle fees)",
-   "notes": "",
+   "notes": "Capital, not operating revenue, per TRPA (Nov. 24, 2026). TRPA's FY 26-27 allocation programs TART's $102,483 in SGR to a 23-foot cutaway replacement bus, and TTD's $98,879 to maintenance equipment (Attachments C and D). Funding Model V1G counted $100,084 as operating revenue.",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean E20",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment D",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 14",
     "restrictions": "State Funds, Oct. 28, 2026.pdf › State of Good Repair (SGR)",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean E20 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 20 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 14, columns B and C",
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment D | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 20 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 14, columns B and C",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 20 (FY 26-27 route allocations)"
    },
    "user": false
@@ -4855,6 +4885,21 @@
    "riders": 613042.0
   }
  },
+ "tda": {
+  "ltf": {
+   "region": 2336765,
+   "trpa": {
+    "ttd": 45800,
+    "tart": 29200
+   },
+   "ttd": 1375636
+  },
+  "sta": {
+   "total": 1393758,
+   "direct99314": 10922,
+   "ttdShare99313": null
+  }
+ },
  "dataNotes": [
   {
    "title": "Costs tab total double-counts TART Main Line",
@@ -5025,8 +5070,8 @@
   }
  ],
  "build": {
-  "id": "20261124a",
-  "builtAt": "2026-11-24T23:41:51",
+  "id": "20261125a",
+  "builtAt": "2026-11-25T00:30:44",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",

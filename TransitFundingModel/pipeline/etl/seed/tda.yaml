@@ -1,0 +1,17 @@
+# TDA apportionment between TTD (El Dorado County portion of the Tahoe region) and Placer County TART, FY 26-27.
+# Source: TRPA staff report, Unmet Transit Needs Public Hearing, FY 2026-2027 Transit Funding Allocations, and State of Good
+# Repair Project Lists (Transportation Committee item 5.B, Governing Board consent item 6.A, Nov. 18, 2026), Attachments A and B.
+# Method: TRPA TDA Handbook (March 2023).
+# The region totals are fixed on the page. Users can change only how the operator share splits between TTD and TART.
+tda:
+  ltf:
+    region: 2336765          # LTF for the Tahoe region: El Dorado County $1,421,436 + Placer County $915,329
+    trpa:                    # TRPA administration ($40,000) and planning and programming ($35,000), off the top, by county
+      ttd: 45800             # El Dorado County: $24,400 administration + $21,400 planning
+      tart: 29200            # Placer County: $15,600 administration + $13,600 planning
+    ttd: 1375636             # editable: LTF to TTD. TART gets the rest of region minus TRPA ($886,129)
+  sta:
+    total: 1393758           # State Controller final estimate for TRPA
+    direct99314: 10922       # PUC 99314 revenue-based share paid directly to TTD
+    ttdShare99313: null      # editable: TTD share of the PUC 99313 remainder. Blank uses the FTA earned share
+                             # (revenue miles, population, ridership): 48.70 percent in the staff report

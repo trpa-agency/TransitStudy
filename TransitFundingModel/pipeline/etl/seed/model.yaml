@@ -24,6 +24,11 @@ sourceFileGroups:
   note: TRPA's transit funding fact sheets, Oct. 28, 2026 versions. They give the amount, purpose, match, and restrictions for each federal, state, and local source.
   members: [fed, state, loc1, loc2, loc3]
   listMembers: true
+- key: tda
+  name: Transportation Development Act (TDA)
+  note: California's TDA funds transit through the Local Transportation Fund, a quarter-cent sales tax returned to the county where it was collected, and State Transit Assistance, from the sales tax on diesel fuel. TRPA apportions both for the California side of the Tahoe region.
+  members: [tdaAlloc2627, tdaHandbookTrpa, tdaGuidebookCa]
+  listMembers: true
 - key: tartSystemsPlan
   name: TART 2025 Systems Plan Update
   note: Placer County, November 18, 2025. Current TART frequency, the preferred service scenario, and the cost of 30-minute peak service.
@@ -62,6 +67,18 @@ references:
     name: TART 2025 Systems Plan Update, staff report, Placer County Public Works, November 18, 2025
     note: Current 60-minute frequency on all TART fixed routes, and the peak-season and year-round 30-minute options.
     url: https://www.placer.ca.gov/DocumentCenter/View/99284/04A
+  tdaAlloc2627:
+    name: TRPA FY 2026-27 transit funding allocations staff report, November 2026
+    note: LTF and STA allocations to TTD and TART for FY 26-27, prepared for the TRPA Governing Board's November 2026 meeting (Attachments A and B).
+    url: https://www.trpa.gov/wp-content/uploads/Transportation-Committee-Agenda-Item-No.-5B-Consent-Calendar-Item-No.-6A-Transit-Fundingv.2.pdf
+  tdaHandbookTrpa:
+    name: TRPA Transportation Development Act Handbook, March 2023
+    note: How TRPA apportions, allocates, and audits LTF and STA in the Tahoe region.
+    url: https://www.trpa.gov/wp-content/uploads/2023-TDA-Handbook.pdf
+  tdaGuidebookCa:
+    name: Caltrans Transportation Development Act Statutes and California Codes of Regulations, July 2018
+    note: The state law and regulations behind TDA.
+    url: https://dot.ca.gov/-/media/dot-media/programs/rail-mass-transportation/documents/f0009844-tda-07-2018-a11y.pdf
   ftaSplit:
     name: Lake Tahoe FTA Sub-Allocation (5307, 5339, 5310), FY 26 full-year apportionments, TRPA
     note: Earned-share split of the Lake Tahoe UZA apportionment by urban revenue miles, population, and ridership, and the 75 percent operations share of 5307. Same inputs as the V1G FTA Allocation Split tab.

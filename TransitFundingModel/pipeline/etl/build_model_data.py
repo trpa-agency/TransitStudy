@@ -225,7 +225,7 @@ class Build:
         self.cfg = load_yaml(cfg_path)
         self.wb = Workbooks(self.cfg, cfg_path.parent)
         seed_dir = cfg_path.parent / self.cfg.get("seed_folder", "seed")
-        self.seed = {name: load_yaml(seed_dir / f"{name}.yaml") for name in ("model", "services", "operators", "sources", "fta", "notes")}
+        self.seed = {name: load_yaml(seed_dir / f"{name}.yaml") for name in ("model", "services", "operators", "sources", "fta", "tda", "notes")}
         self.warnings: list[str] = []
         self.changes: list[str] = []   # workbook values that differ from the seed's stored value
         self.kept: list[str] = []      # seed values held over the workbook
@@ -652,7 +652,7 @@ class Build:
             "references": m.get("references", {}), "scenarios": m.get("scenarios", {}),
             "sourceGroups": m.get("sourceGroups", {}), "ungroupPrograms": m.get("ungroupPrograms", []), "dataUpdates": m.get("dataUpdates", {}),
             "agencies": m["agencies"], "jurisdictions": m["jurisdictions"],
-            "services": services, "operators": operators, "lines": lines, "fta": fta,
+            "services": services, "operators": operators, "lines": lines, "fta": fta, "tda": copy.deepcopy(self.seed["tda"]["tda"]),
             "dataNotes": self.seed["notes"]["dataNotes"], "agreements": self.seed["notes"]["agreements"],
             "build": {"id": bid, "builtAt": now.isoformat(timespec="seconds"),
                       "workbooks": {k: v for k, v in self.wb.files.items()}, "warnings": list(self.warnings)},

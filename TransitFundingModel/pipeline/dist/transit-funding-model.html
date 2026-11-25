@@ -274,6 +274,14 @@
   .fta-grid { display: grid; grid-template-columns: max-content repeat(2, minmax(110px, 160px)) minmax(80px, 120px); gap: 0.35rem 0.7rem; align-items: center; font-size: 0.886rem; }
   .fta-grid .h { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-text); }
   .fta-grid input { font: inherit; font-size: 0.907rem; color: var(--ct-blue-text); font-weight: 600; background: var(--ct-blue-light); border: 1px solid var(--gray-border-strong); border-radius: 6px; padding: 0.2rem 0.4rem; width: 100%; }
+  .tda-totals { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; margin-top: 0.7rem; padding: 0.5rem 0.7rem; background: var(--gray-bg); border-radius: 6px; font-size: 0.84rem; color: var(--gray-text); }
+  .tda-totals .h { flex-basis: 100%; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .tda-totals b { color: var(--brand-text); font-variant-numeric: tabular-nums; margin-left: 0.25rem; }
+  .tda-grid { grid-template-columns: max-content repeat(2, minmax(110px, 180px)) minmax(110px, max-content); }
+  .tda-grid .tda-sub { border-top: 1px solid var(--gray-border); padding-top: 0.35rem; }
+  .tda-grid .tda-tot { border-top: 2px solid var(--gray-border-strong); padding-top: 0.35rem; font-weight: 700; }
+  .tda-grid .tda-na { color: var(--gray-text); font-weight: 400; }
+  .tda-fixed { font-weight: 600; color: var(--brand-text); padding: 0.25rem 0.1rem; font-variant-numeric: tabular-nums; }
   .fta-out { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.5rem; margin-top: 0.7rem; }
   .fta-out div { background: var(--gray-bg); border-radius: 6px; padding: 0.4rem 0.55rem; font-size: 0.8rem; color: var(--gray-text); }
   .fta-out b { display: block; font-size: 1rem; color: var(--brand-text); }
@@ -285,6 +293,7 @@
     .scenario-actions { margin-left: 0; }
     .scenario-bar input[type=text] { min-width: 0; width: 100%; }
     .fta-grid { grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(0, 1fr)) minmax(0, 0.8fr); }
+    .tda-grid { grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(0, 1fr)) minmax(0, 0.9fr); }
   }
   @media print {
     #appHeader, .scenario-bar, .tabbar, .no-print, calcite-button { display: none !important; }
@@ -556,6 +565,7 @@
           <a href="#in-sources">Funding sources</a>
           <a href="#in-proj">Revenue projections</a>
           <a href="#in-fta">FTA 5307 split</a>
+          <a href="#in-tda">TDA split</a>
           <a href="#" data-go="alloc">Shares by route &#8599;</a>
           <div class="grp">Record</div>
           <a href="#in-changes">Changes from source data</a>
@@ -668,10 +678,19 @@
           </div>
           <div class="card in-sec" id="in-fta">
             <h2>FTA 5307 sub-allocation between TTD and Placer County</h2>
-            <p class="note">The Lake Tahoe urbanized area (UZA) apportionment is split by an earned-share formula: the average of each operator's share of urban revenue miles, population, and ridership. 75 percent of 5307 goes to operations. The method comes from the <a data-ref="ftaMou" target="_blank" rel="noopener">2016 transit MOU</a> between TRPA, TTD, and Placer County. The MOU also gives each operator a base allocation before the earned share. The FY 26 split leaves the base out, and so does the model.</p>
+            <p class="note">The Lake Tahoe urbanized area (UZA) apportionment is split by an earned-share formula: the average of each operator's share of urban revenue miles, population, and ridership. 75 percent of 5307 goes to operations. The method comes from the 2016 transit MOU between TRPA, TTD, and Placer County<span data-cite="ftaMou"></span>. The MOU also gives each operator a base allocation before the earned share. The FY 26 split leaves the base out, and so does the model.</p>
             <div class="fta-grid" id="ftaGrid" style="margin-top:0.6rem"></div>
             <div class="fta-out" id="ftaOut"></div>
-            <p class="source">Source: <a data-ref="ftaSplit" target="_blank" rel="noopener">FY 26 Lake Tahoe FTA sub-allocation</a> (TRPA), as entered in the Tahoe Transit Study FTA split<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>. FY 26-27 values are the FY 25-26 apportionment plus 1 percent, an estimate.</p>
+            <p class="source">Source: FY 26 Lake Tahoe FTA sub-allocation<span data-cite="ftaSplit"></span>, as entered in the Tahoe Transit Study FTA split<sup class="cn"><a data-src="1" title="Transit Study Funding Memo Inputs">1</a></sup>. FY 26-27 values are the FY 25-26 apportionment plus 1 percent, an estimate.</p>
+          </div>
+          <div class="card in-sec" id="in-tda">
+            <h2>TDA apportionment between TTD and Placer County</h2>
+            <p class="note">The Transportation Development Act (TDA) is comprised of two transit funds. As the Regional Transportation Planning Agency (RTPA) for the Tahoe portions of El Dorado and Placer Counties, TRPA apportions both funds to the region's transit operators.</p>
+            <p class="note"><b>LTF:</b> The Local Transportation Fund is a quarter-cent state sales tax returned to the county where it was collected. TRPA takes $75,000 off the top for administration and planning. The rest goes to TTD and TART, by county of origin in TRPA's allocation.</p>
+            <p class="note"><b>STA:</b> State Transit Assistance comes from the state sales tax on diesel fuel. TTD receives its revenue-based share (PUC 99314) directly. The population-based share (PUC 99313) splits by the same earned share as the FTA 5307 split above: urban revenue miles, population, and ridership. TART's LTF and STA from the Placer County Transportation Planning Agency, for service outside the Tahoe region, are separate funding sources.</p>
+            <div class="fta-grid tda-grid" id="tdaGrid" style="margin-top:1.2rem"></div>
+            <p class="source">Source: TRPA FY 2026-27 transit funding allocations, Attachments A and B<span data-cite="tdaAlloc2627"></span>.</p>
+            <p class="source">*TART receives its STA revenue-based share (PUC 99314) through the Placer County Transportation Planning Agency.</p>
           </div>
           <div class="card in-sec" id="in-changes">
             <h2>Changes from the source data</h2>
@@ -983,6 +1002,17 @@ window.TRANSIT_MODEL_DATA = {
    "listMembers": true
   },
   {
+   "key": "tda",
+   "name": "Transportation Development Act (TDA)",
+   "note": "California's TDA funds transit through the Local Transportation Fund, a quarter-cent sales tax returned to the county where it was collected, and State Transit Assistance, from the sales tax on diesel fuel. TRPA apportions both for the California side of the Tahoe region.",
+   "members": [
+    "tdaAlloc2627",
+    "tdaHandbookTrpa",
+    "tdaGuidebookCa"
+   ],
+   "listMembers": true
+  },
+  {
    "key": "tartSystemsPlan",
    "name": "TART 2025 Systems Plan Update",
    "note": "Placer County, November 18, 2025. Current TART frequency, the preferred service scenario, and the cost of 30-minute peak service.",
@@ -1003,6 +1033,21 @@ window.TRANSIT_MODEL_DATA = {
    "name": "TART 2025 Systems Plan Update, staff report, Placer County Public Works, November 18, 2025",
    "note": "Current 60-minute frequency on all TART fixed routes, and the peak-season and year-round 30-minute options.",
    "url": "https://www.placer.ca.gov/DocumentCenter/View/99284/04A"
+  },
+  "tdaAlloc2627": {
+   "name": "TRPA FY 2026-27 transit funding allocations staff report, November 2026",
+   "note": "LTF and STA allocations to TTD and TART for FY 26-27, prepared for the TRPA Governing Board's November 2026 meeting (Attachments A and B).",
+   "url": "https://www.trpa.gov/wp-content/uploads/Transportation-Committee-Agenda-Item-No.-5B-Consent-Calendar-Item-No.-6A-Transit-Fundingv.2.pdf"
+  },
+  "tdaHandbookTrpa": {
+   "name": "TRPA Transportation Development Act Handbook, March 2023",
+   "note": "How TRPA apportions, allocates, and audits LTF and STA in the Tahoe region.",
+   "url": "https://www.trpa.gov/wp-content/uploads/2023-TDA-Handbook.pdf"
+  },
+  "tdaGuidebookCa": {
+   "name": "Caltrans Transportation Development Act Statutes and California Codes of Regulations, July 2018",
+   "note": "The state law and regulations behind TDA.",
+   "url": "https://dot.ca.gov/-/media/dot-media/programs/rail-mass-transportation/documents/f0009844-tda-07-2018-a11y.pdf"
   },
   "ftaSplit": {
    "name": "Lake Tahoe FTA Sub-Allocation (5307, 5339, 5310), FY 26 full-year apportionments, TRPA",
@@ -2552,7 +2597,8 @@ window.TRANSIT_MODEL_DATA = {
    "program": "TDA LTF, TRPA apportionment",
    "enabled": true,
    "status": "budgeted",
-   "amountMode": "manual",
+   "amountMode": "tda",
+   "tdaFund": "ltf",
    "amount": 1263326.0,
    "prior": 1200000,
    "growth": 0.00025,
@@ -2596,13 +2642,13 @@ window.TRANSIT_MODEL_DATA = {
    "grantor": "State of California (sales tax), apportioned by TRPA",
    "notes": "",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean D16",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 10 B10, C10",
     "restrictions": "State Funds, Oct. 28, 2026.pdf › Local Transportation Funds (LTF)",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 16 (FY 26-27 route allocations)",
     "projection": "Financial PlanG.xlsx › T2-4 Table A1 note 2: RTP projected population change, 0.025% per year",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean D16 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 16 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C"
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 16 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C"
    },
    "user": false
   },
@@ -2614,7 +2660,8 @@ window.TRANSIT_MODEL_DATA = {
    "program": "TDA STA, TRPA apportionment",
    "enabled": true,
    "status": "budgeted",
-   "amountMode": "manual",
+   "amountMode": "tda",
+   "tdaFund": "sta",
    "amount": 581801.0,
    "prior": 400000,
    "growth": 0.00025,
@@ -2658,13 +2705,13 @@ window.TRANSIT_MODEL_DATA = {
    "grantor": "State of California (fuel sales tax), apportioned by TRPA",
    "notes": "",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean D18",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 12",
     "restrictions": "State Funds, Oct. 28, 2026.pdf › State Transportation Assistance (STA)",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 18 (FY 26-27 route allocations)",
     "projection": "Financial PlanG.xlsx › T2-4 Table A1 note 2",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean D18 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 18 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C"
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 18 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C"
    },
    "user": false
   },
@@ -4309,7 +4356,8 @@ window.TRANSIT_MODEL_DATA = {
    "program": "TDA Local Transportation Fund",
    "enabled": true,
    "status": "budgeted",
-   "amountMode": "manual",
+   "amountMode": "tda",
+   "tdaFund": "ltf",
    "amount": 913053.0,
    "prior": null,
    "growth": 0.00025,
@@ -4353,11 +4401,11 @@ window.TRANSIT_MODEL_DATA = {
    "grantor": "State of California, apportioned by TRPA",
    "notes": "Fact sheet FY 25-26 TART totals: LTF $2,023,819 and STA $1,110,118 (TRPA and PCTPA combined). Not allocated on Revenue %s; placeholder split by service hours on TART fixed routes and paratransit in California.",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean E16",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 11",
     "projection": "Financial PlanG.xlsx › T5-7 Table A2 note 2: population change",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean E16 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 16 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C",
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 16 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 16 (FY 26-27 route allocations)"
    },
    "user": false
@@ -4427,7 +4475,8 @@ window.TRANSIT_MODEL_DATA = {
    "program": "TDA State Transit Assistance",
    "enabled": true,
    "status": "budgeted",
-   "amountMode": "manual",
+   "amountMode": "tda",
+   "tdaFund": "sta",
    "amount": 510729.0,
    "prior": null,
    "growth": 0.00025,
@@ -4471,11 +4520,11 @@ window.TRANSIT_MODEL_DATA = {
    "grantor": "State of California, apportioned by TRPA",
    "notes": "Fact sheet FY 25-26 TART totals: LTF $2,023,819 and STA $1,110,118 (TRPA and PCTPA combined). Not allocated on Revenue %s; placeholder split by service hours on TART fixed routes and paratransit in California.",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean E18",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 13",
     "projection": "Financial PlanG.xlsx › T5-7 Table A2 note 2: population change",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean E18 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 18 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C",
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 18 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 18 (FY 26-27 route allocations)"
    },
    "user": false
@@ -4544,9 +4593,9 @@ window.TRANSIT_MODEL_DATA = {
    "recipient": "TART",
    "program": "SGR",
    "enabled": true,
-   "status": "budgeted",
+   "status": "capital",
    "amountMode": "manual",
-   "amount": 100084.0,
+   "amount": 102483.0,
    "prior": 102929,
    "growth": 0.00025,
    "lastYear": null,
@@ -4587,13 +4636,13 @@ window.TRANSIT_MODEL_DATA = {
    "restrictionText": "Eligible transit maintenance and match for capital projects",
    "purpose": "Transit infrastructure repair and service improvements.",
    "grantor": "State of California (gas tax and vehicle fees)",
-   "notes": "",
+   "notes": "Capital, not operating revenue, per TRPA (Nov. 24, 2026). TRPA's FY 26-27 allocation programs TART's $102,483 in SGR to a 23-foot cutaway replacement bus, and TTD's $98,879 to maintenance equipment (Attachments C and D). Funding Model V1G counted $100,084 as operating revenue.",
    "cites": {
-    "amount": "Funding Model V1G.xlsx › Per Route Model Clean E20",
+    "amount": "TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment D",
     "prior": "State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations",
     "match": "Financial PlanG.xlsx › Revenue %s row 14",
     "restrictions": "State Funds, Oct. 28, 2026.pdf › State of Good Repair (SGR)",
-    "build": "FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean E20 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 20 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 14, columns B and C",
+    "build": "FY 26-27 amount: TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment D | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 20 | Conditions and match: Financial PlanG.xlsx › Revenue %s row 14, columns B and C",
     "alloc": "Funding Model V1G.xlsx › Per Route Model Clean row 20 (FY 26-27 route allocations)"
    },
    "user": false
@@ -5783,6 +5832,21 @@ window.TRANSIT_MODEL_DATA = {
    "riders": 613042.0
   }
  },
+ "tda": {
+  "ltf": {
+   "region": 2336765,
+   "trpa": {
+    "ttd": 45800,
+    "tart": 29200
+   },
+   "ttd": 1375636
+  },
+  "sta": {
+   "total": 1393758,
+   "direct99314": 10922,
+   "ttdShare99313": null
+  }
+ },
  "dataNotes": [
   {
    "title": "Costs tab total double-counts TART Main Line",
@@ -5953,8 +6017,8 @@ window.TRANSIT_MODEL_DATA = {
   }
  ],
  "build": {
-  "id": "20261124a",
-  "builtAt": "2026-11-24T23:41:51",
+  "id": "20261125a",
+  "builtAt": "2026-11-25T00:30:44",
   "workbooks": {
    "v1g": {
     "file": "Funding Model V1G.xlsx",
@@ -6068,13 +6132,14 @@ const ASSUME_DEFAULTS = () => ({ carry: false, fedExcess: 'exclude', opening: Ob
   peak30Start: 1, peak30Cost: null });   // peak30Cost: annual cost in FY 26-27 dollars when edited; null uses the plan total   // first fiscal year of 30-minute peak service (index into YEARS); not the current year by default, per TRPA (Nov. 13, 2026)
 function makeDefaults() {
   return { version: MODEL_VERSION, dataBuild: BUILD.id, name: `Source data (build ${BUILD.id}, ${buildDate()})`, created: new Date().toISOString(),
-    services: dcopy(DATA.services), operators: dcopy(DATA.operators), lines: dcopy(DATA.lines), fta: dcopy(DATA.fta), assume: ASSUME_DEFAULTS(), presets: {}, nameAuto: true, changes: [], edited: {} };
+    services: dcopy(DATA.services), operators: dcopy(DATA.operators), lines: dcopy(DATA.lines), fta: dcopy(DATA.fta), tda: dcopy(DATA.tda || {}), assume: ASSUME_DEFAULTS(), presets: {}, nameAuto: true, changes: [], edited: {} };
 }
 /* Fill fields added after a scenario was saved (assumptions, presets). */
 function patchState(p) {
   const d = ASSUME_DEFAULTS();
   p.assume = Object.assign(d, p.assume || {}); p.assume.opening = Object.assign(d.opening, (p.assume || {}).opening || {}); p.assume.merge = Object.assign(ASSUME_DEFAULTS().merge, (p.assume || {}).merge || {});
   p.presets = p.presets || {};
+  if (DATA && DATA.tda && (!p.tda || !p.tda.ltf || p.tda.ltf.region == null)) p.tda = dcopy(DATA.tda);   // fill or replace the Nov. 24 draft layout
   if (p.nameAuto == null) p.nameAuto = !p.name || /^Source data \(build/.test(p.name);
   return p;
 }
@@ -6180,6 +6245,7 @@ function rebase(old) {
     const [entity, id, ...rest] = key.split(':'); let path = rest.join(':');
     let src, dst;
     if (entity === 'fta') { src = old.fta; dst = fresh.fta; path = path.replace(/^fta\./, ''); }
+    else if (entity === 'tda') { src = old.tda; dst = fresh.tda; path = path.replace(/^tda\./, ''); }
     else if (entity === 'assume') { src = patchState(old).assume; dst = fresh.assume; path = path.replace(/^assume\./, ''); }
     else { const list = ENTITY_LIST[entity]; src = (old[list] || []).find(x => x.id === id); dst = (fresh[list] || []).find(x => x.id === id); }
     if (!src || !dst) { dropped.push(key); continue; }
@@ -6238,8 +6304,8 @@ const FIELD_LABELS = { amount: 'FY 26-27 amount', prior: 'FY 25-26 amount', grow
   matchEligible: 'Counts as match', matchOnly: 'Match-only credit', enabled: 'Included', include: 'Included', vsh: 'Service hours', vsm: 'Service miles', trips: 'Passenger trips',
   rateOverride: 'Cost per hour', costOverride: 'Annual cost', rate: 'Cost per hour', escal: 'Annual escalator', level: 'Funding level', recipient: 'Receiving agency', commitment: 'Commitment basis',
   status: 'Status', area: 'Urban/rural', type: 'Service type', operator: 'Operator', federalized: 'Federalized', amountMode: 'Amount source', name: 'Name', alloc: 'Allocation', rules: 'Eligibility rules', agency: 'Agency' };
-function fieldLabel(path) { if (path.startsWith('overrides.')) return 'Amount in ' + YEARS[+path.split('.')[1]]; if (path.startsWith('rules.')) return 'Rule: ' + path.slice(6); if (path.startsWith('costSchedule.')) return 'Cost in ' + YEARS[+path.split('.')[1]]; if (path.startsWith('juris.')) return 'Share: ' + jurName(path.slice(6)); if (path.startsWith('alloc.pct.')) return 'Share to ' + svcShort(path.slice(10)); if (path.startsWith('fta.')) return 'FTA split: ' + path.slice(4); if (path === 'assume.carry') return 'Carry surpluses forward'; if (path === 'assume.fedExcess') return 'Federal funds for other eligible uses'; if (path.startsWith('assume.opening.')) return 'Opening balance: ' + agShort(path.slice(15)); if (path === 'assume.merge.adminSavings') return 'Merger: SSTMA admin cost removed'; if (path === 'assume.merge.partnerKept') return 'Merger: Lake Link partner funds kept'; if (path === 'assume.merge.compliance') return 'Merger: added federal compliance cost'; if (path === 'juris') return 'Jurisdiction miles'; if (path === 'jurisMiles') return 'Jurisdiction miles entered'; if (path === 'merged') return 'Merged into TTD'; if (path === 'mergedPartner') return 'Partner funds under the merger'; if (path === 'peak30') return '30-minute peak frequency'; if (path === 'assume.peak30Start') return '30-minute peak service: first fiscal year'; if (path === 'assume.peak30Cost') return '30-minute peak service: annual cost (FY 26-27 dollars)'; return FIELD_LABELS[path] || path; }
-function entityName(entity, id) { if (entity === 'assume') return 'Model assumptions';if (entity === 'line') return (lineById(id) || {}).name || id; if (entity === 'service') return (svcById(id) || {}).name || id; if (entity === 'operator') return (S.operators.find(o => o.id === id) || {}).name || id; if (entity === 'fta') return 'FTA 5307 sub-allocation'; return id; }
+function fieldLabel(path) { if (path.startsWith('tda.')) return 'TDA split: ' + ({ 'ltf.ttd': 'LTF to TTD', 'sta.ttdShare99313': 'TTD share of STA 99313' }[path.slice(4)] || path.slice(4)); if (path.startsWith('overrides.')) return 'Amount in ' + YEARS[+path.split('.')[1]]; if (path.startsWith('rules.')) return 'Rule: ' + path.slice(6); if (path.startsWith('costSchedule.')) return 'Cost in ' + YEARS[+path.split('.')[1]]; if (path.startsWith('juris.')) return 'Share: ' + jurName(path.slice(6)); if (path.startsWith('alloc.pct.')) return 'Share to ' + svcShort(path.slice(10)); if (path.startsWith('fta.')) return 'FTA split: ' + path.slice(4); if (path === 'assume.carry') return 'Carry surpluses forward'; if (path === 'assume.fedExcess') return 'Federal funds for other eligible uses'; if (path.startsWith('assume.opening.')) return 'Opening balance: ' + agShort(path.slice(15)); if (path === 'assume.merge.adminSavings') return 'Merger: SSTMA admin cost removed'; if (path === 'assume.merge.partnerKept') return 'Merger: Lake Link partner funds kept'; if (path === 'assume.merge.compliance') return 'Merger: added federal compliance cost'; if (path === 'juris') return 'Jurisdiction miles'; if (path === 'jurisMiles') return 'Jurisdiction miles entered'; if (path === 'merged') return 'Merged into TTD'; if (path === 'mergedPartner') return 'Partner funds under the merger'; if (path === 'peak30') return '30-minute peak frequency'; if (path === 'assume.peak30Start') return '30-minute peak service: first fiscal year'; if (path === 'assume.peak30Cost') return '30-minute peak service: annual cost (FY 26-27 dollars)'; return FIELD_LABELS[path] || path; }
+function entityName(entity, id) { if (entity === 'assume') return 'Model assumptions';if (entity === 'line') return (lineById(id) || {}).name || id; if (entity === 'service') return (svcById(id) || {}).name || id; if (entity === 'operator') return (S.operators.find(o => o.id === id) || {}).name || id; if (entity === 'fta') return 'FTA 5307 sub-allocation'; if (entity === 'tda') return 'TDA apportionment'; return id; }
 function logChange(entity, id, path, from, to) {
   const key = `${entity}:${id}:${path}`;
   if (!(key in S.edited)) S.edited[key] = from === undefined ? null : from;
@@ -6300,7 +6366,19 @@ function ftaShares(st) {
   return { TTD: t, TART: 1 - t, fac };
 }
 function ftaOps(st, rec) { const sh = ftaShares(st); return (+st.fta.apport5307) * (sh[rec] ?? 0) * (+st.fta.opsShare); }
-function lineBase(st, l) { return l.amountMode === 'fta5307' ? ftaOps(st, l.recipient) : (+l.amount || 0); }
+/* TDA (LTF and STA, TRPA apportionment). Region totals are fixed. LTF: TTD gets its amount, TART gets the region total
+   minus TRPA's administration and planning minus TTD. STA: TTD gets its direct PUC 99314 share plus its share of the
+   PUC 99313 remainder (the FTA earned share unless a share is entered); TART gets the rest of the remainder. */
+const tdaTrpa = d => { const r = d.ltf.trpa; return r && typeof r === 'object' ? (+r.ttd) + (+r.tart) : +r; };
+const tdaShare = st => { const v = st.tda.sta.ttdShare99313; return v != null && v !== '' ? +v : ftaShares(st).TTD; };
+function tdaAmt(st, fund, rec) {
+  const d = st.tda; if (!d || !d.ltf || (rec !== 'TTD' && rec !== 'TART')) return 0;
+  if (fund === 'ltf') { const ops = (+d.ltf.region) - tdaTrpa(d); return rec === 'TTD' ? +d.ltf.ttd : ops - (+d.ltf.ttd); }
+  if (fund === 'sta') { const base = (+d.sta.total) - (+d.sta.direct99314), sh = tdaShare(st); return rec === 'TTD' ? base * sh + (+d.sta.direct99314) : base * (1 - sh); }
+  return 0;
+}
+const LINKED = l => l.amountMode === 'fta5307' || l.amountMode === 'tda';
+function lineBase(st, l) { return l.amountMode === 'fta5307' ? ftaOps(st, l.recipient) : l.amountMode === 'tda' ? tdaAmt(st, l.tdaFund, l.recipient) : (+l.amount || 0); }
 function lineAmount(st, l, y) {
   if (!l.enabled) return 0;
   if (l.lastYear != null && l.lastYear !== '' && y > +l.lastYear) return 0;
@@ -6317,6 +6395,7 @@ function lineAmount(st, l, y) {
 function projectionText(l) {
   const parts = [];
   if (l.amountMode === 'fta5307') parts.push('FTA split formula');
+  if (l.amountMode === 'tda') parts.push('TDA split formula');
   if (+l.growth) parts.push((l.growth > 0 ? '+' : '') + pct(+l.growth, 3) + '/yr');
   if (l.cap != null && l.cap !== '') parts.push('cap ' + money(+l.cap));
   const ov = (l.overrides || []).slice(1).some(v => v != null && v !== '');
@@ -6387,7 +6466,7 @@ function compute(st, y) {
   };
   for (const s of svcs) { const cost = svcCost(st, s, y); R.svc[s.id] = { s, cost, byLevel: zeroLevels(), cash: 0, credits: 0, fed: 0, fares: 0, faresRepl: 0, matchAvail: 0, matchReq: 0, fedCap: 0, alloc: {}, risk: 0, nErr: 0, nWarn: 0 }; }
   for (const l of st.lines) {
-    const amt = lineAmount(st, l, y);
+    const amt = l.status === 'capital' ? 0 : lineAmount(st, l, y);   // capital funds are outside operating revenue
     const L = { l, amount: amt, pct: {}, alloc: {}, allocated: 0, unallocated: 0, pctTotal: 0 };
     R.line[l.id] = L;
     if (!l.enabled || !amt) { L.pct = l.enabled ? effPct(st, l, active) : {}; L.pctTotal = sum(Object.values(L.pct)); continue; }
@@ -7119,10 +7198,10 @@ function renderSources() {
       } },
     { colId: 'level', headerName: 'Level', width: 120, valueGetter: p => G(p) ? p.data.level : D(p).level, cellRenderer: p => p.value ? levelBadge(p.value) : '', filterValueGetter: p => { const v = G(p) ? p.data.level : D(p).level; return v ? LEVELS[v].label : ''; } },
     { colId: 'recipient', headerName: 'Receiving agency', width: 124, valueGetter: p => G(p) ? p.data.recipient : agShort(D(p).recipient) },
-    numCol({ colId: 'amount', headerName: 'FY 26-27 amount', width: 132, editable: p => !G(p) && D(p).amountMode !== 'fta5307', valueGetter: p => agg(p, l => lineBase(S, l)), valueParser: p => parseNum(p.newValue),
+    numCol({ colId: 'amount', headerName: 'FY 26-27 amount', width: 132, editable: p => !G(p) && !LINKED(D(p)), valueGetter: p => agg(p, l => lineBase(S, l)), valueParser: p => parseNum(p.newValue),
       valueSetter: p => setField('line', D(p), 'amount', parseNum(p.newValue) ?? 0),
-      cellClass: p => G(p) ? 'num src-total' : 'num ' + (D(p).amountMode === 'fta5307' ? '' : 'input ') + ed(D(p).id, 'amount'),
-      tooltipValueGetter: p => G(p) ? 'Total of the lines in this program' : D(p).amountMode === 'fta5307' ? 'Calculated by the FTA 5307 split below. Unlink in Details to type an amount.' : (citeText(D(p).cites.amount) || null) }),
+      cellClass: p => G(p) ? 'num src-total' : 'num ' + (LINKED(D(p)) ? '' : 'input ') + ed(D(p).id, 'amount'),
+      tooltipValueGetter: p => G(p) ? 'Total of the lines in this program' : D(p).amountMode === 'fta5307' ? 'Calculated by the FTA 5307 split below. Unlink in Details to type an amount.' : D(p).amountMode === 'tda' ? 'Calculated by the TDA split below. Unlink in Details to type an amount.' : (citeText(D(p).cites.amount) || null) }),
     numCol({ colId: 'yr', headerName: `${YEARS[YEAR]} amount`, width: 126, hide: true, valueGetter: p => agg(p, l => lineAmount(S, l, YEAR)), cellClass: p => G(p) ? 'num src-total' : 'num' }),
     { colId: 'matchText', headerName: 'Match requirement', minWidth: 160, flex: 1, valueGetter: p => one(p, l => l.matchText), tooltipValueGetter: p => one(p, l => l.matchText) },
     { colId: 'fedcap', headerName: 'Federal share cap', width: 120, cellClass: 'num', valueGetter: p => one(p, l => l.fedShare == null ? '' : pct(+l.fedShare, 1) + (l.fedShareADA ? ` (ADA ${pct(+l.fedShareADA, 0)})` : ''), 'Varies') },
@@ -7194,7 +7273,8 @@ function buildLineEditor(l) {
   const levelSel = `<select data-path="level" data-kind="level">${LEVEL_ORDER.map(k => k === 'state' ? `<optgroup label="State">${Object.entries(STATE_NAMES).map(([c, n]) => lvOpt('state:' + c, n)).join('')}</optgroup>` : k !== 'local' ? lvOpt(k, LEVELS[k].label)
     : `<optgroup label="Local">${JURIS.map(j => lvOpt('local:' + j.id, j.name)).join('')}${lvOpt('local:', 'Other local or more than one')}</optgroup>`).join('')}</select>`;
   const yrOpts = [['', 'No end year']].concat(YEARS.map((y, i) => [String(i), 'Ends after ' + y]));
-  const isFta = l.amountMode === 'fta5307';
+  const isFta = LINKED(l);
+  const canTda = !!l.tdaFund && (l.recipient === 'TTD' || l.recipient === 'TART');
   const canFta = l.program.startsWith('FTA 5307 Urbanized') && (l.recipient === 'TTD' || l.recipient === 'TART');
   const proj = YEARS.map((y, i) => `<div>${y}<b>${money(lineAmount(S, l, i))}</b></div>`).join('');
   const L0 = R.line[l.id] || { pct: {} };
@@ -7212,7 +7292,7 @@ function buildLineEditor(l) {
     <label class="fld wide${ed('purpose')}">Purpose or eligible activities<textarea data-path="purpose" data-kind="text">${val(l.purpose)}</textarea></label>
   </div></div>
   <div class="ed-sec"><h4>Amounts and projection</h4><div class="ed-grid">
-    <label class="fld${ed('amount')}">FY 26-27 amount ($)<input type="number" step="1" data-path="amount" data-kind="num" value="${isFta ? Math.round(lineBase(S, l)) : val(l.amount)}" ${isFta ? 'disabled' : ''} />${canFta ? `<span class="checks"><label><input type="checkbox" data-path="amountMode" data-kind="ftamode" ${isFta ? 'checked' : ''} /> Use the FTA sub-allocation formula</label></span>` : ''}</label>
+    <label class="fld${ed('amount')}">FY 26-27 amount ($)<input type="number" step="1" data-path="amount" data-kind="num" value="${isFta ? Math.round(lineBase(S, l)) : val(l.amount)}" ${isFta ? 'disabled' : ''} />${canFta ? `<span class="checks"><label><input type="checkbox" data-path="amountMode" data-kind="ftamode" ${isFta ? 'checked' : ''} /> Use the FTA sub-allocation formula</label></span>` : ''}${canTda ? `<span class="checks"><label><input type="checkbox" data-path="amountMode" data-kind="tdamode" ${isFta ? 'checked' : ''} /> Use the TDA apportionment formula</label></span>` : ''}</label>
     <label class="fld${ed('growth')}">Annual growth (%)<input type="number" step="0.01" data-path="growth" data-kind="pct" value="${pv(l.growth)}" /></label>
     <label class="fld${ed('lastYear')}">End year${sel('lastYear', yrOpts, l.lastYear == null ? '' : String(l.lastYear))}</label>
     <label class="fld${ed('cap')}">Annual cap ($)<input type="number" step="1" data-path="cap" data-kind="num" value="${val(l.cap)}" /></label>
@@ -7265,6 +7345,7 @@ function bindForm(root, l) {
       if (kind === 'num') v = parseNum(el.value);
       else if (kind === 'pct') { const n = parseNum(el.value); v = n == null ? null : n / 100; }
       else if (kind === 'bool') v = el.checked;
+      else if (kind === 'tdamode') { v = el.checked ? 'tda' : 'manual'; if (!el.checked) setField('line', l, 'amount', Math.round(lineBase(S, l))); }
       else if (kind === 'ftamode') { v = el.checked ? 'fta5307' : 'manual'; if (!el.checked) setField('line', l, 'amount', Math.round(lineBase(S, l))); }
       else if (kind === 'multi') { v = [...root.querySelectorAll(`[data-path="${path}"]:checked`)].map(x => x.value); if (!v.length) v = null; }
       else v = el.value === '' ? null : el.value;
@@ -7607,6 +7688,28 @@ function renderAgreements() {
 }
 
 /* ── Assumptions ── */
+function renderTda() {
+  const d = S.tda; if (!d || !d.ltf) return;
+  const trpaE = typeof d.ltf.trpa === 'object' ? +d.ltf.trpa.ttd : 0, trpaP = typeof d.ltf.trpa === 'object' ? +d.ltf.trpa.tart : 0, ops = (+d.ltf.region) - tdaTrpa(d), base = (+d.sta.total) - (+d.sta.direct99314), sh = tdaShare(S), linked = d.sta.ttdShare99313 == null || d.sta.ttdShare99313 === '';
+  const fixed = v => `<span class="tda-fixed">${money(v)}</span>`;
+  $('tdaGrid').innerHTML = `<span class="h">Split</span><span class="h">TTD</span><span class="h">TART</span><span class="h">Region total</span>
+    <span>LTF to operators ($)</span><input type="number" step="1" min="0" max="${ops}" data-tda="ltf.ttd" value="${Math.round(+d.ltf.ttd)}" aria-label="LTF to TTD" /><input type="number" step="1" min="0" max="${ops}" data-tda="ltf.ttd" data-side="tart" value="${Math.round(ops - d.ltf.ttd)}" aria-label="LTF to TART" />${fixed(ops)}
+    <span>LTF to TRPA, administration and planning ($)</span><span class="tda-fixed tda-na">N/A</span><span class="tda-fixed tda-na">N/A</span>${fixed(tdaTrpa(d))}
+    <span class="tda-sub">LTF subtotal ($)</span><span class="tda-fixed tda-sub">${money(tdaAmt(S, 'ltf', 'TTD'))}</span><span class="tda-fixed tda-sub">${money(tdaAmt(S, 'ltf', 'TART'))}</span><span class="tda-fixed tda-sub">${money(d.ltf.region)}</span>
+    <span>STA population share, PUC 99313 (%)</span><input type="number" step="0.01" min="0" max="100" data-tda="sta.ttdShare99313" value="${(sh * 100).toFixed(2)}" aria-label="TTD share of STA 99313, percent" /><input type="number" step="0.01" min="0" max="100" data-tda="sta.ttdShare99313" data-side="tart" value="${(100 - sh * 100).toFixed(2)}" aria-label="TART share of STA 99313, percent" /><span class="tda-fixed">100%</span>
+    <span>STA population share, PUC 99313 ($)</span><input type="number" step="1" min="0" max="${Math.round(base)}" data-tda="sta.ttdShare99313" data-unit="usd" value="${Math.round(base * sh)}" aria-label="TTD STA 99313, dollars" /><input type="number" step="1" min="0" max="${Math.round(base)}" data-tda="sta.ttdShare99313" data-unit="usd" data-side="tart" value="${Math.round(base * (1 - sh))}" aria-label="TART STA 99313, dollars" />${fixed(base)}
+    <span>STA revenue share, PUC 99314 ($)</span>${fixed(d.sta.direct99314)}<span class="tda-fixed">$0*</span>${fixed(d.sta.direct99314)}
+    <span class="tda-sub">STA subtotal ($)</span><span class="tda-fixed tda-sub">${money(tdaAmt(S, 'sta', 'TTD'))}</span><span class="tda-fixed tda-sub">${money(tdaAmt(S, 'sta', 'TART'))}</span><span class="tda-fixed tda-sub">${money(d.sta.total)}</span>
+    <span class="tda-tot">TDA total, LTF and STA ($)</span><span class="tda-fixed tda-tot">${money(tdaAmt(S, 'ltf', 'TTD') + tdaAmt(S, 'sta', 'TTD'))}</span><span class="tda-fixed tda-tot">${money(tdaAmt(S, 'ltf', 'TART') + tdaAmt(S, 'sta', 'TART'))}</span><span class="tda-fixed tda-tot">${money((+d.ltf.region) + (+d.sta.total))}</span>`;
+  $('tdaGrid').querySelectorAll('[data-tda]').forEach(el => el.addEventListener('change', () => {
+    const p = el.dataset.tda, tart = el.dataset.side === 'tart'; let v = parseNum(el.value);
+    if (el.dataset.unit === 'usd' && v != null) { if (v < 0 || v > base) { toast(`Enter an amount from $0 to ${money(base)}. The other operator gets the rest.`); renderTda(); return; } v = v / base * 100; }   // dollars to a share
+    if (tart && v != null) v = p === 'ltf.ttd' ? ops - v : 100 - v;   // TART's entry sets TTD to the rest
+    if (p === 'ltf.ttd') { if (v == null || v < 0 || v > ops) { toast(`Enter an amount from $0 to ${money(ops)}. The other operator gets the rest.`); renderTda(); return; } v = Math.round(v); }
+    if (p === 'sta.ttdShare99313') { if (v == null || v < 0 || v > 100) { toast('Enter a share from 0 to 100 percent. The other operator gets the rest.'); renderTda(); return; } v = Math.abs(v / 100 - ftaShares(S).TTD) < 0.00005 ? null : v / 100; }
+    const old = getPath(S.tda, p); if (same(old, v)) return; setPathRaw(S.tda, p, v); logChange('tda', 'tda', 'tda.' + p, old, v); refresh();
+  }));
+}
 function renderFta() {
   const f = S.fta, sh = ftaShares(S);
   const inp = (path, v, step) => `<input type="number" step="${step || 1}" data-fta="${path}" value="${v}" aria-label="${path}" />`;
@@ -7698,7 +7801,7 @@ function openFlags(lineId, svcId) {
 let MOVE = null;
 function offerMoveSources(svc, from, to) {
   const used = S.lines.filter(l => l.enabled && l.recipient === from && ((R.line[l.id] || {}).pct || {})[svc.id] > 0.0005);
-  const only = used.filter(l => l.amountMode !== 'fta5307' && R.line[l.id].pct[svc.id] >= 0.999);
+  const only = used.filter(l => !LINKED(l) && R.line[l.id].pct[svc.id] >= 0.999);
   const shared = used.filter(l => !only.includes(l));
   const how = 'To change a funding source\'s receiving agency, open Details next to the source in Funding sources, on Service and funding inputs.';
   if (!only.length) { if (used.length) toast(`${svc.name} moved to ${agShort(to)}. Its funding sources stay with ${agShort(from)}. ${how}`); return; }
@@ -7733,6 +7836,8 @@ function netChanges() {
    changed, with the percent and FY 26-27 dollars, plus a row when the split method changed. Other edits pass through. */
 function expandChange(c) {
   const path = c.path || c.field;
+  if (c.entity === 'tda' && path === 'tda.sta.ttdShare99313') { const f = v => v == null || v === '' ? `FTA earned share (${pct(ftaShares(S).TTD, 2)})` : pct(+v, 2); return [Object.assign({}, c, { path, from: f(c.from), to: f(c.to) })]; }
+  if (c.entity === 'tda' && path === 'tda.ltf.ttd') { const f = v => money(+v); return [Object.assign({}, c, { path, from: f(c.from), to: f(c.to) })]; }
   if (c.entity !== 'line' || !/^alloc(\.pct)?$/.test(path)) return [Object.assign({}, c, { path })];
   const l = lineById(c.id), amt = l ? lineAmount(S, l, 0) : 0, whole = path === 'alloc';
   const fA = whole ? (c.from || {}) : null, tA = whole ? (c.to || {}) : null;
@@ -7830,6 +7935,7 @@ function renderInputs() {
   renderSources();
   renderProjection();
   renderFta();
+  renderTda();
   renderChanges();
 }
 const deficitList = (RR) => { const d = AGENCIES.filter(a => RR.agency[a.id].balance < -1); return d.length ? d.map(a => `${a.short} ${moneyShort(RR.agency[a.id].balance)}`).join(', ') : 'none'; };
@@ -8070,6 +8176,8 @@ function init() {
     ys.addEventListener('change', () => { YEAR = +ys.value || 0; document.querySelectorAll('.yr-sel').forEach(o => { o.value = String(YEAR); }); refresh({ noSave: true }); });
   });
   $('issuePill').addEventListener('click', () => { goTab('alloc'); setTimeout(() => $('issuesCard').scrollIntoView({ behavior: 'smooth' }), 250); });
+  // <span data-cite="key"> placeholders become superscript citation numbers for that source or group
+  document.querySelectorAll('span[data-cite]').forEach(el => { el.outerHTML = supHtml([SRC_NUM[el.dataset.cite]]); });
   const tabBtns = [...document.querySelectorAll('.tabbar [role="tab"]')];
   tabBtns.forEach((b, i) => {
     b.addEventListener('click', () => goTab(b.dataset.tab));

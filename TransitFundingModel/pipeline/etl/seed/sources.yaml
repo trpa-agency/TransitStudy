@@ -408,7 +408,8 @@ sources:
   program: TDA LTF, TRPA apportionment
   enabled: true
   status: budgeted
-  amountMode: manual
+  amountMode: tda
+  tdaFund: ltf
   amount: 1263326.0
   prior: 1200000
   growth: 0.00025
@@ -457,6 +458,11 @@ sources:
     build: 'FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean D16 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 16
       | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C'
   user: false
+  keep:
+    amount:
+      reason: Calculated by the TDA split on Service and funding inputs from TRPA's FY 26-27 allocation (Nov. 2026). The seed amount is unused
+      workbook: 1263326.0
+      cite: 'TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A'
   from:
     revenue:
       row: TDA LTF (TRPA)
@@ -471,7 +477,8 @@ sources:
   program: TDA STA, TRPA apportionment
   enabled: true
   status: budgeted
-  amountMode: manual
+  amountMode: tda
+  tdaFund: sta
   amount: 581801.0
   prior: 400000
   growth: 0.00025
@@ -519,6 +526,11 @@ sources:
     build: 'FY 26-27 amount: Funding Model V1G.xlsx › Per Route Model Clean D18 | Shares: Funding Model V1G.xlsx › Per Route Model Clean row 18
       | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C'
   user: false
+  keep:
+    amount:
+      reason: Calculated by the TDA split on Service and funding inputs from TRPA's FY 26-27 allocation (Nov. 2026). The seed amount is unused
+      workbook: 581801.0
+      cite: 'TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B'
   from:
     revenue:
       row: TDA STA (TRPA)
@@ -2205,7 +2217,8 @@ sources:
   program: TDA Local Transportation Fund
   enabled: true
   status: budgeted
-  amountMode: manual
+  amountMode: tda
+  tdaFund: ltf
   amount: 913053.0
   prior: null
   growth: 0.00025
@@ -2253,6 +2266,11 @@ sources:
       | Conditions and match: Financial PlanG.xlsx › Revenue %s row 10, columns B and C'
     alloc: Funding Model V1G.xlsx › Per Route Model Clean row 16 (FY 26-27 route allocations)
   user: false
+  keep:
+    amount:
+      reason: Calculated by the TDA split on Service and funding inputs from TRPA's FY 26-27 allocation (Nov. 2026). The seed amount is unused
+      workbook: 913053.0
+      cite: 'TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment A'
   from:
     revenue:
       row: TDA LTF (TRPA)
@@ -2325,7 +2343,8 @@ sources:
   program: TDA State Transit Assistance
   enabled: true
   status: budgeted
-  amountMode: manual
+  amountMode: tda
+  tdaFund: sta
   amount: 510729.0
   prior: null
   growth: 0.00025
@@ -2373,6 +2392,11 @@ sources:
       | Conditions and match: Financial PlanG.xlsx › Revenue %s row 12, columns B and C'
     alloc: Funding Model V1G.xlsx › Per Route Model Clean row 18 (FY 26-27 route allocations)
   user: false
+  keep:
+    amount:
+      reason: Calculated by the TDA split on Service and funding inputs from TRPA's FY 26-27 allocation (Nov. 2026). The seed amount is unused
+      workbook: 510729.0
+      cite: 'TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment B'
   from:
     revenue:
       row: TDA STA (TRPA)
@@ -2444,9 +2468,9 @@ sources:
   recipient: TART
   program: SGR
   enabled: true
-  status: budgeted
+  status: capital
   amountMode: manual
-  amount: 100084.0
+  amount: 102483.0
   prior: 102929
   growth: 0.00025
   lastYear: null
@@ -2482,7 +2506,9 @@ sources:
   restrictionText: Eligible transit maintenance and match for capital projects
   purpose: Transit infrastructure repair and service improvements.
   grantor: State of California (gas tax and vehicle fees)
-  notes: ''
+  notes: 'Capital, not operating revenue, per TRPA (Nov. 24, 2026). TRPA''s FY 26-27 allocation programs TART''s $102,483
+    in SGR to a 23-foot cutaway replacement bus, and TTD''s $98,879 to maintenance equipment (Attachments C and D). Funding Model
+    V1G counted $100,084 as operating revenue.'
   cites:
     amount: Funding Model V1G.xlsx › Per Route Model Clean E20
     prior: State Funds, Oct. 28, 2026.pdf › FY 25-26 budgeted for operations
@@ -2492,6 +2518,11 @@ sources:
       | Conditions and match: Financial PlanG.xlsx › Revenue %s row 14, columns B and C'
     alloc: Funding Model V1G.xlsx › Per Route Model Clean row 20 (FY 26-27 route allocations)
   user: false
+  keep:
+    amount:
+      reason: TRPA FY 26-27 SGR allocation to TART (Attachment D). Capital, so it is outside operating revenue
+      workbook: 100084.0
+      cite: 'TRPA FY 2026-27 transit funding allocations staff report, November 2026 › Attachment D'
   from:
     revenue:
       row: State of Good Repair
